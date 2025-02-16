@@ -1,0 +1,51 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    background: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-left .logo {
+    height: 50px;
+    width: auto;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .icon {
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .notification-icon {
+    color: #125370;
+  }
+  
+  .profile-photo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #ddd;
+  }
+  
+  
+  .logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #125370;
+    transition: color 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    color: #ff0000;
+  }
+  

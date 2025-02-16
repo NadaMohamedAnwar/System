@@ -1,0 +1,42 @@
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #333;
+    color: white;
+    position: fixed;
+    left: -250px; /* Hidden by default */
+    transition: left 0.3s;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sidebar.open {
+    left: 0; /* Show when open */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 10px 0;
+}
+
+.sidebar li a {
+    color: white !important;
+    text-decoration: none;
+}
+
+.sidebar li a:hover {
+    text-decoration: underline;
+}
+.sidebar li a:active {
+    color: #125370;
+}
+.sidebar li a.active {
+    color: #125370 !important;
+    background-color: transparent !important; 
+    text-decoration: none !important; 
+    font-weight: bold; 
+}
