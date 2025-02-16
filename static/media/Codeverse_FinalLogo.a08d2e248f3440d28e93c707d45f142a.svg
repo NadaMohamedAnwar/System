@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   width="4236"
+   height="2243"
+   version="1.1"
+   id="svg4"
+   xmlns="http://www.w3.org/2000/svg">
+  <defs id="defs4">
+    <rect
+       x="1861.4623"
+       y="1623.6957"
+       width="1298.3309"
+       height="215.86706"
+       id="rect5" />
+  </defs>
+  <g transform="translate(-231 -197)" id="g4">
+    <text
+       fill="#125370"
+       font-family="Montserrat, sans-serif"
+       font-weight="700"
+       font-size="458"
+       transform="matrix(1 0 0 1 1537.71 1325)"
+       id="text1">codeverse</text>
+    <text
+       fill="#125370"
+       font-family="'Glacial Indifference', sans-serif"
+       font-weight="400"
+       font-size="183px"
+       id="text2"
+       x="1788.9717"
+       y="1526.1285"
+       style="font-size:180px;line-height:0px;letter-spacing:16px;word-spacing:0px">
+      <tspan
+         id="tspan5"
+         x="1788.9717"
+         y="1526.1285"
+         dx="0"
+         style="font-size:180px;letter-spacing:16px;word-spacing:0px">crafting digital verse</tspan>
+    </text>
+    <path
+       d="M347 1190C347 889.005 593.243 645 897 645 1200.76 645 1447 889.005 1447 1190 1447 1491 1200.76 1735 897 1735 593.243 1735 347 1491 347 1190Z"
+       fill="#125370"
+       fill-rule="evenodd"
+       id="path2" />
+    <text
+       fill="#125370"
+       font-family="Artifakt Element Black, sans-serif"
+       font-weight="800"
+       font-size="1068"
+       transform="matrix(1 0 0 1 927.199 1479)"
+       id="text3">{</text>
+    <text
+       fill="#FFFFFF"
+       font-family="Artifakt Element Black, sans-serif"
+       font-weight="800"
+       font-size="1063"
+       transform="matrix(1 0 0 1 869.763 1480)"
+       id="text4">{</text>
+  </g>
+</svg>
