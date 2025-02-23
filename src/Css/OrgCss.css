@@ -454,44 +454,128 @@ form button:hover {
 .active-color {
     background-color: gray; 
 }
-.schedule {
+
+.schedule-container {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    width: 100%;
-    margin: 0 auto;
+    width: 700px;
+    margin: 20px auto;
     border: 2px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .time-slot {
+    overflow: hidden;
+    background-color: #fff;
+}
+
+
+.agents-header {
+    display: flex;
+    color: #125370;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+}
+
+.time-placeholder {
+    width: 100px;
+}
+
+.agent-name {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid #ddd;
+}
+
+.agent-name:last-child {
+    border-right: none; 
+}
+
+
+.schedule-grid {
+    display: flex;
+    width: 100%;
+    position: relative;
+    border-bottom: 2px solid #ccc;
+}
+
+.time-column {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    background-color: #e9e9e9;
+    border-right: 2px solid #ccc;
+   
+    padding-top: 5px;
+}
+
+.time-label {
+    height: 50px;
     display: flex;
     align-items: center;
-    height: 60px;
-    border-bottom: 1px solid #ccc;
-    position: relative;
-    padding-left: 40px; /* Adjusted padding for alignment */
-  }
-  
-  .time-label {
-    position: absolute;
-    left: -100px; /* Ensures it's visible */
-    font-size: 14px;
+    justify-content: center;
     font-weight: bold;
-    margin: 50px;
-    color: #333;
-    white-space: nowrap; 
-  }
-  
-  .task-block {
-    position: absolute;
-    background-color: #125370;
-    color: white;
+    border-bottom: 2px solid #ccc;
+}
+
+
+.agent-task-column {
+    flex: 1;
+    position: relative;
     padding: 5px;
+    border-right: 2px solid #ddd;
+    min-height: 600px;
+    background-color: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+}
+
+.agent-task-column::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    background-image: linear-gradient(to bottom, transparent 49px, #ccc 50px); 
+    background-size: 100% 50px;
+}
+
+/* Task Block */
+.task-block {
+    background-color: white;
+    color: #125370;
     border-radius: 5px;
-    width: 30%;
+    padding: 5px;
     text-align: center;
-  }
-  /* ======================================================================= */
-  
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    width: calc(100% - 10px);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    line-height: 1.2;
+}
+.schedule-container button {
+    border-radius: 10px;
+    height: 30px;
+    margin: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    background: linear-gradient(90deg, #125370, gray);
+}
+.schedule-count{
+    display: flex;
+    
+}
+.service-counts{
+    margin: 20px auto;
+
+}
+.service-counts ul{
+    list-style: none;
+}

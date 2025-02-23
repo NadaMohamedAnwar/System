@@ -16,6 +16,7 @@ function AddTask() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
+  const [startDate, setstartDate] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [taskId, settaskId] = useState("");
   const navigate = useNavigate();
@@ -146,6 +147,7 @@ const FetchTaskTypes=async()=>{
     if (!title || title.length > 50)
       newErrors.title = "Title is required and must be less than 50 characters.";
     if (!dueDate) newErrors.dueDate = "Due Date is required.";
+    if (!startDate) newErrors.startDate = "Due Date is required.";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -167,6 +169,7 @@ const FetchTaskTypes=async()=>{
       description,
       priority: parseInt(priority,10),
       dueDate,
+      startDate,
       caseId:parseInt(CaseId,10)
     };
 
@@ -183,6 +186,7 @@ const FetchTaskTypes=async()=>{
       setDescription("");
       setPriority("");
       setDueDate("");
+      setstartDate("");
       setErrors({});
       if(exist==1){
         navigate(-1)
@@ -389,6 +393,19 @@ const FetchTaskTypes=async()=>{
                 <option value="1">Medium</option>
                 <option value="2">High</option>
               </select>
+                </div>
+                <div className="input-org">
+                <label>Start Date</label>
+                <input
+                  type="datetime-local"
+                  value={startDate}
+                  onChange={(e) => setstartDate(e.target.value)}
+                />
+                {errors.dueDate && (
+                <small className="error" style={{ color: "red" }}>
+                    {errors.startDate}
+                </small>
+                )}
                 </div>
 
                 <div className="input-org">

@@ -71,7 +71,9 @@ function ClientsManagement() {
                         <tbody>
                             {clients.length > 0 ? (
                                 clients.map((Client) => (
-                                    <tr key={Client.id} >
+                                    <tr key={Client.id} onClick={() =>
+                                        navigate(`/view-client/${Client.id}`, { state: { Client } })
+                                    }>
                                         <td>{Client.accountName}</td>
                                         <td>{Client.contactName}</td>
                                         <td>{Client.contactMobileNumber}</td>

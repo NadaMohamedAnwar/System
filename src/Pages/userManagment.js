@@ -158,7 +158,9 @@ function UserManagement() {
                         <tbody>
                             {FilterUsers.length > 0 ? (
                                 FilterUsers.map((User) => (
-                                    <tr key={User.id}>
+                                    <tr key={User.id} onClick={() =>
+                                        navigate(`/view-user/${User.id}`, { state: { User } })
+                                    }>
                                         <td>{User.userName}</td>
                                         <td>{User.email}</td>
                                         <td>{User.phone}</td>

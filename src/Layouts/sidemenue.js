@@ -79,7 +79,7 @@ const SidebarMenu = () => {
                         style={{ fontSize: "0.75rem" }}
                     >
                         <GrSchedule  size={15} className="me-2" />
-                        {open && <span>Scheduel</span>}
+                        {open && <span>Schedule</span>}
                     </NavLink>
                 </li>
 

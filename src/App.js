@@ -41,6 +41,8 @@ import AddUser from './Pages/addUser';
 import ViewCase from './Pages/viewCase';
 import ViewTask from './Pages/viewTask';
 import AttachCaseFile from './Pages/attachCaseFile';
+import ViewClient from './Pages/viewClient';
+import ViewUser from './Pages/viewUser';
 // import './App.css'; 
 
 function App() {
@@ -72,6 +74,7 @@ function App() {
           <Route path='/clients' element={<PrivateRoute component={ClientsManagement} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
           <Route path='/add-client' element={<PrivateRoute component={AddClient} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           <Route path='/edit-client/:id' element={<PrivateRoute component={EditClient} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
+          <Route path='/view-client/:id' element={<PrivateRoute component={ViewClient} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           
           <Route path='/users' element={<PrivateRoute component={UserManagement} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
           <Route path='/add-agent' element={<PrivateRoute component={AddAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
@@ -80,6 +83,8 @@ function App() {
           <Route path='/add-head' element={<PrivateRoute component={AddHead} roles={['OrgAdmin','SuperAdmin']} />} />
           <Route path='/add-manager' element={<PrivateRoute component={AddManager} roles={['OrgAdmin','SuperAdmin','HeadManager']} />} />
           <Route path='/edit-user/:role' element={<PrivateRoute component={EditUser} roles={['OrgAdmin','SuperAdmin','Manager','HeadManager']}  />} />
+          <Route path='/view-user/:id' element={<PrivateRoute component={ViewUser} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
+          
 
           <Route path='/add-department' element={<PrivateRoute component={AddDep} roles={['OrgAdmin']} />} />
           <Route path='/active-departments' element={<PrivateRoute component={ActiveDep} roles={['OrgAdmin']} />} />

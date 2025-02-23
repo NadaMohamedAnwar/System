@@ -1,78 +1,93 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import SidebarMenu from "../Layouts/sidemenue";
-import { useDispatch, useSelector } from "react-redux";
-import { editCases, fetchClients } from "../Redux/Actions/Action";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ViewTask() {
-    const [TaskDetails, setTaskDetails] = useState(null);
-    const navigate = useNavigate();
-    const { state } = useLocation();
-  
-    useEffect(() => {
-      if (state?.Task) {
-        setTaskDetails(state.Task);
-      }
-    }, [state]);
-  
-    if (!TaskDetails) {
-      return <div className="text-center mt-10 text-lg">Loading case details...</div>;
+  const [TaskDetails, setTaskDetails] = useState(null);
+  const navigate = useNavigate();
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (state?.task) {
+      setTaskDetails(state.task);
     }
-  
-    return (
-        <div className="d-flex">
-        <SidebarMenu/>
-        <div className="manage mx-auto">
-          <h2 className="check-head text-color">Task Details</h2>
-          <div>
-          <table >
-            <tbody>
-           
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Title</td>
-                    <td className="p-3 border">{TaskDetails.title}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Description</td>
-                    <td className="p-3 border">{TaskDetails.description}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Priority</td>
-                    <td className="p-3 border">{TaskDetails.priority}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Status</td>
-                    <td className="p-3 border">{TaskDetails.status}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Assigned To</td>
-                    <td className="p-3 border">{TaskDetails.assignedTo ?? "N/A"}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Department ID</td>
-                    <td className="p-3 border">{TaskDetails.departmentId}</td>
-                </tr>
-                <tr>
-                    <td className="p-3 font-medium bg-gray-100 border">Due Date</td>
-                    <td className="p-3 border">{new Date(TaskDetails.dueDate).toLocaleString()}</td>
-                </tr>
-                
+  }, [state]);
 
+  if (!TaskDetails) {
+    return <div className="text-center mt-10 text-lg">Loading task details...</div>;
+  }
 
-            </tbody>
-          </table>
+  return (
+    <div className="d-flex">
+      <SidebarMenu />
+      <div className="manage mx-auto p-4 w-75">
+        <h2 className="check-head text-color mb-4">Task Details</h2>
+        <div className="task-info border p-4 rounded shadow bg-light">
+          <div className="row">
+            {/* General Information */}
+            <div className="col-md-4">
+              <h5 className="mb-3">General Information</h5>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Task Name:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.taskName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Assigned To:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.assignedToUserName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Client:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.clientName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Created By:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.createdByUserName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Department:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.departmentName} disabled />
+              </div>
+            </div>
+
+            {/* Task Details */}
+            <div className="col-md-4">
+              <h5 className="mb-3">Task Details</h5>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Priority:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.priorityName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Status:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.statusName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Service:</label>
+                <input type="text" className="form-control form-control-sm" value={TaskDetails.serviceName} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label">Description:</label>
+                <textarea className="form-control form-control-sm" value={TaskDetails.description} disabled rows="3"></textarea>
+              </div>
+            </div>
+
+            {/* Date & Duration */}
+            <div className="col-md-4">
+              <h5 className="mb-3">Date & Duration</h5>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Start At:</label>
+                <input type="text" className="form-control form-control-sm" value={new Date(TaskDetails.startAt).toLocaleString()} disabled />
+              </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label w-50">Due Date:</label>
+                <input type="text" className="form-control form-control-sm" value={new Date(TaskDetails.dueDate).toLocaleString()} disabled />
+              </div>
+            </div>
           </div>
-          <button
-            onClick={() => navigate(-1)}
-            className="filter-btn"
-          >
-            Back
-          </button>
         </div>
+        <button onClick={() => navigate(-1)} className="btn btn-secondary mt-3">Back</button>
       </div>
-    );
+    </div>
+  );
 }
 
 export default ViewTask;

@@ -505,6 +505,42 @@ export const fetchTasks = (depid) => async (dispatch) => {
     });
   }
 };
+export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,ParentTaskId,AssignedTo,CreatedBy,DepartmentIds) => async (dispatch) => {
+  dispatch({ type: 'FETCH_TASKS_REQUEST' });
+  console.log("Final departmentId before fetching tasks:", DepartmentIds);
+  try {
+    const token = sessionStorage.getItem('token');
+    const OrgId = sessionStorage.getItem('orgId');
+    const params = { OrgId };
+    if (ClientId) params.ClientId = ClientId;
+    if (ServiceId) params.ServiceId = ServiceId;
+    if (TaskTypeId) params.TaskTypeId = TaskTypeId;
+    if (Status) params.Status = Status;
+    if (CaseId) params.CaseId = CaseId;
+    if (ParentTaskId) params.ParentTaskId = ParentTaskId;
+    if (AssignedTo) params.AssignedTo = AssignedTo;
+    if (CreatedBy) params.CreatedBy = CreatedBy;
+    if (DepartmentIds && DepartmentIds.length > 0) {
+      params.DepartmentIds = DepartmentIds;
+  }
+    const response = await axios.get('http://agentsys.runasp.net/api/Task',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        
+        params,
+      }
+    );
+    console.log(response.data)
+    dispatch({ type: 'FETCH_TASKS_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_TASKS_FAILURE',
+      payload: error.message,
+    });
+  }
+};
 
 
 export const addATask = (taskData) => async (dispatch) => {

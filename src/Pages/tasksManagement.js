@@ -20,6 +20,7 @@ function TaskManagement() {
     const [priority, setPriority] = useState("");
     const roles = sessionStorage.getItem('roles');
     const { Users } = useSelector((state) => state.Users);
+    const [total, setTotal] = useState(0);
     const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
       useEffect(() => {
           dispatch(fetchActiveDepartments(orgId));
@@ -47,7 +48,11 @@ function TaskManagement() {
 useEffect(() => {
     if (departmentId) {
         dispatch(fetchTasks(departmentId)); 
-        console.log(FilterTasks)   
+        console.log(FilterTasks)
+        if (FilterTasks) {
+            setTotal(FilterTasks.length);
+        }
+        
     }
 }, [dispatch,departmentId]);
 //   useEffect(() => {
@@ -150,7 +155,7 @@ useEffect(() => {
 
                     
                         <div className="head-icon">
-                            <h4 className="check-head text-color">Tasks</h4>
+                            <h4 className="check-head text-color">Tasks   {FilterTasks.length}/{total}</h4>
                             <FontAwesomeIcon
                                 onClick={() => navigate("/add-task")}
                                 className="icon-edit"
@@ -170,15 +175,15 @@ useEffect(() => {
                             </thead>
                             <tbody>
                                 {FilterTasks? (
-                                    FilterTasks.map((Task) => (
-                                        <tr key={Task.id} onClick={() =>
-                                            navigate(`/view-task/${Task.id}`, { state: { Task } })
+                                    FilterTasks.map((task) => (
+                                        <tr key={task.id} onClick={() =>
+                                            navigate(`/view-task/${task.id}`, { state: { task } })
                                         }>
-                                            <td>{Task.title}</td>
-                                            <td>{Task.priority}</td>
-                                            <td>{Task.status}</td>
-                                            <td>{getAgentName(Task.assignedTo)}</td>
-                                            <td>{Task.dueDate}</td>
+                                            <td>{task.title}</td>
+                                            <td>{task.priority}</td>
+                                            <td>{task.status}</td>
+                                            <td>{getAgentName(task.assignedTo)}</td>
+                                            <td>{task.dueDate}</td>
                                             {/* <td>
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
