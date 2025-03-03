@@ -31,7 +31,7 @@ function Login(){
       sessionStorage.setItem('id', userId);
       sessionStorage.setItem('roles', JSON.stringify(roles));
       sessionStorage.setItem('departments',departments)
-      
+       console.log(response.data)
         navigate('/home');
       
       // if(roles=="SuperAdmin"){

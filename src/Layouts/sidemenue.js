@@ -72,7 +72,7 @@ const SidebarMenu = () => {
                         {open && <span>Dashboard</span>}
                     </NavLink>
                 </li>
-                <li className="mb-3 fs-6">
+                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager"))&&<li className="mb-3 fs-6">
                     <NavLink
                         to="/schduel"
                         className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
@@ -81,7 +81,7 @@ const SidebarMenu = () => {
                         <GrSchedule  size={15} className="me-2" />
                         {open && <span>Schedule</span>}
                     </NavLink>
-                </li>
+                </li>}
 
                 {/* Dropdown Menu for Org Management */}
                 {userRoles.includes("SuperAdmin") &&(<li className="mb-3">
@@ -211,10 +211,10 @@ const SidebarMenu = () => {
                                     className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light fs-7"
                                 >
                                     <FcDepartment  size={15} className="me-2" />
-                                    {open && <span style={{ fontSize: "0.75rem" }}>Active Departments</span>}
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Departments</span>}
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <NavLink
                                     to="/inactive-departments"
                                     className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light fs-7"
@@ -222,7 +222,7 @@ const SidebarMenu = () => {
                                     <FcDepartment  size={15} className="me-2" />
                                     {open && <span style={{ fontSize: "0.75rem" }}>InActive Departments</span>}
                                 </NavLink>
-                            </li>
+                            </li> */}
                             <li>
                                 <NavLink
                                     to="/assign-department"
@@ -304,7 +304,7 @@ const SidebarMenu = () => {
                                     {open && <span style={{ fontSize: "0.75rem" }}>Add Agent</span>}
                                 </NavLink>
                             </li>} */}
-                            {(userRoles.includes("Manager")||userRoles.includes("OrgAdmin") || userRoles.includes("HeadManager") || userRoles.includes("SuperAdmin"))&&<li>
+                            {(userRoles.includes("OrgAdmin") || userRoles.includes("SuperAdmin"))&&<li>
                                 <NavLink
                                     to="/add-user"
                                     className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
@@ -317,7 +317,7 @@ const SidebarMenu = () => {
                     )}
                 </li>
                 {/* Dropdown Menu for Task Management */}
-                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager") ||userRoles.includes("SuperAdmin")) &&<li className="mb-3">
+                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3">
                     <div
                         className="d-flex align-items-center text-decoration-none text-white p-2 rounded cursor-pointer hover-bg-light"
                         onClick={() => setTaskOpen(!TaskOpen)} 
@@ -357,22 +357,13 @@ const SidebarMenu = () => {
                                     {open && <span style={{ fontSize: "0.75rem" }}>Assigen Agent</span>}
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink
-                                    to="/assign-parent"
-                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
-                                >
-                                    <BiAddToQueue  size={15} className="me-2" />
-                                    {open && <span style={{ fontSize: "0.75rem" }}>Assign Parent</span>}
-                                </NavLink>
-                            </li>
-                            
+    
                         </ul>
                     )}
                 </li>
                 }
                 {/* Dropdown Menu for Cases Management */}
-                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager") ||userRoles.includes("SuperAdmin"))&&<li className="mb-3">
+                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager"))&&<li className="mb-3">
                     <div
                         className="d-flex align-items-center text-decoration-none text-white p-2 rounded cursor-pointer hover-bg-light"
                         onClick={() => setCaseOpen(!CaseOpen)} 

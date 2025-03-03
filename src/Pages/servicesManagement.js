@@ -72,7 +72,7 @@ function ServicesManagement() {
                     </div>
                     <div className="table-container">
                         <div className="head-icon">
-                            <h4 className="check-head text-color">All Services</h4>
+                            <h4 className="check-head text-color">Services: {FilterServices.length}</h4>
                             <FontAwesomeIcon
                                 onClick={() => navigate("/add-service")}
                                 className="icon-edit"

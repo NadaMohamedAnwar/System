@@ -134,7 +134,7 @@ function UserManagement() {
                     
                     </div>
                     <div className="head-icon">
-                        <h4 className="check-head text-color">All Users</h4>
+                        <h4 className="check-head text-color">All Users: {FilterUsers.length}</h4>
                         <FontAwesomeIcon
                             onClick={() => navigate("/add-user")}
                             className="icon-edit"

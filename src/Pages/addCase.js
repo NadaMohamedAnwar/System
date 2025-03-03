@@ -22,6 +22,7 @@ function AddCase() {
   const [CaseId, setCaseId] = useState("");
   const [linkedCaseId, setlinkedCaseId] = useState("");
   const [errors, setErrors] = useState({});
+   const [RevelantCases, setRevelantCases] = useState([]);
   const dispatch = useDispatch();
   const { Cases} = useSelector((state) => state.Cases);
   const { Clients } = useSelector((state) => state.Clients);
@@ -33,6 +34,11 @@ function AddCase() {
   useEffect(() => {
         dispatch(fetchCases());
     }, [dispatch]); 
+    useEffect(() => {
+        const RevelantCases=Cases.filter((c) => c.clientId == clientId);
+        setRevelantCases(RevelantCases)
+           
+    }, [CaseId]);
     useEffect(() => {
         if (Clients.length > 0) {
             const filteredClients = Clients.filter((c) => c.organizationId === orgId);
@@ -89,8 +95,8 @@ function AddCase() {
     const caseData = {
       title,
       description: description || null,
-      pricingType: parseInt(pricingType,10),
-      price: price ? parseFloat(price) : null,
+      pricingType: 1,
+      price: .00,
       opposingParty: opposingParty || null,
       opposingLawyer: opposingLawyer || null,
       startDate,
@@ -113,7 +119,7 @@ function AddCase() {
       setOpposingLawyer("");
       setStartDate("");
       setCaseType("");
-      setClientId("");
+      // setClientId("");
       setErrors({});
       if(exist==1){
         navigate(-1)
@@ -298,7 +304,7 @@ function AddCase() {
         {currentSection === 2 && (
           <div className="org-data-div">
             <h5 className="text-color">Financial Info</h5>
-             <div className="input-org">
+             {/* <div className="input-org">
               <label>Pricing Type</label>
               <select
                 value={pricingType}
@@ -320,7 +326,7 @@ function AddCase() {
                 placeholder="Enter Price"
               />
               {errors.price && <small className="error" style={{color:"red"}}>{errors.price}</small>}
-            </div>
+            </div> */}
             
             <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
             Save and Exit
@@ -339,8 +345,8 @@ function AddCase() {
                   value={linkedCaseId}
                   onChange={(e) => setlinkedCaseId(e.target.value)}
                 ><option value="">Select Case</option>
-                 {Cases && Cases.length > 0 ? (
-                    Cases.map((Case) => (
+                 {RevelantCases && RevelantCases.length > 0 ? (
+                    RevelantCases.map((Case) => (
                         <option key={Case.id} value={Case.id}>{Case.title}</option>
                     ))
                     ) : (

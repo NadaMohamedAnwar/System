@@ -126,7 +126,7 @@ function CaseManagement() {
                     
                     </div>
                     <div className="head-icon">
-                        <h4 className="check-head text-color">Cases</h4>
+                        <h4 className="check-head text-color">Cases:{FilteredCases.length}</h4>
                         <FontAwesomeIcon
                             onClick={() => navigate("/add-case")}
                             className="icon-edit"

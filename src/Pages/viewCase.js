@@ -20,7 +20,7 @@ function ViewCase() {
   }, [caseDetails]);
 
   if (!caseDetails) {
-    return <div className="text-center mt-10 text-lg">No case details available.</div>;
+    return <div className="text-center mt-10 text-lg my-5">No case details available.</div>;
   }
 
   return (
@@ -35,19 +35,19 @@ function ViewCase() {
             <div className="col-md-4">
               <h5 className="mb-3">General Information</h5>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Title:</label>
+                <label className="form-label w-50 small-label">Title:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.title} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Case Type:</label>
+                <label className="form-label w-50 small-label">Case Type:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.casetype} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Client ID:</label>
+                <label className="form-label w-50 small-label">Client ID:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.clientId} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Case Status:</label>
+                <label className="form-label w-50 small-label">Case Status:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.caseStatus} disabled />
               </div>
             </div>
@@ -56,19 +56,19 @@ function ViewCase() {
             <div className="col-md-4">
               <h5 className="mb-3">Case Details</h5>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Opposing Party:</label>
+                <label className="form-label w-50 small-label">Opposing Party:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.opposingParty} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Opposing Lawyer:</label>
+                <label className="form-label w-50 small-label">Opposing Lawyer:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.opposingLawyer} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Price:</label>
+                <label className="form-label w-50 small-label">Price:</label>
                 <input type="text" className="form-control form-control-sm" value={`$${caseDetails.price}`} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label">Description:</label>
+                <label className="form-label small-label">Description:</label>
                 <textarea className="form-control form-control-sm" value={caseDetails.description} disabled rows="3"></textarea>
               </div>
             </div>
@@ -77,7 +77,7 @@ function ViewCase() {
             <div className="col-md-4">
               <h5 className="mb-3">Date & Documents</h5>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Start Date:</label>
+                <label className="form-label w-50 small-label">Start Date:</label>
                 <input type="text" className="form-control form-control-sm" value={new Date(caseDetails.startDate).toLocaleDateString()} disabled />
               </div>
               <div className="mb-2">
@@ -102,7 +102,7 @@ function ViewCase() {
 
           </div>
         </div>
-        <button onClick={() => navigate(-1)} className="btn btn-secondary mt-3">Back</button>
+        <button onClick={() => navigate(-1)} className="filter-btn">Back</button>
       </div>
     </div>
   );

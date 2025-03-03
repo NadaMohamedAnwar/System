@@ -51,7 +51,7 @@ function ClientsManagement() {
                 {error && <p>Error: {error}</p>} */}
                 <div>
                     <div className="head-icon">
-                        <h4 className="check-head text-color">All Clients</h4>
+                        <h4 className="check-head text-color">Clients:{Clients.length}</h4>
                         <FontAwesomeIcon
                             onClick={() => navigate("/add-client")}
                             className="icon-edit"

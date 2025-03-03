@@ -12,12 +12,6 @@ const initialState = {
             return{...state, loading:false, Departments:action.payload,FilterDepartments:action.payload};
         case 'FETCH_DEPARTMENT_FAILURE':
             return{...state, loading:false, error:action.payload};
-        case 'FETCH_INACTIVE_DEPARTMENT_REQUEST':
-            return{...state, loading:true, error:null};
-        case 'FETCH_INACTIVE_DEPARTMENT_SUCCESS':
-            return{...state, loading:false, Departments:action.payload};
-        case 'FETCH_INACTIVE_DEPARTMENT_FAILURE':
-            return{...state, loading:false, error:action.payload};
         case 'ADD_DEPARTMENT_REQUEST':
             return { ...state, loading: true, error: null };
         case 'ADD_DEPARTMENT_SUCCESS':

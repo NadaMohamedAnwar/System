@@ -91,7 +91,9 @@ function InActiveDep() {
                             <tbody>
                                 {FilterDepartments.length > 0 ? (
                                     FilterDepartments.map((dep) => (
-                                        <tr key={dep.id}>
+                                        <tr key={dep.id} onClick={() =>
+                                            navigate(`/view-department/${dep.id}`, { state: { dep } })
+                                        }>
                                             <td>{dep.name}</td>
                                             <td>{dep.profileType}</td>
                                             <td>{dep.managerName}</td>

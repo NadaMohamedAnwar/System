@@ -53,7 +53,7 @@ function CategoryManagement() {
                     </div>
                     <div className="table-container">
                         <div className="head-icon">
-                            <h4 className="check-head text-color">Tags</h4>
+                            <h4 className="check-head text-color">Tags:{FilterCategories.length}</h4>
                             <FontAwesomeIcon
                                 onClick={() => navigate("/add-category")}
                                 className="icon-edit"

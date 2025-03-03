@@ -130,7 +130,7 @@ function OrgManagement() {
                                 {FilterOrgs.length > 0 ? (
                                     FilterOrgs.map((org) => (
                                         <tr key={org.id}  onClick={() =>
-                                            navigate(`/edit-org/${org.id}`, { state: { org } })
+                                            navigate('/view-org', { state: { org } })
                                         }>
                                             <td>{org.organizationName}</td>
                                             <td>{org.organizationStatus ? "Active" : "Inactive"}</td>
@@ -141,7 +141,7 @@ function OrgManagement() {
                                                     className="icon-edit"
                                                     icon={faEdit}
                                                     onClick={() =>
-                                                        navigate(`edit-organization/${org.id}`, { state: { org } })
+                                                        navigate(`/edit-org/${org.id}`, { state: { org } })
                                                     }
                                                 />
                                             {/* <button 

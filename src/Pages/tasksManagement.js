@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import SidebarMenu from "../Layouts/sidemenue";
 import Calendar from "react-calendar";
-import { deleteOrg, fetchActiveDepartments, fetchTasks, fetchUsers, filterTasks } from "../Redux/Actions/Action";
+import { deleteOrg, fetchActiveDepartments, fetchAllTasks, fetchTasks, fetchUsers, filterTasks } from "../Redux/Actions/Action";
 import axios from "axios";
 
 function TaskManagement() {
@@ -20,7 +20,7 @@ function TaskManagement() {
     const [priority, setPriority] = useState("");
     const roles = sessionStorage.getItem('roles');
     const { Users } = useSelector((state) => state.Users);
-    const [total, setTotal] = useState(0);
+    const [total, setTotal] = useState();
     const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
       useEffect(() => {
           dispatch(fetchActiveDepartments(orgId));
@@ -47,8 +47,7 @@ function TaskManagement() {
     
 useEffect(() => {
     if (departmentId) {
-        dispatch(fetchTasks(departmentId)); 
-        console.log(FilterTasks)
+        dispatch(fetchAllTasks("", "", "", "", "", "", "", "",departmentId));
         if (FilterTasks) {
             setTotal(FilterTasks.length);
         }
@@ -63,7 +62,8 @@ useEffect(() => {
          dispatch(filterTasks(name,sDate,priority));
      };
      const resetData=()=>{
-        dispatch(fetchTasks(departmentId));
+        console.log(FilterTasks)
+        dispatch(fetchAllTasks("", "", "", "", "", "", "", "",departmentId));
         setsDate("")
         setname("")
         setPriority("") 
@@ -155,7 +155,7 @@ useEffect(() => {
 
                     
                         <div className="head-icon">
-                            <h4 className="check-head text-color">Tasks   {FilterTasks.length}/{total}</h4>
+                            <h4 className="check-head text-color">Tasks:   {FilterTasks.length}</h4>
                             <FontAwesomeIcon
                                 onClick={() => navigate("/add-task")}
                                 className="icon-edit"
@@ -179,10 +179,10 @@ useEffect(() => {
                                         <tr key={task.id} onClick={() =>
                                             navigate(`/view-task/${task.id}`, { state: { task } })
                                         }>
-                                            <td>{task.title}</td>
-                                            <td>{task.priority}</td>
-                                            <td>{task.status}</td>
-                                            <td>{getAgentName(task.assignedTo)}</td>
+                                            <td>{task.taskName}</td>
+                                            <td>{task.priorityName}</td>
+                                            <td>{task.statusName}</td>
+                                            <td>{task.assignedToUserName}</td>
                                             <td>{task.dueDate}</td>
                                             {/* <td>
                                                 <FontAwesomeIcon

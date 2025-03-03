@@ -32,7 +32,7 @@ export const fetchActiveDepartments = (orgId) => async (dispatch) => {
 
 
 export const fetchInActiveDepartments = () => async (dispatch) => {
-  dispatch({ type: 'FETCH_INACTIVE_DEPARTMENT_REQUEST' });
+  dispatch({ type: 'FETCH_DEPARTMENT_REQUEST' });
   try {
     const token = sessionStorage.getItem('token');
     const orgId = sessionStorage.getItem('orgId')
@@ -47,12 +47,12 @@ export const fetchInActiveDepartments = () => async (dispatch) => {
         }
       }
     );
-    console.log(response.data)
-    dispatch({ type: 'FETCH_INACTIVE_DEPARTMENT_SUCCESS', payload: response.data });
+    console.log("inactive",response.data)
+    dispatch({ type: 'FETCH_DEPARTMENT_SUCCESS', payload: response.data });
     
   } catch (error) {
     dispatch({
-      type: 'FETCH_INACTIVE_DEPARTMENT_FAILURE',
+      type: 'FETCH_DEPARTMENT_FAILURE',
       payload: error.message,
     });
   }
@@ -144,8 +144,8 @@ export const filterDeps = (name,profile) => (dispatch, getState) => {
   const filteredDepartments = Departments.filter((c) => {
     
     return (
-      (name && c.name.toLowerCase().includes(name.toLowerCase())) &&
-      (profile && c.profileType === profile)
+      (!name || c.name.toLowerCase().includes(name.toLowerCase())) &&
+      (!profile || c.profileType === profile)
     );
   });
 
@@ -472,7 +472,7 @@ export const filterCategory = (name) => (dispatch, getState) => {
   const filteredCategories = Categories.filter((c) => {
     
     return (
-      (name && c.name.toLowerCase().includes(name.toLowerCase()))
+      (!name || c.name.toLowerCase().includes(name.toLowerCase()))
     );
   });
    console.log(filteredCategories)
@@ -508,6 +508,7 @@ export const fetchTasks = (depid) => async (dispatch) => {
 export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,ParentTaskId,AssignedTo,CreatedBy,DepartmentIds) => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_REQUEST' });
   console.log("Final departmentId before fetching tasks:", DepartmentIds);
+  const OrgId = sessionStorage.getItem('orgId');
   try {
     const token = sessionStorage.getItem('token');
     const OrgId = sessionStorage.getItem('orgId');
@@ -520,9 +521,9 @@ export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,Parent
     if (ParentTaskId) params.ParentTaskId = ParentTaskId;
     if (AssignedTo) params.AssignedTo = AssignedTo;
     if (CreatedBy) params.CreatedBy = CreatedBy;
-    if (DepartmentIds && DepartmentIds.length > 0) {
-      params.DepartmentIds = DepartmentIds;
-  }
+    if (DepartmentIds) params.DepartmentIds = DepartmentIds;
+    console.log("params",params)
+  
     const response = await axios.get('http://agentsys.runasp.net/api/Task',
       {
         headers: {
@@ -590,9 +591,9 @@ export const filterTasks = (name, sDate, priority) => (dispatch, getState) => {
     const caseDate = c.dueDate ? c.dueDate.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
 
     return (
-      (name && c.title.toLowerCase().includes(name.toLowerCase())) &&
-      (sDate && caseDate === sDate) &&
-      (priority && c.priority === priority)
+      (!name || c.title.toLowerCase().includes(name.toLowerCase())) &&
+      (!sDate || caseDate === sDate) &&
+      (!priority || c.priority === priority)
     );
   });
 
@@ -711,8 +712,8 @@ export const filterService = (name,profile) => (dispatch, getState) => {
   const filteredServices = Services.filter((c) => {
     
     return (
-      (name && c.name.toLowerCase().includes(name.toLowerCase())) &&
-      (profile && c.profileName === profile)
+      (!name || c.name.toLowerCase().includes(name.toLowerCase())) &&
+      (!profile || c.profileName === profile)
     );
   });
 
@@ -903,9 +904,9 @@ export const filterUsers = (orgName, Phone,NationalId) => (dispatch, getState) =
   const filteredCases = Users.filter((c) => {
 
     return (
-      (orgName && c.organization.toLowerCase().includes(orgName.toLowerCase())) &&
-      (NationalId && c.nationalId === NationalId) &&
-      (Phone && c.phone === Phone)
+      (!orgName || c.organization.toLowerCase().includes(orgName.toLowerCase())) &&
+      (!NationalId || c.nationalId === NationalId) &&
+      (!Phone || c.phone === Phone)
     );
   });
 
@@ -1042,9 +1043,9 @@ export const filterCases = (name, sDate, clientId) => (dispatch, getState) => {
     const caseDate = c.startDate ? c.startDate.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
 
     return (
-      (name && c.title.toLowerCase().includes(name.toLowerCase())) &&
-      (sDate && caseDate === sDate) &&
-      (clientId && c.clientId === parseInt(clientId, 10))
+      (!name || c.title.toLowerCase().includes(name.toLowerCase())) &&
+      (!sDate || caseDate === sDate) &&
+      (!clientId || c.clientId === parseInt(clientId, 10))
     );
   });
 

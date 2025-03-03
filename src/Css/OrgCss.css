@@ -292,7 +292,8 @@ form button:hover {
 .input-org-filter input,
 .input-org-filter select,.input-org-filter textarea {
     width: 100%;
-    border-radius: 10px;
+    padding: 5px;
+    border-radius: 5px;
     border: none;
     border-bottom: 1px solid #125370;
 }
@@ -546,6 +547,7 @@ form button:hover {
 /* Task Block */
 .task-block {
     background-color: white;
+    border:1px solid #125370;
     color: #125370;
     border-radius: 5px;
     padding: 5px;
@@ -554,7 +556,7 @@ form button:hover {
     left: 5px;
     right: 5px;
     width: calc(100% - 10px);
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); */
     font-size: 14px;
     line-height: 1.2;
 }

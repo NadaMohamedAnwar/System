@@ -31,7 +31,7 @@ function ViewUser() {
   return (
     <div className="d-flex">
       <SidebarMenu />
-      <div className="manage mx-auto p-4 w-50">
+      <div className="manage mx-auto p-4 w-50 my-5">
         <h2 className="check-head text-color mb-4">User Details</h2>
         
         <div className="User-info border p-4 rounded shadow bg-light">
@@ -41,19 +41,19 @@ function ViewUser() {
             <div className="col-md-4">
             <h5 className="mb-3">General Information</h5>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Username:</label>
+                <label className="form-label w-50 small-label">Username:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.userName} disabled />
             </div>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Role:</label>
+                <label className="form-label w-50 small-label">Role:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.role} disabled />
             </div>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">National ID:</label>
+                <label className="form-label w-50 small-label">National ID:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.nationalId} disabled />
             </div>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Organization:</label>
+                <label className="form-label w-50 small-label">Organization:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.organization} disabled />
             </div>
             </div>
@@ -62,15 +62,15 @@ function ViewUser() {
             <div className="col-md-4">
             <h5 className="mb-3">Contact Information</h5>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Email:</label>
+                <label className="form-label w-50 small-label">Email:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.email} disabled />
             </div>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Phone:</label>
+                <label className="form-label w-50 small-label">Phone:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.phone} disabled />
             </div>
             <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50">Is Active:</label>
+                <label className="form-label w-50 small-label">Is Active:</label>
                 <input type="text" className="form-control form-control-sm" value={UserDetails.isActive ? "Yes" : "No"} disabled />
             </div>
             </div>
@@ -103,7 +103,7 @@ function ViewUser() {
           </div>
         </div>
         
-        <button onClick={() => navigate(-1)} className="btn btn-secondary mt-3">Back</button>
+        <button onClick={() => navigate(-1)} className="filter-btn">Back</button>
       </div>
     </div>
   );

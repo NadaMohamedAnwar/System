@@ -6,6 +6,7 @@ import axios from "axios";
 import SidebarMenu from "../Layouts/sidemenue";
 import { useDispatch, useSelector } from "react-redux";
 import { addAOrg } from "../Redux/Actions/Action";
+import MapModal from "../Components/map-model";
 
 function AddOrg() {
   const [name, setname] = useState("");
@@ -24,14 +25,50 @@ function AddOrg() {
   const [currentSection, setCurrentSection] = useState(0);
   const [errors, setErrors] = useState({});
 
+   const [latLng, setLatLng] = useState(null);
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+    const [showMapModal, setShowMapModal] = useState(false);
+    const [location, setlocation] = useState('');
+
+  const getLocationName = async (lat, lng) => {
+    try {
+        const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {
+            params: {
+                format: 'json',
+                lat,
+                lon: lng,
+            }
+        });
+        return response.data.display_name || 'Unknown Location';
+    } catch (error) {
+        console.error('Error fetching location name:', error);
+        return 'Unknown Location';
+    }
+};
+useEffect(() => {
+  if (latLng) { // Check if latLng is not null
+      const fetchLocationName = async () => {
+          const locationName = await getLocationName(latLng.lat, latLng.lng);
+          setlocation(locationName);
+      };
+      fetchLocationName();
+  }
+}, [latLng]);
+const handleConfirmLocation = (latlng) => {
+  setLatLng(latlng);
+  setLatitude(latlng.lat);  // Use latlng directly
+  setLongitude(latlng.lng); // Use latlng directly
+  console.log('Location confirmed:', latlng);
+};
   const dispatch = useDispatch();
 
   const handleNext = () => {
-    setCurrentSection((prevSection) => (prevSection + 1) % 3); 
+    setCurrentSection((prevSection) => (prevSection + 1) % 4); 
   };
 
   const handlePrevious = () => {
-    setCurrentSection((prevSection) => (prevSection - 1 + 3) % 3); 
+    setCurrentSection((prevSection) => (prevSection - 1 + 4) % 4); 
   };
   const validateInputs = () => {
     let newErrors = {};
@@ -84,6 +121,9 @@ function AddOrg() {
       financialLimitFrom: parseFloat(financialLimitFrom) || null,
       financialLimitTo: parseFloat(financialLimitTo) || null,
       bankAccount: bankAccount,
+      orgLocation_Address:location,
+      orgLocation_Latitude:latitude,
+      orgLocation_Longitude:longitude
       // address: accountAderss,
     };
 
@@ -128,6 +168,10 @@ function AddOrg() {
           <div className={`stage-item ${currentSection === 2 ? "active" : ""}`}>
             <span>3</span>
             <p>Financial</p>
+          </div>
+          <div className={`stage-item ${currentSection === 3 ? "active" : ""}`}>
+            <span>4</span>
+            <p>Location Info</p>
           </div>
         </div>
 
@@ -274,9 +318,17 @@ function AddOrg() {
               />
               {errors.financialLimitTo && <small className="error" style={{color:"red"}}>{errors.financialLimitTo}</small>}
             </div>
+           
+          </div>
+        )}
+        {currentSection === 3 && (
+          <div className="org-data-div">
+            <h5 className="text-color">Location Info</h5>
+            <p>Location : {location || "Not Set"}</p>
+            <button style={{ marginTop: "20px", width: "100%" }} onClick={() => setShowMapModal(true)}>Select Location</button>
             <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
               Submit
-            </button>
+            </button>  
           </div>
         )}
 
@@ -289,6 +341,8 @@ function AddOrg() {
         </div>
 
         <ToastContainer />
+        <MapModal show={showMapModal}  handleClose={() => setShowMapModal(false)}
+            onConfirm={handleConfirmLocation} />
       </div>
     </div>
   );

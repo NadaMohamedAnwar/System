@@ -43,6 +43,8 @@ import ViewTask from './Pages/viewTask';
 import AttachCaseFile from './Pages/attachCaseFile';
 import ViewClient from './Pages/viewClient';
 import ViewUser from './Pages/viewUser';
+import ViewOrg from './Pages/viewOrg';
+import ViewDep from './Pages/viewDep';
 // import './App.css'; 
 
 function App() {
@@ -56,8 +58,8 @@ function App() {
           <Route path='/' element={<Login />} />
           <Route path='*' element={<h2>Page Not Found</h2>} />
           <Route path='/home' element={<PrivateRoute component={Home} roles={['SuperAdmin','OrgAdmin','Manager','HeadManager']}  />} />
-          <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['SuperAdmin']} />} />
-          <Route path='/schduel' element={<PrivateRoute component={CalendarComponent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
+          <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
+          <Route path='/schduel' element={<PrivateRoute component={CalendarComponent} roles={['OrgAdmin','Manager','HeadManager']}  />} />
 
           <Route path='/add-category' element={<PrivateRoute component={AddCategory} roles={['SuperAdmin']} />} />
           <Route path='/categories' element={<PrivateRoute component={CategoryManagement} roles={['SuperAdmin']} />} />
@@ -65,6 +67,7 @@ function App() {
 
           <Route path='/add-org' element={<PrivateRoute component={AddOrg} roles={['SuperAdmin']}  />} />
           <Route path='/edit-org/:id' element={<PrivateRoute component={EditOrg} roles={['SuperAdmin']}  />} />
+          <Route path='/view-org' element={<PrivateRoute component={ViewOrg} roles={['SuperAdmin']}  />} />
           <Route path='/organizations' element={<PrivateRoute component={OrgManagement} roles={['SuperAdmin']}  />} />
           
           <Route path='/add-service' element={<PrivateRoute component={AddService} roles={['SuperAdmin']}  />} />
@@ -91,19 +94,20 @@ function App() {
           <Route path='/inactive-departments' element={<PrivateRoute component={InActiveDep} roles={['OrgAdmin']} />} />
           <Route path='/assign-department' element={<PrivateRoute component={AssignDep} roles={['OrgAdmin']} />} />
           <Route path='/edit-dep/:id' element={<PrivateRoute component={EditDep} roles={['OrgAdmin']}  />} />
+          <Route path='/view-department/:id' element={<PrivateRoute component={ViewDep} roles={['OrgAdmin']}  />} />
 
-          <Route path='/add-task' element={<PrivateRoute component={AddTask} roles={['OrgAdmin','Manager','HeadManager','SuperAdmin']} />} />
-          <Route path='/assign-agent' element={<PrivateRoute component={AssignAgent} roles={['OrgAdmin','Manager','HeadManager','SuperAdmin']} />} />
-          <Route path='/assign-parent' element={<PrivateRoute component={AssignParent} roles={['OrgAdmin','Manager','HeadManager','SuperAdmin']} />} />
-          <Route path='/tasks' element={<PrivateRoute component={TaskManagement} roles={['OrgAdmin','Manager','HeadManager','SuperAdmin']} />} />
-          <Route path='/view-task/:id' element={<PrivateRoute component={ViewTask} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
+          <Route path='/add-task' element={<PrivateRoute component={AddTask} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/assign-agent' element={<PrivateRoute component={AssignAgent} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/assign-parent' element={<PrivateRoute component={AssignParent} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/tasks' element={<PrivateRoute component={TaskManagement} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/view-task/:id' element={<PrivateRoute component={ViewTask} roles={['OrgAdmin','Manager','HeadManager']} />} />
 
           
-          <Route path='/cases' element={<PrivateRoute component={CaseManagement} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
-          <Route path='/add-case' element={<PrivateRoute component={AddCase} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
-          <Route path='/edit-case/:id' element={<PrivateRoute component={EditCase} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
-          <Route path='/view-case/:id' element={<PrivateRoute component={ViewCase} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
-          <Route path='/attach-document' element={<PrivateRoute component={AttachCaseFile} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
+          <Route path='/cases' element={<PrivateRoute component={CaseManagement} roles={['OrgAdmin','Manager','HeadManager']}  />} />
+          <Route path='/add-case' element={<PrivateRoute component={AddCase} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/edit-case/:id' element={<PrivateRoute component={EditCase} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/view-case/:id' element={<PrivateRoute component={ViewCase} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/attach-document' element={<PrivateRoute component={AttachCaseFile} roles={['OrgAdmin','Manager','HeadManager']} />} />
 
 
           
