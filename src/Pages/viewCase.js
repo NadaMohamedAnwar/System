@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import SidebarMenu from "../Layouts/sidemenue";
+import { fetchAllTasks } from "../Redux/Actions/Action";
+import { useDispatch, useSelector } from "react-redux";
 
 function ViewCase() {
   const [caseDetails, setCaseDetails] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { Tasks = [] } = useSelector((state) => state.Tasks || {});
   const { state } = useLocation();
 
   useEffect(() => {
     if (state?.Case) {
+      dispatch(fetchAllTasks("", "", "", "", state.id, "", "", "",[]));
       setCaseDetails(state.Case);
       console.log(caseDetails)
     }
@@ -98,6 +103,28 @@ function ViewCase() {
                 </div>
               </div>
 
+            </div>
+            <div className="col-md-4">
+            <h5 className="mb-3">Tasks</h5>
+            <div className="border p-2 rounded  bg-white" style={{ maxHeight: "300px", overflowY: "auto" }}>
+                {Tasks.length > 0 ? (
+                Tasks.map((task) => (
+                    <div key={task.id} className="mb-2 p-2 border-bottom" onClick={() =>
+                        navigate(`/view-task/${task.id}`, { state: { task } })
+                    }
+                    style={{ cursor: "pointer", transition: "0.3s", borderRadius: "5px" }}
+                         onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f8f9fa"}
+                         onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "white"}>
+                    <strong>{task.taskName}</strong>
+                    <p className="m-0 text-muted">Assigned to: {task.assignedToUserName}</p>
+                    <p className="m-0">Priority: {task.priorityName} | Status: {task.statusName}</p>
+                    <p className="m-0">Due Date: {new Date(task.dueDate).toLocaleDateString()}</p>
+                    </div>
+                ))
+                ) : (
+                <p className="m-0 text-muted">No tasks available</p>
+                )}
+            </div>
             </div>
 
           </div>

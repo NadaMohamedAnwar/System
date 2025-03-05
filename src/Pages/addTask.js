@@ -50,11 +50,11 @@ function AddTask() {
       
    useEffect(() => {
      if (Users && Users.length > 0) {
-       const agentList = Users.filter((u) => u.role === "Agent");
+       const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
        console.log("Agents:", agentList);
      }
-   }, [Users]);
+   }, [Users,departmentId]);
   const { filteredServices } = useSelector((state) => state.Services); 
   const [errors, setErrors] = useState({});
 
@@ -121,6 +121,14 @@ function AddTask() {
     FetchTaskTypes()
 }, [serviceId]);
   
+useEffect(() => {
+  const CaseSelected = Cases.find((c) => c.id === parseInt(CaseId,10));
+  
+  if (CaseSelected) {
+    console.log(CaseSelected.clientId);
+    setClientId(CaseSelected.clientId);
+  }
+}, [CaseId, Cases]);
 const FetchTaskTypes=async()=>{
   try {
     const token = sessionStorage.getItem('token');
@@ -180,13 +188,14 @@ const FetchTaskTypes=async()=>{
       toast.success("Task added successfully!");
       setServiceId("");
       setTaskTypeId("");
-      setDepartmentId("");
+      // setDepartmentId("");
       setClientId("");
       setTitle("");
       setDescription("");
       setPriority("");
       setDueDate("");
       setstartDate("");
+      setCaseId("")
       setErrors({});
       if(exist==1){
         navigate(-1)
@@ -326,7 +335,7 @@ const FetchTaskTypes=async()=>{
               
             </div>
             
-            <div className="input-org">
+            {serviceId!="1407d97e-9763-4f95-81ca-7859de98a186"&&<div className="input-org">
               <label>Client ID</label>
               <select
                 value={clientId}
@@ -346,7 +355,7 @@ const FetchTaskTypes=async()=>{
                   {errors.clientId}
                 </small>
               )}
-            </div>
+            </div>}
           </div>
         )}
 

@@ -9,13 +9,14 @@ function AssignDep() {
   const [id, setid] = useState("");
   const [ManagerId, setManagerId] = useState("");
   const [Managers, setManagers] = useState([]);
+   const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
 
   const dispatch = useDispatch();
   const { Departments } = useSelector((state) => state.Departments);
   const { Users } = useSelector((state) => state.Users);
 
   useEffect(() => {
-    dispatch(fetchActiveDepartments());
+    dispatch(fetchActiveDepartments(orgId));
     dispatch(fetchUsers());
   }, [dispatch]);
 

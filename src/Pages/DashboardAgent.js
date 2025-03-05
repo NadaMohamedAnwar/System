@@ -101,8 +101,7 @@ function DashboardAgent() {
       <div className="d-flex">
             <SidebarMenu/>
         <div className="dashboard">
-          <div className="controls">
-            {/* <h3>Controls</h3> */}
+          {/* <div className="controls">
             <div className="control-group">
               <label htmlFor="search">التاريخ</label>
               <input type="date" id="search" placeholder="Type here..." />
@@ -128,7 +127,7 @@ function DashboardAgent() {
               </select>
             </div>
             <button className="apply-button">تطبيق</button>
-          </div>
+          </div> */}
           <div className="graphs">
             <div className="graph">
               <h4>Bar Chart</h4>

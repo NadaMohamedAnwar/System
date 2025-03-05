@@ -7,6 +7,7 @@ import TaskReducer from './TaskReducer';
 import ServicesReducer from './serviceReducer';
 import UsersReducer from './UserReducer';
 import CaseReducer from './CaseReducer';
+import CourtReducer from './CourtReducer';
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     Services: ServicesReducer,
     Users: UsersReducer,
     Cases: CaseReducer,
+    Courts: CourtReducer,
 });
 
 export default rootReducer;

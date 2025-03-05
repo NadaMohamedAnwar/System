@@ -380,6 +380,24 @@ export const deleteClient = (id) => async (dispatch) => {
 export const filterClients = (departmentId) => (dispatch) => {
   dispatch({ type: "FILTER_CLIENTS", payload: departmentId });
 };
+export const filterClientDate = (orgId, Name, contactName, Phone, address) => (dispatch, getState) => {
+  const {Clients} = getState().Clients;
+
+  const filteredClients = Clients.filter((c) => {
+    return (
+      (!orgId || c.organizationId === orgId) &&  
+      (!Name || c.accountName?.toLowerCase().includes(Name.toLowerCase())) &&
+      (!contactName || c.contactName?.toLowerCase().includes(contactName.toLowerCase())) &&
+      (!address || c.accountAddress?.toLowerCase().includes(address.toLowerCase())) &&
+      (!Phone || c.contactMobileNumber?.toLowerCase() === Phone.toLowerCase())
+    );
+  });
+
+  console.log("Filtered Clients:", filteredClients); 
+
+  dispatch({ type: "FILTER_CLIENTDATA", payload: filteredClients });
+};
+
 
 // ==========================category=======================
 export const fetchCategories = () => async (dispatch) => {
@@ -991,7 +1009,7 @@ export const deleteCases  = (id) => async (dispatch) => {
       dispatch({ type: "DELETE_CASES_SUCCESS", payload: id });
   } catch (error) {
       dispatch({
-          type: "DELETE_CASES_FAIL",
+          type: "DELETE_CASES_FAILURE",
           payload: error.response?.data?.message || error.message,
       });
   }
@@ -1014,6 +1032,50 @@ export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
       payload: error.message,
     });
     return Promise.reject(error); 
+  }
+};
+export const assignCaseTocourts = (CaseId,CourtIds) => async (dispatch) => {
+    dispatch({ type: 'ASSIGN_CASES_REQUEST' });
+    try {
+      const token = sessionStorage.getItem('token');
+  
+      const response = await axios.post(
+        `http://agentsys.runasp.net/api/Cases/${CaseId}/courts`, 
+        CourtIds, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      dispatch({ type: 'ASSIGN_CASES_SUCCESS', payload: response.data });
+      return Promise.resolve(response.data);
+    } catch (error) {
+      dispatch({ type: 'ASSIGN_CASES_FAILURE', payload: error.message });
+      return Promise.reject(error);
+    }
+  
+};
+export const fetchCourts = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_COURT_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token');
+    const response = await axios.get('http://agentsys.runasp.net/api/Courts',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data)
+    dispatch({ type: 'FETCH_COURT_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_COURT_FAILURE',
+      payload: error.message,
+    });
   }
 };
 export const attachCaseFile = (CaseId,formData) => async (dispatch) => {
@@ -1052,3 +1114,4 @@ export const filterCases = (name, sDate, clientId) => (dispatch, getState) => {
 
   dispatch({ type: "FILTER_CASES", payload: filteredCases });
 };
+// ======================================================================

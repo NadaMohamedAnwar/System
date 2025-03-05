@@ -22,25 +22,17 @@ function AssignAgent() {
    useEffect(() => {
          dispatch(fetchActiveDepartments());
      }, [dispatch]);
-     useEffect(() => {
-         console.log("Departments", Departments);
-         if (Departments.length > 0 && depids) {
-             const depIdsArray = depids.split(',').map(id => id.trim()); 
-             const filteredDeps = Departments.filter(dep => depIdsArray.includes(dep.id.toString())).map(dep => dep.id);
-             setHeadDeps(filteredDeps);
-             console.log("Filtered Head Deps:", filteredDeps);
-     
-         }
-         if (roles.includes("OrgAdmin")) {
-             setDepartmentId(Departments[0].id); 
-             console.log("departmentId:", departmentId);
-          
-         }else if (roles &&(roles.includes("HeadManager")|| roles.includes("Manager"))){
-             setDepartmentId(depids[0]); 
-             console.log("depids:", depids);
-             console.log("departmentId:",depids[0]);
-         }
-     }, [Departments, depids, roles]);
+    
+    useEffect(() => {
+            if (Departments && Departments.length > 0) {
+                if (roles.includes("OrgAdmin") || roles.includes("HeadManager")) {
+                    setDepartmentId(""); 
+                }else{
+                    setDepartmentId(sessionStorage.getItem("departments"))
+                }
+            }
+        }, [Departments, roles]);
+   
      useEffect(() => {
          if (departmentId) {
                 dispatch(fetchTasks(departmentId));
@@ -49,11 +41,11 @@ function AssignAgent() {
  
    useEffect(() => {
      if (Users && Users.length > 0) {
-       const agentList = Users.filter((u) => u.role === "Agent");
+       const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
        console.log("Agents:", agentList);
      }
-   }, [Users]);
+   }, [Users,departmentId]);
 
 
   const handleAssignAgent = async () => {
@@ -73,12 +65,13 @@ function AssignAgent() {
       <SidebarMenu />
         <div className="org-par col-sm-12 col-md-8 col-lg-6">
                 <h5 className="text-color">Assign Agent</h5>
-                {roles.includes("OrgAdmin")&&<div className="input-org-filter">
+                {(roles.includes("OrgAdmin")||roles.includes("HeadManager"))&&<div className="input-org-filter">
                             <label>Department</label>
                             <select
                                 value={departmentId}
                                 onChange={(e) => setDepartmentId(e.target.value)}
                             >
+                              <option value="">Select Department</option>
                                 {Departments && Departments.length > 0 ? (
                                 Departments.map((dep) => (
                                     <option key={dep.id} value={dep.id}>{dep.name}</option>
@@ -89,22 +82,7 @@ function AssignAgent() {
                             </select>
                         </div>
                         }
-                        {roles.includes("HeadManager")&&<div className="input-org-filter">
-                            <label>Department</label>
-                            <select
-                                value={departmentId}
-                                onChange={(e) => setDepartmentId(e.target.value)}
-                            >
-                                {headDeps && headDeps.length > 0 ? (
-                                headDeps.map((dep) => (
-                                    <option key={dep.id} value={dep.id}>{dep.name}</option>
-                                ))
-                                ) : (
-                                <option>No Departments available</option>
-                                )}
-                            </select>
-                        </div>
-                        }
+                        
                 <div className="input-org">
                   <label>Parent Task</label>
                   <select

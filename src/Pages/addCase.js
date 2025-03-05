@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SidebarMenu from "../Layouts/sidemenue";
 import { useDispatch, useSelector } from "react-redux";
-import {  addCases, assignCaseToParent, attachCaseFile, fetchCases, fetchClients } from "../Redux/Actions/Action";
+import {  addCases, assignCaseTocourts, assignCaseToParent, attachCaseFile, fetchCases, fetchClients, fetchCourts } from "../Redux/Actions/Action";
 import { useNavigate } from "react-router-dom";
 
 function AddCase() {
@@ -26,16 +26,19 @@ function AddCase() {
   const dispatch = useDispatch();
   const { Cases} = useSelector((state) => state.Cases);
   const { Clients } = useSelector((state) => state.Clients);
+  const { Courts } = useSelector((state) => state.Courts);
+  const [CourtId, setCourtId] = useState([]);
   const[clients,setclients]=useState([])
   const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
   useEffect(() => {
         dispatch(fetchClients());
+        dispatch(fetchCourts())
     }, [dispatch]); 
   useEffect(() => {
         dispatch(fetchCases());
     }, [dispatch]); 
     useEffect(() => {
-        const RevelantCases=Cases.filter((c) => c.clientId == clientId);
+        const RevelantCases=Cases.filter((c) => c.clientId === parseInt(clientId));
         setRevelantCases(RevelantCases)
            
     }, [CaseId]);
@@ -55,6 +58,12 @@ function AddCase() {
         console.log("File details:", selectedFile);
       }
     };
+    
+    const handleCourtChange = (e) => {
+      const selectedOptions = Array.from(e.target.selectedOptions, (option) => parseInt(option.value, 10));
+      setCourtId(selectedOptions);
+    };
+    
 
   const handleNext = () => setCurrentSection((prev) => (prev + 1) % 5);
   const handlePrevious = () => setCurrentSection((prev) => (prev - 1 + 5) % 5);
@@ -65,15 +74,15 @@ function AddCase() {
     if (!title || title.length < 1 || title.length > 100) {
       newErrors.title = "Title must be between 1 and 100 characters.";
     }
-    if (price !== "" && price < 0) {
-      newErrors.price = "Price must be greater than or equal to 0.";
-    }
+    // if (price !== "" && price < 0) {
+    //   newErrors.price = "Price must be greater than or equal to 0.";
+    // }
     if (!startDate) {
       newErrors.startDate = "Start Date is required.";
     }
-    if (!pricingType) {
-      newErrors.pricingType = "Pricing Type is required.";
-    }
+    // if (!pricingType) {
+    //   newErrors.pricingType = "Pricing Type is required.";
+    // }
     if (!caseType) {
       newErrors.caseType = "Case Type is required.";
     }
@@ -96,7 +105,7 @@ function AddCase() {
       title,
       description: description || null,
       pricingType: 1,
-      price: .00,
+      price: 100,
       opposingParty: opposingParty || null,
       opposingLawyer: opposingLawyer || null,
       startDate,
@@ -109,12 +118,11 @@ function AddCase() {
     try {
       console.log(caseData)
       const newCase=await dispatch(addCases(caseData));
-      setCaseId(newCase.id)
+      console.log(newCase)
+      setCaseId(newCase.data.id)
       toast.success("Case added successfully!");
       setTitle("");
       setDescription("");
-      setPricingType("");
-      setPrice("");
       setOpposingParty("");
       setOpposingLawyer("");
       setStartDate("");
@@ -124,7 +132,7 @@ function AddCase() {
       if(exist==1){
         navigate(-1)
       }else{
-        setCurrentSection(3);
+        setCurrentSection(2);
       }
       
     } catch (error) {
@@ -142,6 +150,19 @@ function AddCase() {
         toast.error("An error occurred. Please try again.");
       }
     };
+    const handleAssignCourts = async () => {
+  
+  
+      try {
+        console.log(CaseId,CourtId)
+        await dispatch(assignCaseTocourts(CaseId,CourtId));
+        toast.success("Task Assigned successfully!");
+        
+      } catch (error) {
+        toast.error("An error occurred. Please try again.");
+      }
+    };
+
 
   const handleAttachFile = async () => {
       try {
@@ -178,7 +199,7 @@ function AddCase() {
           </div>
           <div className={`stage-item ${currentSection === 2 ? "active" : ""}`}>
             <span>3</span>
-            <p>Financial Info</p>
+            <p>Assign Court</p>
           </div>
           <div className={`stage-item ${currentSection === 3 ? "active" : ""}`}>
             <span>4</span>
@@ -297,13 +318,19 @@ function AddCase() {
                 <small className="error" style={{color:"red"}}>{errors.startDate}</small>
               )}
             </div>
+            <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
+            Save and Exit
+            </button>
+            <button onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }}>
+            Save and Continue
+            </button>
           </div>
         )}
 
         {/* Section 3: Financial Info */}
         {currentSection === 2 && (
           <div className="org-data-div">
-            <h5 className="text-color">Financial Info</h5>
+            <h5 className="text-color">Assign Court</h5>
              {/* <div className="input-org">
               <label>Pricing Type</label>
               <select
@@ -327,13 +354,24 @@ function AddCase() {
               />
               {errors.price && <small className="error" style={{color:"red"}}>{errors.price}</small>}
             </div> */}
-            
-            <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
-            Save and Exit
-            </button>
-            <button onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }}>
-            Save and Continue
-            </button>
+             <div className="input-org">
+                  <label>Courts (Select multiple)</label>
+                  <select multiple value={CourtId} onChange={handleCourtChange}>
+                    {Courts && Courts.length > 0 ? (
+                      Courts.map((court) => (
+                        <option key={court.courtId} value={court.courtId}>
+                          {court.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No Courts available</option>
+                    )}
+                  </select>
+
+              </div>
+              <button onClick={handleAssignCourts} style={{ marginTop: "20px", width: "100%" }}>
+                Assign Courts
+                </button>
           </div>
         )}
         {currentSection === 3 && (

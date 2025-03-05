@@ -60,6 +60,11 @@ const ClientReducer = (state = initialState, action) => {
                     Client.name.toLowerCase().includes(action.payload) 
                 ),
             };
+        case "FILTER_CLIENTDATA":
+            return {
+                ...state,
+                filteredClients: action.payload,
+            };
 
         default:
             return state;

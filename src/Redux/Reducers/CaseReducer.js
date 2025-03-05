@@ -41,21 +41,21 @@ const initialState = {
             };
         case "DELETE_CASES_REQUEST":
             return { ...state, loading: true };
-        case "DELETE_CASES_FAIL":
+        case "DELETE_CASES_FAILURE":
             return { ...state, error: action.payload, loading: false };
         case "ASSIGN_CASES_SUCCESS":
             return {
                 ...state,loading: false};
         case "ASSIGN_CASES_REQUEST":
                 return { ...state, loading: true };
-        case "ASSIGN_CASES_FAIL":
+        case "ASSIGN_CASES_FAILURE":
                 return { ...state, error: action.payload, loading: false };
         case "ATTACH_CASES_SUCCESS":
             return {
                 ...state,loading: false};
         case "ATTACH_CASES_REQUEST":
                 return { ...state, loading: true };
-        case "ATTACH_CASES_FAIL":
+        case "ATTACH_CASES_FAILURE":
                 return { ...state, error: action.payload, loading: false };
         case "FILTER_CASES":
             return {

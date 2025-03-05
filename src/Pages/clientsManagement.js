@@ -1,38 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import SidebarMenu from "../Layouts/sidemenue";
-import { deleteClient, fetchClients } from "../Redux/Actions/Action";
+import { deleteClient, fetchClients, filterClientDate } from "../Redux/Actions/Action";
 
 function ClientsManagement() {
     const dispatch = useDispatch();
-    const { Clients, loading, error } = useSelector((state) => state.Clients);
+    const { Clients, filteredClients } = useSelector((state) => state.Clients);
     const navigate = useNavigate();
-    const[clients,setclients]=useState([])
-   const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
-   const userRoles=sessionStorage.getItem("roles")
-     useEffect(() => {
-           dispatch(fetchClients());
-       }, [dispatch]); 
-       
-       useEffect(() => {
-           if (Clients.length > 0) {
-            if (userRoles.includes("SuperAdmin")){
-                const filteredClients=Clients;
-                setclients(filteredClients);
-               console.log("Filtered Clients:", filteredClients);
     
-            }else{
-                const filteredClients = Clients.filter((c) => c.organizationId === orgId);
-                setclients(filteredClients);
-               console.log("Filtered Clients:", filteredClients);
-            } 
-           }
-       }, [Clients, orgId]);
+    const [name, setName] = useState("");
+    const [contactName, setContactName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+
+    const orgId = parseInt(sessionStorage.getItem("orgId"), 10);
+    const userRoles = sessionStorage.getItem("roles");
+
+    // Fetch Clients on component mount
+    useEffect(() => {
+        dispatch(fetchClients()).then(() => {
+            const storedOrgId = parseInt(sessionStorage.getItem("orgId"), 10) || 0;
+            if (userRoles.includes("SuperAdmin")) {
+                dispatch(filterClientDate("", "", "", "", ""));
+            } else {
+                dispatch(filterClientDate(storedOrgId, "", "", "", ""));
+            }
+        });
+    }, [dispatch]); 
+    
+    
+
+    // useEffect(() => {
+    //     if (Clients.length === 0) {
+    //         dispatch(fetchClients()).then(() => {
+    //             if (userRoles.includes("SuperAdmin")) {
+    //                 dispatch(filterClientDate("", "", "", "", ""));
+    //             } else {
+    //                 dispatch(filterClientDate(orgId, "", "", "", ""));
+    //             }
+    //         });
+    //     }
+    // }, [orgId, userRoles]); 
+    
+    const handleFilter = () => {
+        console.log("Filtering with:", { orgId, name, contactName, phone, address });
+    
+        if (Clients.length > 0) {  // Only filter if Clients exist
+            if (userRoles.includes("SuperAdmin")) {
+                dispatch(filterClientDate("", name, contactName, phone, address));
+            } else {
+                dispatch(filterClientDate(orgId || 0, name, contactName, phone, address));
+            }
+        } else {
+            console.warn("No Clients available to filter.");
+        }
+    };
+    
+    useEffect(() => {
+        console.log("Filtered Clients:", filteredClients);
+    }, [filteredClients]);
+
+    const resetData = () => {
+        setName("");
+        setContactName("");
+        setPhone("");
+        setAddress("");
+    
+        // Filter only if Clients are already loaded
+        if (Clients.length > 0) {
+            dispatch(filterClientDate(orgId, "", "", "", ""));
+        }
+    };
     
 
     const handleDelete = (id) => {
@@ -45,62 +88,97 @@ function ClientsManagement() {
 
     return (
         <div className="d-flex">
-            <SidebarMenu/>
+            <SidebarMenu />
             <div className="manage mx-auto">
-                {/* {loading && <p>Loading Products...</p>}
-                {error && <p>Error: {error}</p>} */}
                 <div>
-                    <div className="head-icon">
-                        <h4 className="check-head text-color">Clients:{Clients.length}</h4>
-                        <FontAwesomeIcon
-                            onClick={() => navigate("/add-client")}
-                            className="icon-edit"
-                            icon={faPlus}
-                        />
+                    <div className="filter-div">
+                        <div className="input-org-filter">
+                            <label>Name</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-org-filter">
+                            <label>Contact Name</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Contact Name"
+                                value={contactName}
+                                onChange={(e) => setContactName(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-org-filter">
+                            <label>Phone</label>
+                            <input
+                                type="number"
+                                placeholder="Enter Phone"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                            />
+                        </div>
+                        <div className="input-org-filter">
+                            <label>Account Address</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Address"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                            />
+                        </div>
+                        <button className="filter-btn" onClick={handleFilter}>Filter</button>
+                        <button className="filter-btn" onClick={resetData}>Reset</button>
                     </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Account Name</th>
-                                <th>Contact Name</th>
-                                <th>Contact Mobile Number</th>
-                                <th>Account Address</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clients.length > 0 ? (
-                                clients.map((Client) => (
-                                    <tr key={Client.id} onClick={() =>
-                                        navigate(`/view-client/${Client.id}`, { state: { Client } })
-                                    }>
-                                        <td>{Client.accountName}</td>
-                                        <td>{Client.contactName}</td>
-                                        <td>{Client.contactMobileNumber}</td>
-                                        <td>{Client.accountAddress}</td>
-                                        <td>
-                                            <FontAwesomeIcon
-                                                className="icon-edit"
-                                                icon={faEdit}
-                                                onClick={() =>
-                                                    navigate(`/edit-client/${Client.id}`, { state: { Client } })
-                                                }
-                                            />
-                                            {/* <FontAwesomeIcon
-                                                className="icon-del"
-                                                icon={faTrash}
-                                                onClick={() => handleDelete(Client.id)}
-                                            /> */}
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className="table-container">
+                        <div className="head-icon">
+                            <h4 className="check-head text-color">Clients: {filteredClients.length}</h4>
+                            <FontAwesomeIcon
+                                onClick={() => navigate("/add-client")}
+                                className="icon-edit"
+                                icon={faPlus}
+                            />
+                        </div>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td colSpan="2">No Clients found</td>
+                                    <th>Account Name</th>
+                                    <th>Contact Name</th>
+                                    <th>Contact Mobile Number</th>
+                                    <th>Account Address</th>
+                                    <th>Actions</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredClients.length > 0 ? (
+                                    filteredClients.map((Client) => (
+                                        <tr key={Client.id} onClick={() =>
+                                            navigate(`/view-client/${Client.id}`, { state: { Client } })
+                                        }>
+                                            <td>{Client.accountName}</td>
+                                            <td>{Client.contactName}</td>
+                                            <td>{Client.contactMobileNumber}</td>
+                                            <td>{Client.accountAddress}</td>
+                                            <td>
+                                                <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEdit}
+                                                    onClick={() =>
+                                                        navigate(`/edit-client/${Client.id}`, { state: { Client } })
+                                                    }
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="5">No Clients found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <ToastContainer />
             </div>
