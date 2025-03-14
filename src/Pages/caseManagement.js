@@ -16,28 +16,11 @@ function CaseManagement() {
     const [sDate, setsDate] = useState("");
     const [clientId, setClientId] = useState("");
     const { Clients } = useSelector((state) => state.Clients);
-    const[clients,setclients]=useState([])
     const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
     const userRoles=sessionStorage.getItem("roles")
-        useEffect(() => {
-            dispatch(fetchClients());
-        }, [dispatch]);
-        useEffect(() => {
-            if (Clients.length > 0) {
-             if (userRoles.includes("SuperAdmin")){
-                 const filteredClients=Clients;
-                 setclients(filteredClients);
-                console.log("Filtered Clients:", filteredClients);
-     
-             }else{
-                 const filteredClients = Clients.filter((c) => c.organizationId === orgId);
-                 setclients(filteredClients);
-                console.log("Filtered Clients:", filteredClients);
-             } 
-            }
-        }, [Clients, orgId]);
-     
-    
+    useEffect(() => {
+        dispatch(fetchClients());
+    }, [dispatch]);
       
     useEffect(() => {
         dispatch(fetchCases());
@@ -112,8 +95,8 @@ function CaseManagement() {
                                 onChange={handleClientChange}
                             >
                                 <option value="">Select Client</option>
-                                {clients && clients.length > 0 ? (
-                                clients.map((client) => (
+                                {Clients && Clients.length > 0 ? (
+                                Clients.map((client) => (
                                     <option key={client.id} value={client.id}>{client.contactName}</option>
                                 ))
                                 ) : (

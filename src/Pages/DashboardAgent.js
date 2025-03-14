@@ -1,156 +1,149 @@
-// import React, { useState } from "react";
-// import BarChartComponent from "../Components/BarChartComponent";
-// import LineChartComponent from "../Components/LineChartComponent";
-// import PieChartComponent from "../Components/PieChartComponent";
-// import DashboardCss from '../Css/DashboardCss.css'
 
-// function DashboardAgent() {
-//     const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-//     const toggleSidebar = () => {
-//       setSidebarCollapsed(!isSidebarCollapsed);
-//     };
-  
-//     const data = [
-//       { name: "January", value: 30 },
-//       { name: "February", value: 50 },
-//       { name: "March", value: 70 },
-//       { name: "April", value: 90 },
-//     ];
-  
-//     const pieData = [
-//       { name: "Group A", value: 400 },
-//       { name: "Group B", value: 300 },
-//       { name: "Group C", value: 300 },
-//       { name: "Group D", value: 200 },
-//     ];
-  
-//     return (
-//       <div className={`dashboard ${isSidebarCollapsed ? "collapsed" : ""}`}>
-//         <aside className="controls">
-//           <button className="toggle-button" onClick={toggleSidebar}>
-//             ☰
-//           </button>
-//           <h3>Controls</h3>
-//           <div className="control-group">
-//             <label htmlFor="search">Search:</label>
-//             <input type="text" id="search" placeholder="Type here..." />
-//           </div>
-//           <div className="control-group">
-//             <label htmlFor="filter">Filter by Month:</label>
-//             <select id="filter">
-//               <option value="all">All Months</option>
-//               <option value="jan">January</option>
-//               <option value="feb">February</option>
-//               <option value="mar">March</option>
-//               <option value="apr">April</option>
-//             </select>
-//           </div>
-//           <div className="control-group">
-//             <label htmlFor="range">Adjust Range:</label>
-//             <input type="range" id="range" min="0" max="100" />
-//           </div>
-//           <button className="apply-button">Apply Filters</button>
-//         </aside>
-//         <main className="graphs">
-//           <div className="graph">
-//             <h4>Bar Chart</h4>
-//             <BarChartComponent data={data} />
-//           </div>
-//           <div className="graph">
-//             <h4>Line Chart</h4>
-//             <LineChartComponent data={data} />
-//           </div>
-//            <div className="graph">
-//             <h4>Line Chart</h4>
-//             <LineChartComponent data={data} />
-//           </div>
-//           <div className="graph">
-//             <h4>Pie Chart</h4>
-//             <PieChartComponent data={pieData} />
-//           </div>
-//         </main>
-//       </div>
-//     );
-// }
-
-// export default DashboardAgent;
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BarChartComponent from "../Components/BarChartComponent";
-import LineChartComponent from "../Components/LineChartComponent";
 import PieChartComponent from "../Components/PieChartComponent";
-import DashboardCss from '../Css/DashboardCss.css'
 import SidebarMenu from "../Layouts/sidemenue";
+import DashboardCss from "../Css/DashboardCss.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchActiveDepartments, fetchCasesReport, fetchClients, fetchTaskscount, fetchTasksReport, fetchUsers } from "../Redux/Actions/Action";
 
 function DashboardAgent() {
-    const data = [
-      { name: "January", value: 30 },
-      { name: "February", value: 50 },
-      { name: "March", value: 70 },
-      { name: "April", value: 90 },
-    ];
-  
-    const pieData = [
-      { name: "Group A", value: 400 },
-      { name: "Group B", value: 300 },
-      { name: "Group C", value: 300 },
-      { name: "Group D", value: 200 },
-    ];
-  
-    return (
-      <div className="d-flex">
-            <SidebarMenu/>
-        <div className="dashboard">
-          {/* <div className="controls">
-            <div className="control-group">
-              <label htmlFor="search">التاريخ</label>
-              <input type="date" id="search" placeholder="Type here..." />
+ 
+  const dispatch = useDispatch();
+  const [departmentId, setdepartmentId] = useState("");
+  const [AgentId, setAgentId] = useState("");
+  const { Departments } = useSelector((state) => state.Departments);
+  const { Users } = useSelector((state) => state.Users);
+  const [clientId, setClientId] = useState("");
+  const { Clients } = useSelector((state) => state.Clients);
+  const { ReportTaskData,TaskCount } = useSelector((state) => state.Tasks);
+  const { ReportCasesData } = useSelector((state) => state.Cases);
+  const [Agents, setAgents] = useState([]);
+  const [FromDate, setFromDate] = useState("");
+  const [ToDate, setToDate] = useState("");
+  const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
+  useEffect(() => {
+      dispatch(fetchActiveDepartments(orgId));
+      dispatch(fetchUsers());
+      dispatch(fetchClients());
+      dispatch(fetchTaskscount())
+      dispatch(fetchTasksReport("","","","",""))
+      dispatch(fetchCasesReport("","","","",""))
+  }, [dispatch]);
+
+  useEffect(() => {
+        if (Users && Users.length > 0) {
+          const agentList = Users.filter((u) => u.role === "Agent");
+          setAgents(agentList);
+          console.log("Agents:", agentList);
+        }
+      }, [Users]);
+
+ const handleFilter = () => {
+  console.log(FromDate,ToDate,departmentId,clientId,AgentId)
+  dispatch(fetchTasksReport(FromDate,ToDate,departmentId,clientId,AgentId))
+  dispatch(fetchCasesReport(FromDate,ToDate,departmentId,clientId,AgentId))
+  };
+  const resetData=()=>{
+    setFromDate("")
+    setToDate("");
+    setAgentId("")
+    setClientId("")
+    setdepartmentId("")
+    console.log(FromDate,ToDate,departmentId,clientId,AgentId)
+  dispatch(fetchTasksReport(FromDate,ToDate,departmentId,clientId,AgentId))
+   
+  }
+  useEffect(()=>{
+    console.log(ReportTaskData,ReportCasesData,TaskCount)
+  },[ReportTaskData,ReportCasesData,TaskCount])
+  return (
+    <div className="d-flex">
+      <SidebarMenu />
+      <div className="dashboard">
+        {/* Filters Section */}
+        <div className="filter-div">
+          <div className="input-org-filter">
+            <label>Date From</label>
+            <input type="date" name="dateFrom" value={FromDate} onChange={(e) => setFromDate(e.target.value)} />
+          </div>
+          <div className="input-org-filter">
+            <label>Date To</label>
+            <input type="date" name="dateTo" value={ToDate} onChange={(e) => setToDate(e.target.value)} />
+          </div>
+          <div className="input-org-filter">
+            <label>Department</label>
+            <select
+                value={departmentId}
+                onChange={(e) => setdepartmentId(e.target.value)}
+            >   
+                <option value="">All Departments</option>
+                {Departments && Departments.length > 0 ? (
+                Departments.map((dep) => (
+                    <option key={dep.id} value={dep.id}>{dep.name}</option>
+                ))
+                ) : (
+                <option>No Departments available</option>
+                )}
+            </select>
             </div>
-            <div className="control-group">
-              <label htmlFor="filter">اسم العامل</label>
-              <select id="filter">
-                <option value="all">All Months</option>
-                <option value="jan">January</option>
-                <option value="feb">February</option>
-                <option value="mar">March</option>
-                <option value="apr">April</option>
+            <div className="input-org-filter">
+              <label>Agents</label>
+              <select value={AgentId} onChange={(e) => setAgentId(e.target.value)}>
+                  <option value="">All Agents</option>
+                  {Agents?.length > 0 ? (
+                  Agents.map((a) => (
+                      <option key={a.id} value={a.id}>
+                      {a.userName}
+                      </option>
+                  ))
+                  ) : (
+                  <option disabled>No Agents available</option>
+                  )}
               </select>
-            </div>
-            <div className="control-group">
-              <label htmlFor="filter">اسم العميل</label>
-              <select id="filter">
-                <option value="all">All Months</option>
-                <option value="jan">January</option>
-                <option value="feb">February</option>
-                <option value="mar">March</option>
-                <option value="apr">April</option>
-              </select>
-            </div>
-            <button className="apply-button">تطبيق</button>
-          </div> */}
-          <div className="graphs">
-            <div className="graph">
-              <h4>Bar Chart</h4>
-              <BarChartComponent data={data} />
-            </div>
-            <div className="graph">
-              <h4>Line Chart</h4>
-              <LineChartComponent data={data} />
-            </div>
-            <div className="graph">
-              <h4>Pie Chart</h4>
-              <PieChartComponent data={pieData} />
-            </div>
-            <div className="graph">
-              <h4>Line Chart</h4>
-              <LineChartComponent data={data} />
-            </div>
+          </div>
+          <div className="input-org-filter">
+            <label>Client</label>
+            <select
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value)}
+            >
+                <option value="">All Clients</option>
+                {Clients && Clients.length > 0 ? (
+                Clients.map((client) => (
+                    <option key={client.id} value={client.id}>{client.contactName}</option>
+                ))
+                ) : (
+                <option>No Clients available</option>
+                )}
+            </select>
+          </div>
+          <button className="filter-btn" onClick={handleFilter}>Filter</button>
+          <button className="filter-btn" onClick={resetData}>Reset</button>
+        </div>
+
+        {/* KPIs Section */}
+        
+        {/* Graphs Section */}
+        <div className="graphs">
+          <div className="graph">
+            <h4>Task Status Breakdown</h4>
+            <BarChartComponent data={ReportTaskData} />
+          </div>
+          <div className="graph">
+            <h4>Cases Status Breakdown</h4>
+            <BarChartComponent data={ReportCasesData} />
+          </div>
+          <div className="graph">
+            <h4>Total & Overdue Tasks</h4>
+            <PieChartComponent data={TaskCount} />
           </div>
         </div>
       </div>
-    );
-    
+    </div>
+  );
 }
 
 export default DashboardAgent;
+
 

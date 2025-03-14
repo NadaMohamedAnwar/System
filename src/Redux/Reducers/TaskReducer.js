@@ -2,6 +2,8 @@ const initialState = {
     loading: false,
     Tasks: [],
     FilterTasks:[],
+    ReportTaskData:[],
+    TaskCount:{},
     error: null,
   };
   const TaskReducer=(state=initialState,action)=>{
@@ -55,6 +57,18 @@ const initialState = {
                 ...state,
                 FilterTasks: action.payload,
             };
+        case 'FETCH_TASKS_REPORT_REQUEST':
+            return{...state, loading:true, error:null};
+        case 'FETCH_TASKS_REPORT_SUCCESS':
+            return{...state, loading:false, ReportTaskData:action.payload};
+        case 'FETCH_TASKS_REPORT_FAILURE':
+            return{...state, loading:false, error:action.payload};
+        case 'FETCH_TASKS_COUNT_REQUEST':
+            return{...state, loading:true, error:null};
+        case 'FETCH_TASKS_COUNT_SUCCESS':
+            return{...state, loading:false, TaskCount:action.payload};
+        case 'FETCH_TASKS_COUNT_FAILURE':
+            return{...state, loading:false, error:action.payload};
         default:
             return state;
 

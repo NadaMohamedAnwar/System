@@ -96,7 +96,7 @@ body {
 }
 
 .org-data-div{
-    width: 70%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -154,7 +154,14 @@ body {
     opacity: 0.5;
 }
 
-
+.div-arbitrations{
+    border: 1px solid #125370;
+    border-radius: 10px;
+    width: 90%;
+    padding-right: 20px;
+    margin: auto;
+   
+}
 /* ======================================================================== */
 .manage {
     flex-grow: 1;
@@ -576,6 +583,7 @@ form button:hover {
 }
 .service-counts{
     margin: 20px auto;
+    text-align: left;
 
 }
 .service-counts ul{

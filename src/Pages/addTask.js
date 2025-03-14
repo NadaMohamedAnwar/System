@@ -78,26 +78,10 @@ function AddTask() {
 
     const userRoles=sessionStorage.getItem("roles")
     const { Clients } = useSelector((state) => state.Clients);
-     const[clients,setclients]=useState([])
     useEffect(() => {
       dispatch(fetchClients());
   }, [dispatch]); 
   
-   useEffect(() => {
-      if (Clients.length > 0) {
-        if (userRoles.includes("SuperAdmin")){
-            const filteredClients=Clients;
-            setclients(filteredClients);
-            console.log("Filtered Clients:", filteredClients);
-
-        }else{
-            const filteredClients = Clients.filter((c) => c.organizationId === orgId);
-            setclients(filteredClients);
-            console.log("Filtered Clients:", filteredClients);
-        } 
-      }
-  }, [Clients, orgId]);
-
   useEffect(() => {
     console.log("filteredServices after dispatch:", filteredServices);
   }, [filteredServices]);
@@ -342,8 +326,8 @@ const FetchTaskTypes=async()=>{
                 onChange={(e) => setClientId(e.target.value)}
               >
                 <option value="">Select Client</option>
-                {clients && clients.length > 0 ? (
-                  clients.map((client) => (
+                {Clients && Clients.length > 0 ? (
+                  Clients.map((client) => (
                     <option key={client.id} value={client.id}>{client.contactName}</option>
                   ))
                 ) : (

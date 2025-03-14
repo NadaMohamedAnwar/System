@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
 import { IoNotifications } from "react-icons/io5";
 import logo from '../Images/Codeverse_FinalLogo.svg';
 import defaultProfile from "../Images/profile-user-svgrepo-com.svg"; 
 import "../Css/HeaderCss.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile } from "../Redux/Actions/Action";
 
 function Header() {
   const navigate = useNavigate();
-
+  const {profile}=useSelector((state) => state.Users)
+  const dispatch = useDispatch();
   const userProfile = {
     image: null,
   };
+   useEffect(()=>{
+    dispatch(getUserProfile())
 
+   },[])
   const handleLogout = (e) => {
     e.preventDefault();
     sessionStorage.clear();

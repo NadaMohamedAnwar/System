@@ -1,146 +1,4 @@
-/* 
-body {
-  
-    color: #333;
-  }
-  
-  .dashboard {
-    display: flex;
-    padding-top: 100px;
-    transition: all 0.3s ease;
-  }
-  
-  
- 
-  .controls {
-    width: 250px;
-    padding: 20px;
-    background-color: #f4f6f8;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  .controls h3 {
-    margin: 0;
-    font-size: 1.5rem;
-    text-align: center;
-  }
-  
-  .control-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .control-group label {
-    font-size: 0.9rem;
-  }
-  
-  .control-group input,
-  .control-group select {
-    padding: 8px;
-    background-color: white;
-    border: 1px solid green;
-    outline: none;
-    border-radius: 10px;
-  }
-  .control-group input:focus,
-  .control-group select:focus{
-    border: 1px solid orange;
-  }
-  .apply-button {
-    padding: 10px;
-    background: linear-gradient(90deg, green, orange);
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .apply-button:hover {
-    
-  }
-  .controls h3{
-    background: linear-gradient(90deg, green, orange);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
 
-  .toggle-button {
-    background: none;
-    border: none;
-    color: black;
-    font-size: 1.5rem;
-    cursor: pointer;
-    align-self: flex-end;
-    margin-bottom: 10px;
-
-  }
-  
-  .dashboard.collapsed .controls {
-    width: 60px;
-  }
-  
-  .dashboard.collapsed .controls h3,
-  .dashboard.collapsed .control-group,
-  .dashboard.collapsed .apply-button {
-    display: none;
-  }
-  
-  .graphs {
-    flex: 1;
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    background-color: #f4f6f8;
-    overflow-y: auto;
-  }
-  
-  .graph {
-    flex: 1 1 calc(50% - 20px);
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .graph h4 {
-    margin-bottom: 10px;
-    font-size: 1.2rem;
-    color: #007bff;
-    text-align: center;
-  }
- 
-  @media (max-width: 768px) {
-    .controls {
-      position: fixed;
-      height: 100%;
-      z-index: 1000;
-      transform: translateX(-100%);
-    }
-  
-    .dashboard.collapsed .controls {
-      transform: translateX(0);
-    }
-    .toggle-button {
-    position: fixed;
-    top: 10px;
-    left: 10px; 
-    z-index: 1100; 
-    color: #000;
-  }
-    .graphs {
-      margin-left: 0;
-    }
-  } */
-   /* ============================================= */
    
 body {
   margin: 0;
@@ -156,6 +14,7 @@ body {
   flex-grow: 1;
   flex-direction: column;
   justify-content: space-between;
+  margin:50px auto;
 }
 
 .controls {
@@ -173,8 +32,10 @@ body {
 .graphs {
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
   background-color: #f4f6f8;
 }
 
@@ -230,12 +91,12 @@ body {
 
 .graph {
   flex: 1 1 calc(50% - 20px);
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+  background-color: white;
   padding: 15px;
+  border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 
 .graph h4 {
   margin-bottom: 10px;
@@ -252,3 +113,4 @@ body {
     padding: 0px 50px;
   }
 } */
+ 

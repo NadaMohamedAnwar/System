@@ -2,6 +2,7 @@ const initialState = {
     loading: false,
     Cases: [],
     FilteredCases:[],
+    ReportCasesData :[],
     error: null,
   };
   const CaseReducer=(state=initialState,action)=>{
@@ -62,6 +63,12 @@ const initialState = {
                 ...state,
                 FilteredCases: action.payload,
             };
+        case 'FETCH_CASES_REPORT_REQUEST':
+            return{...state, loading:true, error:null};
+        case 'FETCH_CASES_REPORT_SUCCESS':
+            return{...state, loading:false,  ReportCasesData :action.payload};
+        case 'FETCH_CASES_REPORT_FAILURE':
+            return{...state, loading:false, error:action.payload};
         default:
             return state;
 

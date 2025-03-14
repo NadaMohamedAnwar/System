@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     Users: [],
     FilterUsers:[],
+    profile:{},
     error: null,
   };
   const UsersReducer=(state=initialState,action)=>{
@@ -13,6 +14,12 @@ const initialState = {
         case 'FETCH_USERS_SUCCESS':
             return{...state, loading:false, Users:action.payload, FilterUsers:action.payload};
         case 'FETCH_USERS_FAILURE':
+            return{...state, loading:false, error:action.payload};
+        case 'FETCH_PROFILE_REQUEST':
+            return{...state, loading:true, error:null};
+        case 'FETCH_PROFILE_SUCCESS':
+            return{...state, loading:false, profile:action.payload};
+        case 'FETCH_PROFILE_FAILURE':
             return{...state, loading:false, error:action.payload};
         case 'ADD_USERS_REQUEST':
             return { ...state, loading: true, error: null };

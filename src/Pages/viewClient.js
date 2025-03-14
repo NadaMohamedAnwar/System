@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import SidebarMenu from "../Layouts/sidemenue";
 import { fetchAllTasks } from "../Redux/Actions/Action";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,11 +9,13 @@ function ViewClient() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const dispatch = useDispatch();
+  const{id}=useParams();
+
   const { Tasks = [] } = useSelector((state) => state.Tasks || {});
   useEffect(() => {
     if (state?.Client) {
       console.log("Received Client Data:", state.Client);
-      dispatch(fetchAllTasks(state.id, "", "", "", "", "", "", "",[]));
+      dispatch(fetchAllTasks(id, "", "", "", "", "", "", "",[]));
       setClientDetails(state.Client);
     }
   }, [state]);

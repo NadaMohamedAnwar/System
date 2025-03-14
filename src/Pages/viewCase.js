@@ -1,21 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import SidebarMenu from "../Layouts/sidemenue";
 import { fetchAllTasks } from "../Redux/Actions/Action";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 function ViewCase() {
   const [caseDetails, setCaseDetails] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { Tasks = [] } = useSelector((state) => state.Tasks || {});
+  const [arbitraries, setarbitraries] = useState([]);
   const { state } = useLocation();
+  const{id}=useParams();
 
   useEffect(() => {
     if (state?.Case) {
-      dispatch(fetchAllTasks("", "", "", "", state.id, "", "", "",[]));
+      dispatch(fetchAllTasks("", "", "", "", id, "", "", "",[]));
       setCaseDetails(state.Case);
       console.log(caseDetails)
+      const fetchCourts = async () => {
+        try {
+          const token = sessionStorage.getItem('token'); 
+          const response = await axios.get(`http://agentsys.runasp.net/api/Cases/${id}/arbitraries`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          });
+          setarbitraries(response.data);
+        } catch (error) {
+        
+          console.error("Error:", error);
+        } 
+      };
+      fetchCourts();
+      
     }
   }, [state]);
   useEffect(() => {
@@ -23,7 +42,6 @@ function ViewCase() {
       console.log(caseDetails)
     
   }, [caseDetails]);
-
   if (!caseDetails) {
     return <div className="text-center mt-10 text-lg my-5">No case details available.</div>;
   }
@@ -38,7 +56,7 @@ function ViewCase() {
             
             {/* General Information */}
             <div className="col-md-4">
-              <h5 className="mb-3">General Information</h5>
+              <h5 className="mb-3">Basic Information</h5>
               <div className="mb-2 d-flex align-items-center gap-2">
                 <label className="form-label w-50 small-label">Title:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.title} disabled />
@@ -55,11 +73,15 @@ function ViewCase() {
                 <label className="form-label w-50 small-label">Case Status:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.caseStatus} disabled />
               </div>
+              <div className="mb-2 d-flex align-items-center gap-2">
+                <label className="form-label small-label">Description:</label>
+                <textarea className="form-control form-control-sm" value={caseDetails.description} disabled rows="1"></textarea>
+              </div>
             </div>
 
             {/* Case Details */}
             <div className="col-md-4">
-              <h5 className="mb-3">Case Details</h5>
+              <h5 className="mb-3">Opposing Party</h5>
               <div className="mb-2 d-flex align-items-center gap-2">
                 <label className="form-label w-50 small-label">Opposing Party:</label>
                 <input type="text" className="form-control form-control-sm" value={caseDetails.opposingParty} disabled />
@@ -69,22 +91,16 @@ function ViewCase() {
                 <input type="text" className="form-control form-control-sm" value={caseDetails.opposingLawyer} disabled />
               </div>
               <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50 small-label">Price:</label>
-                <input type="text" className="form-control form-control-sm" value={`$${caseDetails.price}`} disabled />
+                <label className="form-label w-50 small-label">Start Date:</label>
+                <input type="text" className="form-control form-control-sm" value={new Date(caseDetails.startDate).toLocaleDateString()} disabled />
               </div>
-              <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label small-label">Description:</label>
-                <textarea className="form-control form-control-sm" value={caseDetails.description} disabled rows="3"></textarea>
-              </div>
+             
             </div>
 
             {/* Date & Documents */}
             <div className="col-md-4">
-              <h5 className="mb-3">Date & Documents</h5>
-              <div className="mb-2 d-flex align-items-center gap-2">
-                <label className="form-label w-50 small-label">Start Date:</label>
-                <input type="text" className="form-control form-control-sm" value={new Date(caseDetails.startDate).toLocaleDateString()} disabled />
-              </div>
+              <h5 className="mb-3">Documents</h5>
+              
               <div className="mb-2">
                 <label className="form-label">Case Documents:</label>
                 <div className="border p-2 rounded bg-white" style={{ minHeight: "40px" }}>
@@ -126,6 +142,27 @@ function ViewCase() {
                 )}
             </div>
             </div>
+            <div className="col-md-4">
+            <h5 className="mb-3">Arbitraries</h5>
+            <div className="border p-2 rounded bg-white" style={{ maxHeight: "300px", overflowY: "auto" }}>
+              {arbitraries.length > 0 ? (
+                arbitraries.map((arbitrary) => (
+                  <div
+                    key={arbitrary.courtId}
+                    className="mb-2 p-2 border-bottom"
+                    style={{ cursor: "pointer", transition: "0.3s", borderRadius: "5px" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f8f9fa")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "white")}
+                  >
+                    <strong>Court ID: {arbitrary.courtId}</strong>
+                    <p className="m-0">Hearing Date: {new Date(arbitrary.hearingDate).toLocaleDateString()}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="m-0 text-muted">No arbitraries available</p>
+              )}
+            </div>
+          </div>
 
           </div>
         </div>

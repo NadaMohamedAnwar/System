@@ -23,7 +23,7 @@ function AddUser() {
   }, [dispatch,orgId]);
   
   useEffect(() => {
-    const deps = Departments.filter((d) => d.managerId === null);
+    const deps = Departments.filter((d) => d.headManagerID === null);
     setdepartments(deps)
   }, [dispatch,Departments]);
   // State for required fields
@@ -41,7 +41,7 @@ function AddUser() {
   const [postalCode, setPostalCode] = useState("");
   const [dateHired, setDateHired] = useState("");
   const [salary, setSalary] = useState("");
-
+  const [Picture,setPicture]=useState(null);
 
   const [categoriesId, setCategoriesId] = useState([]); 
   const [departmentId, setDepartmentId] = useState("");
@@ -64,7 +64,13 @@ function AddUser() {
     const selectedOptions = Array.from(e.target.selectedOptions, (option) => parseInt(option.value, 10));
     setCategoriesId(selectedOptions);
   };
-
+  const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+        setPicture(file);
+        console.log('File details:', file);
+        }
+    };
   // **Validation Function**
   const validateInputs = () => {
     let newErrors = {};
@@ -98,75 +104,121 @@ function AddUser() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-    let userData={};
+    const userData = new FormData();
+   
     if(roles==="RegisterOrgAdmin"){
-      userData = {
-        organizationId: parseInt(orgId, 10),
-        name: name,
-        dateOfBirth: dateOfBirth,
-        address: address,
-        postalCode: postalCode,
-        dateHired: dateHired,
-        salary: parseFloat(salary),
-        profilePictureUrl: null,
-        userStatus: true,
-        businessUserId: businessUserId ? parseInt(businessUserId, 10) : null,
-        userNationalId: userNationalId,
-        username: username,
-        email: email,
-        phoneNumber: phoneNumber,
-      };
+     
+
+      userData.append("OrganizationId", parseInt(orgId, 10));
+      userData.append("UserStatus", true);
+      userData.append("BusinessUserId", businessUserId ? parseInt(businessUserId, 10) : null);
+      userData.append("UserNationalId", userNationalId);
+      userData.append("Username", username);
+      userData.append("Email", email);
+      userData.append("PhoneNumber", phoneNumber);
+      userData.append("Name", name);
+      userData.append("DateOfBirth", dateOfBirth);
+      userData.append("Address", address);
+      userData.append("DateHired", dateHired);
+      userData.append("Salary", parseFloat(salary));
+
+      // Optional Fields
+      if (postalCode) {
+        userData.append("PostalCode", postalCode);
+      }
+
+      // Required File (Profile Picture)
+      if (Picture) {
+        userData.append("Picture", Picture); 
+      } else {
+        throw new Error("Profile picture is required.");
+      }
+
 
     }else if(roles==="RegisterHeadManager"){
-        userData = {
-            organizationId: parseInt(orgId, 10),
-            name: name,
-            dateOfBirth: dateOfBirth,
-            address: address,
-            postalCode: postalCode,
-            dateHired: dateHired,
-            salary: parseFloat(salary),
-            userStatus: true,
-            businessUserId: businessUserId ? parseInt(businessUserId, 10) : null,
-            userNationalId: userNationalId,
-            username: username,
-            email: email,
-            phoneNumber: phoneNumber,
-            departmentsIds: departmentIds.length > 0 ? departmentIds : null
-        };      
+      
+
+      userData.append("OrganizationId", parseInt(orgId, 10));
+      userData.append("Name", name);
+      userData.append("DateOfBirth", dateOfBirth);
+      userData.append("Address", address);
+      userData.append("PostalCode", postalCode);
+      userData.append("DateHired", dateHired);
+      userData.append("Salary", parseFloat(salary));
+      userData.append("UserStatus", true);
+      userData.append("UserNationalId", userNationalId);
+      userData.append("username", username);
+      userData.append("Email", email);
+      userData.append("PhoneNumber", phoneNumber);
+      
+      // Add optional fields if they exist
+      if (businessUserId) {
+        userData.append("BusinessUserId", parseInt(businessUserId, 10));
+      }
+      if (Picture instanceof File) {
+        userData.append("UserPicture", Picture);
+      } else {
+        console.error("Invalid file type for Picture");
+      }
+      
+      if (departmentIds.length > 0) {
+        departmentIds.forEach((id) => {
+          userData.append("DepartmentsIds", parseInt(id, 10)); 
+        });
+      } else {
+        throw new Error("DepartmentsIds is required and cannot be empty.");
+      }
+        
 
     }else if(roles==="RegisterManager"){
-        userData = {
-            organizationId: parseInt(orgId, 10),
-            name: name,
-            dateOfBirth: dateOfBirth,
-            address: address,
-            postalCode: postalCode,
-            dateHired: dateHired,
-            salary: parseFloat(salary),
-            profilePictureUrl: null,
-            userStatus: true,
-            businessUserId: businessUserId ? parseInt(businessUserId, 10) : null,
-            userNationalId: userNationalId,
-            username: username,
-            email: email,
-            phoneNumber: phoneNumber,
-        };
+
+        userData.append("OrganizationId", parseInt(orgId, 10));
+        userData.append("Name", name);
+        userData.append("DateOfBirth", dateOfBirth);
+        userData.append("Address", address);
+        userData.append("PostalCode", postalCode);
+        userData.append("DateHired", dateHired);
+        userData.append("Salary", parseFloat(salary));
+        userData.append("UserStatus", true);
+        userData.append("BusinessUserId", businessUserId ? parseInt(businessUserId, 10) : null);
+        userData.append("UserNationalId", userNationalId);
+        userData.append("username", username);
+        userData.append("Email", email);
+        userData.append("PhoneNumber", phoneNumber);
+        if (Picture instanceof File) {
+          userData.append("Picture", Picture);
+        } else {
+          console.error("Invalid file type for Picture");
+        }
+        
+        for (let pair of userData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
+        }
 
     }else if(roles==="RegisterAgent"){
-      userData = {
-        id: null,
-        userStatus: true, // Always true
-        businessUserId: businessUserId ? parseInt(businessUserId, 10) : null,
-        departmentId: departmentId ? parseInt(departmentId, 10) : null,
-        userNationalId: userNationalId,
-        username: username,
-        email: email,
-        phoneNumber: phoneNumber || null,
-        orgId: parseInt(orgId, 10),
-        orgAdminId: sessionStorage.getItem("id"),
-        categoriesId: categoriesId.length > 0 ? categoriesId : null,
-      };
+      userData.append("id", null);
+      userData.append("userStatus", true); 
+      userData.append("businessUserId", businessUserId ? parseInt(businessUserId, 10) : null);
+      userData.append("departmentId", departmentId ? parseInt(departmentId, 10) : null);
+      userData.append("userNationalId", userNationalId);
+      userData.append("username", username);
+      userData.append("email", email);
+      userData.append("phoneNumber", phoneNumber || null);
+      userData.append("orgId", parseInt(orgId, 10));
+      userData.append("orgAdminId", sessionStorage.getItem("id"));
+
+      // Append categoriesId array properly
+      if (categoriesId.length > 0) {
+        categoriesId.forEach((id) => userData.append("categoriesId", id));
+      } else {
+        userData.append("categoriesId", null);
+      }
+
+      // Append ProfilePicture file
+      if (Picture) {
+        userData.append("profilePicture", Picture);
+      }
+
 
     }
     
@@ -179,8 +231,16 @@ function AddUser() {
       setUsername("");
       setEmail("");
       setPhoneNumber("");
+      setName("");
+      setDateOfBirth("");
+      setAddress("");
+      setPostalCode("");
+      setDateHired("");
+      setSalary("");
+      setPicture(null);
       setCategoriesId([]);
       setDepartmentId("");
+      setdepartmentIds([]);
       setErrors({});
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -308,6 +368,15 @@ function AddUser() {
                             placeholder="Enter Address"
                         />
                     </div>}
+                    <div className="input-org">
+                        <label>Photo</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        {errors.username && <small className="error">{errors.username}</small>}
+                    </div>
                    
                 </div>)}
             {currentSection === 2 && (

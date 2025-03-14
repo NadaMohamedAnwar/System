@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SidebarMenu from "../Layouts/sidemenue";
 import { useDispatch, useSelector } from "react-redux";
-import {  addCases, assignCaseTocourts, assignCaseToParent, attachCaseFile, fetchCases, fetchClients, fetchCourts } from "../Redux/Actions/Action";
+import {  addCases, assignCaseToAgent, assignCaseTocourts, assignCaseToParent, attachCaseFile, fetchCases, fetchClients, fetchCourts, fetchUsers } from "../Redux/Actions/Action";
 import { useNavigate } from "react-router-dom";
 
 function AddCase() {
@@ -26,14 +26,27 @@ function AddCase() {
   const dispatch = useDispatch();
   const { Cases} = useSelector((state) => state.Cases);
   const { Clients } = useSelector((state) => state.Clients);
-  const { Courts } = useSelector((state) => state.Courts);
-  const [CourtId, setCourtId] = useState([]);
-  const[clients,setclients]=useState([])
+  const {Courts} = useSelector((state)=> state.Courts)
+  const [selectedCourt, setSelectedCourt] = useState("");
+  const [arbitrations, setArbitrations] = useState([]);
+  const [hearingDate, setHearingDate] = useState("");
+  const { Users } = useSelector((state) => state.Users);
+  const [AgentId, setAgentId] = useState("");
+  const [Agents, setAgents] = useState([]);
   const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
+ 
   useEffect(() => {
         dispatch(fetchClients());
         dispatch(fetchCourts())
+        dispatch(fetchUsers());
     }, [dispatch]); 
+     useEffect(() => {
+         if (Users && Users.length > 0) {
+           const agentList = Users.filter((u) => u.role === "Agent");
+           setAgents(agentList);
+           console.log("Agents:", agentList);
+         }
+       }, [Users]);
   useEffect(() => {
         dispatch(fetchCases());
     }, [dispatch]); 
@@ -42,13 +55,6 @@ function AddCase() {
         setRevelantCases(RevelantCases)
            
     }, [CaseId]);
-    useEffect(() => {
-        if (Clients.length > 0) {
-            const filteredClients = Clients.filter((c) => c.organizationId === orgId);
-            setclients(filteredClients);
-            console.log("Filtered Clients:", filteredClients);
-        }
-    }, [Clients, orgId]);
   
     const [file, setFile] = useState(null);
     const handleFileChange = (e) => {
@@ -58,15 +64,9 @@ function AddCase() {
         console.log("File details:", selectedFile);
       }
     };
-    
-    const handleCourtChange = (e) => {
-      const selectedOptions = Array.from(e.target.selectedOptions, (option) => parseInt(option.value, 10));
-      setCourtId(selectedOptions);
-    };
-    
 
-  const handleNext = () => setCurrentSection((prev) => (prev + 1) % 5);
-  const handlePrevious = () => setCurrentSection((prev) => (prev - 1 + 5) % 5);
+  const handleNext = () => setCurrentSection((prev) => (prev + 1) % 6);
+  const handlePrevious = () => setCurrentSection((prev) => (prev - 1 + 6) % 6);
 
   const validateInputs = () => {
     let newErrors = {};
@@ -139,6 +139,20 @@ function AddCase() {
       toast.error("An error occurred. Please try again.");
     }
   };
+  const handleAddArbitration = () => {
+    if (!selectedCourt || !hearingDate) {
+      alert("Please select a court and hearing date before adding an arbitration.");
+      return;
+    }
+
+    const newArbitration = {
+      courtId: selectedCourt,
+      hearingDate: hearingDate,
+    };
+
+    setArbitrations((prev) => [...prev, newArbitration]);
+  };
+
    const handleAssignParent = async () => {
   
   
@@ -150,20 +164,29 @@ function AddCase() {
         toast.error("An error occurred. Please try again.");
       }
     };
-    const handleAssignCourts = async () => {
+    const handleAssignArbitrations = async () => {
   
   
       try {
-        console.log(CaseId,CourtId)
-        await dispatch(assignCaseTocourts(CaseId,CourtId));
+      
+        await dispatch(assignCaseTocourts(CaseId,arbitrations));
         toast.success("Task Assigned successfully!");
         
       } catch (error) {
+        setArbitrations([])
         toast.error("An error occurred. Please try again.");
+        
       }
     };
-
-
+    const handleCourtChange = (event) => {
+      setSelectedCourt(event.target.value);
+    };
+  
+    const handleHearingDateChange = (event) => {
+      setHearingDate(event.target.value);
+    };
+  
+   
   const handleAttachFile = async () => {
       try {
         if (!file || !CaseId) {
@@ -183,6 +206,17 @@ function AddCase() {
         toast.error("An error occurred. Please try again.");
       }
     };
+    const handleAssignAgent = async () => {
+        
+        try {
+          await dispatch(assignCaseToAgent(CaseId,AgentId));
+          setCurrentSection(0);
+          toast.success("Task Assigned successfully!");
+         
+        } catch (error) {
+          toast.error("An error occurred. Please try again.");
+        }
+      };
   return (
     <div className="d-flex">
       <SidebarMenu />
@@ -199,7 +233,7 @@ function AddCase() {
           </div>
           <div className={`stage-item ${currentSection === 2 ? "active" : ""}`}>
             <span>3</span>
-            <p>Assign Court</p>
+            <p>Arbitrations</p>
           </div>
           <div className={`stage-item ${currentSection === 3 ? "active" : ""}`}>
             <span>4</span>
@@ -208,6 +242,10 @@ function AddCase() {
           <div className={`stage-item ${currentSection === 4 ? "active" : ""}`}>
             <span>5</span>
             <p>Document</p>
+          </div>
+          <div className={`stage-item ${currentSection === 5 ? "active" : ""}`}>
+            <span>6</span>
+            <p>Assign Agent</p>
           </div>
         </div>
 
@@ -262,8 +300,8 @@ function AddCase() {
                 value={clientId}
                 onChange={(e) => setClientId(e.target.value)}
               > <option value="">Select Client</option>
-                {clients && clients.length > 0 ? (
-                  clients.map((client) => (
+                {Clients && Clients.length > 0 ? (
+                  Clients.map((client) => (
                     <option key={client.id} value={client.id}>{client.contactName}</option>
                   ))
                 ) : (
@@ -309,7 +347,7 @@ function AddCase() {
             <div className="input-org">
               <label>Start Date</label>
               <input
-                type="date"
+                type="datetime-local"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 onBlur={handleInputBlur}
@@ -330,7 +368,7 @@ function AddCase() {
         {/* Section 3: Financial Info */}
         {currentSection === 2 && (
           <div className="org-data-div">
-            <h5 className="text-color">Assign Court</h5>
+            <h5 className="text-color">Assign Arbitrations</h5>
              {/* <div className="input-org">
               <label>Pricing Type</label>
               <select
@@ -354,9 +392,11 @@ function AddCase() {
               />
               {errors.price && <small className="error" style={{color:"red"}}>{errors.price}</small>}
             </div> */}
-             <div className="input-org">
-                  <label>Courts (Select multiple)</label>
-                  <select multiple value={CourtId} onChange={handleCourtChange}>
+                <div className="div-arbitrations">
+                <div className="input-org">
+                  <label>Court</label>
+                  <select value={selectedCourt} onChange={handleCourtChange}>
+                    <option value="" disabled>Select a court</option>
                     {Courts && Courts.length > 0 ? (
                       Courts.map((court) => (
                         <option key={court.courtId} value={court.courtId}>
@@ -367,13 +407,40 @@ function AddCase() {
                       <option disabled>No Courts available</option>
                     )}
                   </select>
+                </div>
+                <div className="input-org">
 
-              </div>
-              <button onClick={handleAssignCourts} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Courts
+                  <label>Hearing Date</label>
+                  <input type="datetime-local" value={hearingDate} onChange={handleHearingDateChange} />
+                </div>
+                <button onClick={handleAddArbitration} style={{ marginTop: "20px", width: "100%" }}>Add</button>
+                </div>
+                <div className="manage">
+                  {arbitrations.length > 0 ? (
+                    <table>
+                      
+                      <tr> 
+                         <th>Court ID</th>
+                        <th>Hearing Date</th>
+                        
+                      </tr>
+                      {arbitrations.map((arb, index) => (
+                        <tr key={index}>
+                         <td>{arb.courtId}</td>
+                         <td>{arb.hearingDate}</td>
+                        </tr>
+                      ))}
+                    </table>
+                  ) : (
+                    <td colSpan="2">No arbitrations added yet.</td>
+                  )}
+
+                </div>
+                <button onClick={handleAssignArbitrations} style={{ marginTop: "20px", width: "100%" }}>
+                Assign arbitrations
                 </button>
-          </div>
-        )}
+                
+          </div>)}
         {currentSection === 3 && (
             <div className="org-data-div">
                 <h5 className="text-color">Assign Relevant</h5>
@@ -422,6 +489,30 @@ function AddCase() {
               </div>
 
               <button onClick={handleAttachFile}>Attach</button>
+            </div>
+       )}
+        {currentSection === 5 && (
+            <div className="org-data-div">
+                <h5 className="text-color">Assign Agent</h5>
+                <div className="input-org">
+                  <label>Agents</label>
+                  <select value={AgentId} onChange={(e) => setAgentId(e.target.value)}>
+                    <option value="">Select a Agent</option>
+                    {Agents?.length > 0 ? (
+                      Agents.map((a) => (
+                        <option key={a.id} value={a.id}>
+                          {a.userName}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>No Agents available</option>
+                    )}
+                  </select>
+                </div>
+
+                <button onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }}>
+                Assign Agent
+                </button>
             </div>
        )}
 

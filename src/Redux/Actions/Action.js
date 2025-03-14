@@ -380,12 +380,11 @@ export const deleteClient = (id) => async (dispatch) => {
 export const filterClients = (departmentId) => (dispatch) => {
   dispatch({ type: "FILTER_CLIENTS", payload: departmentId });
 };
-export const filterClientDate = (orgId, Name, contactName, Phone, address) => (dispatch, getState) => {
+export const filterClientDate = ( Name, contactName, Phone, address) => (dispatch, getState) => {
   const {Clients} = getState().Clients;
 
   const filteredClients = Clients.filter((c) => {
-    return (
-      (!orgId || c.organizationId === orgId) &&  
+    return (  
       (!Name || c.accountName?.toLowerCase().includes(Name.toLowerCase())) &&
       (!contactName || c.contactName?.toLowerCase().includes(contactName.toLowerCase())) &&
       (!address || c.accountAddress?.toLowerCase().includes(address.toLowerCase())) &&
@@ -601,7 +600,53 @@ export const assignTaskToAgent = (taskId,AgentId) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
+export const fetchTasksReport = (DateFrom, DateTo, Department, Client, Agent) => async (dispatch) => {
+  dispatch({ type: 'FETCH_TASKS_REPORT_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token');
+    const params = {};
+    if (DateFrom) params.DateFrom = DateFrom;
+    if (DateTo) params.DateTo = DateTo;
+    if (Department) params.Department = Department;
+    if (Client) params.Client = Client;
+    if (Agent) params.Agent = Agent;
 
+    const response = await axios.get('http://agentsys.runasp.net/api/Task/status-breakdown', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params, 
+    });
+
+    console.log(response.data)
+    dispatch({ type: 'FETCH_TASKS_REPORT_SUCCESS', payload: response.data.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_TASKS_REPORT_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+export const fetchTaskscount = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_TASKS_COUNT_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token');
+
+    const response = await axios.get('http://agentsys.runasp.net/api/Task/count', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(response.data)
+    dispatch({ type: 'FETCH_TASKS_COUNT_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_TASKS_COUNT_FAILURE',
+      payload: error.message,
+    });
+  }
+};
 export const filterTasks = (name, sDate, priority) => (dispatch, getState) => {
   const { Tasks } = getState().Tasks;
 
@@ -764,6 +809,31 @@ export const fetchUsers = () => async (dispatch) => {
   }
 };
 
+export const getUserProfile = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_PROFILE_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token');
+    const response = await axios.get('http://agentsys.runasp.net/api/Users/GetUserProfile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("profile:", response.data); 
+
+    if (response.data.isSuccessful) {
+      dispatch({ type: 'FETCH_PROFILE_SUCCESS', payload: response.data.data }); 
+    } else {
+      dispatch({ type: 'FETCH_PROFILE_FAILURE', payload: "API call failed" });
+    }
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_PROFILE_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+
 
 
 export const addUsers = (userData,type) => async (dispatch) => {
@@ -771,9 +841,14 @@ export const addUsers = (userData,type) => async (dispatch) => {
   try {
     const token = sessionStorage.getItem('token'); 
     console.log(`http://agentsys.runasp.net/api/Users/${type}`, userData)
+    for (let pair of userData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+     
     const response = await axios.post(`http://agentsys.runasp.net/api/Users/${type}`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data", 
       },
     });
     console.log(response.data)
@@ -787,12 +862,33 @@ export const addUsers = (userData,type) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
-export const editUsers = (userData,type) => async (dispatch) => {
+export const editAgent = (userData) => async (dispatch) => {
   dispatch({ type: 'EDIT_USERS_REQUEST' });
   try {
     const token = sessionStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Users/${type}`,
+      `http://agentsys.runasp.net/api/Users/UpdateAgentProfile`,
+      userData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch({ type: 'EDIT_USERS_SUCCESS', payload: response.data });
+  } catch (error) {
+    console.log('Error Response:', error.response); 
+    dispatch({ type: 'EDIT_USERS_FAILURE', payload: error.message });
+    throw error;
+  }
+  
+};
+export const editUsers = (userData,AdminId) => async (dispatch) => {
+  dispatch({ type: 'EDIT_USERS_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token'); 
+    const response = await axios.put(
+      `http://agentsys.runasp.net/api/Admin/${AdminId}/update`,
       userData,
       {
         headers: {
@@ -1034,14 +1130,15 @@ export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
-export const assignCaseTocourts = (CaseId,CourtIds) => async (dispatch) => {
+export const assignCaseTocourts = (caseId,arbitrations) => async (dispatch) => {
     dispatch({ type: 'ASSIGN_CASES_REQUEST' });
     try {
       const token = sessionStorage.getItem('token');
-  
+      console.log(caseId,arbitrations,parseInt(sessionStorage.getItem("orgId"), 10))
       const response = await axios.post(
-        `http://agentsys.runasp.net/api/Cases/${CaseId}/courts`, 
-        CourtIds, 
+        `http://agentsys.runasp.net/api/Cases/${caseId}/arbitraries`, 
+        caseId,
+        arbitrations, 
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -1114,4 +1211,53 @@ export const filterCases = (name, sDate, clientId) => (dispatch, getState) => {
 
   dispatch({ type: "FILTER_CASES", payload: filteredCases });
 };
+export const fetchCasesReport = (DateFrom, DateTo, Department, Client, Agent) => async (dispatch) => {
+  dispatch({ type: 'FETCH_CASES_REPORT_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token');
+    const params = {};
+    if (DateFrom) params.DateFrom = DateFrom;
+    if (DateTo) params.DateTo = DateTo;
+    if (Department) params.Department = Department;
+    if (Client) params.Client = Client;
+    if (Agent) params.Agent = Agent;
+
+    const response = await axios.get('http://agentsys.runasp.net/api/Cases/status-breakdown',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        params,
+      }
+    );
+    console.log(response.data)
+    dispatch({ type: 'FETCH_CASES_REPORT_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_CASES_REPORT_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
+  dispatch({ type: 'ASSIGN_CASES_REQUEST' });
+  try {
+    const token = sessionStorage.getItem('token'); 
+    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    dispatch({ type: 'ASSIGN_CASES_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ASSIGN_CASES_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};
+
 // ======================================================================

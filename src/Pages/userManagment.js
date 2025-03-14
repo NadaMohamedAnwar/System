@@ -158,10 +158,10 @@ function UserManagement() {
                         <tbody>
                             {FilterUsers.length > 0 ? (
                                 FilterUsers.map((User) => (
-                                    <tr key={User.id} onClick={() =>
+                                    <tr key={User.id} >
+                                        <td onClick={() =>
                                         navigate(`/view-user/${User.id}`, { state: { User } })
-                                    }>
-                                        <td>{User.userName}</td>
+                                    }>{User.userName}</td>
                                         <td>{User.email}</td>
                                         <td>{User.phone}</td>
                                         <td>{User.organization}</td>
@@ -176,7 +176,7 @@ function UserManagement() {
                                             className="icon-edit"
                                             icon={faEdit}
                                             onClick={() =>
-                                                navigate(`/edit-User/${User.role}`, { state: { User } })
+                                                navigate(`/edit-agent`, { state: { User } })
                                             }
                                             />
                                             <button 

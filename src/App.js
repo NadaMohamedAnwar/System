@@ -45,6 +45,7 @@ import ViewClient from './Pages/viewClient';
 import ViewUser from './Pages/viewUser';
 import ViewOrg from './Pages/viewOrg';
 import ViewDep from './Pages/viewDep';
+import EditAgent from './Pages/editAgent';
 // import './App.css'; 
 
 function App() {
@@ -80,12 +81,13 @@ function App() {
           <Route path='/view-client/:id' element={<PrivateRoute component={ViewClient} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           
           <Route path='/users' element={<PrivateRoute component={UserManagement} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']}  />} />
-          <Route path='/add-agent' element={<PrivateRoute component={AddAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
-          <Route path='/add-user' element={<PrivateRoute component={AddUser} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
-          <Route path='/add-admin' element={<PrivateRoute component={AddOrgAdmin} roles={['SuperAdmin']} />} />
+          {/* <Route path='/add-agent' element={<PrivateRoute component={AddAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} /> */}
+          <Route path='/add-user' element={<PrivateRoute component={AddUser} roles={['OrgAdmin','SuperAdmin']} />} />
+          {/* <Route path='/add-admin' element={<PrivateRoute component={AddOrgAdmin} roles={['SuperAdmin']} />} />
           <Route path='/add-head' element={<PrivateRoute component={AddHead} roles={['OrgAdmin','SuperAdmin']} />} />
-          <Route path='/add-manager' element={<PrivateRoute component={AddManager} roles={['OrgAdmin','SuperAdmin','HeadManager']} />} />
-          <Route path='/edit-user/:role' element={<PrivateRoute component={EditUser} roles={['OrgAdmin','SuperAdmin','Manager','HeadManager']}  />} />
+          <Route path='/add-manager' element={<PrivateRoute component={AddManager} roles={['OrgAdmin','SuperAdmin','HeadManager']} />} /> */}
+          <Route path='/edit-user/:role' element={<PrivateRoute component={EditUser} roles={['OrgAdmin','SuperAdmin']}  />} />
+          <Route path='/edit-agent' element={<PrivateRoute component={EditAgent} roles={['OrgAdmin','SuperAdmin']}  />} />
           <Route path='/view-user/:id' element={<PrivateRoute component={ViewUser} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           
 

@@ -24,12 +24,9 @@ function ClientsManagement() {
     // Fetch Clients on component mount
     useEffect(() => {
         dispatch(fetchClients()).then(() => {
-            const storedOrgId = parseInt(sessionStorage.getItem("orgId"), 10) || 0;
-            if (userRoles.includes("SuperAdmin")) {
-                dispatch(filterClientDate("", "", "", "", ""));
-            } else {
-                dispatch(filterClientDate(storedOrgId, "", "", "", ""));
-            }
+            
+            dispatch(filterClientDate("", "", "", ""));
+            
         });
     }, [dispatch]); 
     
@@ -51,29 +48,22 @@ function ClientsManagement() {
         console.log("Filtering with:", { orgId, name, contactName, phone, address });
     
         if (Clients.length > 0) {  // Only filter if Clients exist
-            if (userRoles.includes("SuperAdmin")) {
-                dispatch(filterClientDate("", name, contactName, phone, address));
-            } else {
-                dispatch(filterClientDate(orgId || 0, name, contactName, phone, address));
-            }
+           
+            dispatch(filterClientDate( name, contactName, phone, address));
+            
         } else {
             console.warn("No Clients available to filter.");
         }
     };
     
-    useEffect(() => {
-        console.log("Filtered Clients:", filteredClients);
-    }, [filteredClients]);
-
     const resetData = () => {
         setName("");
         setContactName("");
         setPhone("");
         setAddress("");
-    
-        // Filter only if Clients are already loaded
+        
         if (Clients.length > 0) {
-            dispatch(filterClientDate(orgId, "", "", "", ""));
+            dispatch(filterClientDate( "", "", "", ""));
         }
     };
     
