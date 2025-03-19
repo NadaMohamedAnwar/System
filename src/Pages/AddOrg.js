@@ -59,7 +59,7 @@ const handleConfirmLocation = (latlng) => {
   setLatLng(latlng);
   setLatitude(latlng.lat);  // Use latlng directly
   setLongitude(latlng.lng); // Use latlng directly
-  console.log('Location confirmed:', latlng);
+  // console.log('Location confirmed:', latlng);
 };
   const dispatch = useDispatch();
 

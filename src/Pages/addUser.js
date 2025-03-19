@@ -68,7 +68,7 @@ function AddUser() {
         const file = e.target.files[0];
         if (file) {
         setPicture(file);
-        console.log('File details:', file);
+        // console.log('File details:', file);
         }
     };
   // **Validation Function**
@@ -191,9 +191,9 @@ function AddUser() {
           console.error("Invalid file type for Picture");
         }
         
-        for (let pair of userData.entries()) {
-          console.log(pair[0] + ': ' + pair[1]);
-        }
+        // for (let pair of userData.entries()) {
+        //   console.log(pair[0] + ': ' + pair[1]);
+        // }
 
     }else if(roles==="RegisterAgent"){
       userData.append("id", null);
@@ -375,7 +375,6 @@ function AddUser() {
                             accept="image/*"
                             onChange={handleImageChange}
                         />
-                        {errors.username && <small className="error">{errors.username}</small>}
                     </div>
                    
                 </div>)}

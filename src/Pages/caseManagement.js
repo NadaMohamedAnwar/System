@@ -13,6 +13,8 @@ function CaseManagement() {
     const { FilteredCases} = useSelector((state) => state.Cases);
     const navigate = useNavigate();
     const [name, setname] = useState("");
+    const [Lawyer, setlawer] = useState("");
+    const [Party, setparty] = useState("");
     const [sDate, setsDate] = useState("");
     const [clientId, setClientId] = useState("");
     const { Clients } = useSelector((state) => state.Clients);
@@ -27,15 +29,25 @@ function CaseManagement() {
     }, [dispatch]); 
     
     const handleFilter = () => {
-        dispatch(filterCases(name, sDate,parseInt(clientId,10)));
+        dispatch(filterCases(name,Lawyer,Party, sDate,parseInt(clientId,10)));
     };
     const resetData=()=>{
         dispatch(fetchCases());
         setClientId("")
         setname("")
         setsDate("")
+        setlawer("")
+        setparty("")
     }
     // Call handleFilter on input change
+    const handleLawerChange = (e) => {
+        setlawer(e.target.value);
+         
+    };
+    const handlePartyChange = (e) => {
+        setparty(e.target.value);
+         
+    };
     const handleNameChange = (e) => {
         setname(e.target.value);
          
@@ -80,6 +92,24 @@ function CaseManagement() {
                             />
                         </div>
                         <div className="input-org-filter">
+                            <label>Opposing Lawyer</label>
+                            <input 
+                            type="text"
+                            placeholder="Enter Case Name"
+                            value={Lawyer}
+                            onChange={handleLawerChange}  
+                            />
+                        </div>
+                        <div className="input-org-filter">
+                            <label>Opposing Party</label>
+                            <input 
+                            type="text"
+                            placeholder="Enter Case Name"
+                            value={Party}
+                            onChange={handlePartyChange}  
+                            />
+                        </div>
+                        <div className="input-org-filter">
                             <label>Start Date</label>
                             <input 
                             type="date"
@@ -108,60 +138,61 @@ function CaseManagement() {
                         <button className="filter-btn" onClick={resetData}>Reset</button>
                     
                     </div>
-                    <div className="head-icon">
-                        <h4 className="check-head text-color">Cases:{FilteredCases.length}</h4>
-                        <FontAwesomeIcon
-                            onClick={() => navigate("/add-case")}
-                            className="icon-edit"
-                            icon={faPlus}
-                        />
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Case Title</th>  
-                                <th>Opposing Lawyer</th>
-                                <th>Opposing Party</th>
-                                <th>Start Date</th>
-                                <th>Price</th>
-                                <th>Client</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {FilteredCases.length > 0 ? (
-                                FilteredCases.map((Case) => (
-                                    <tr key={Case.id}  onClick={() =>
-                                        navigate(`/view-case/${Case.id}`, { state: { Case } })
-                                    }>
-                                        <td>{Case.title}</td>
-                                        <td>{Case.opposingLawyer}</td>
-                                        <td>{Case.opposingParty}</td>
-                                        <td>{Case.startDate}</td>
-                                        <td>{Case.price}</td>
-                                        <td>{getclientName(Case.clientId)}</td>
-                                        {/* <td>
-                                            <FontAwesomeIcon
-                                                className="icon-edit"
-                                                icon={faEdit}
-                                                onClick={() =>
-                                                    navigate(`/edit-case/${Case.id}`, { state: { Case } })
-                                                }
-                                            />
-                                            <FontAwesomeIcon
-                                                className="icon-del"
-                                                icon={faTrash}
-                                                onClick={() => handleDelete(Case.id)}
-                                            />
-                                        </td> */}
-                                    </tr>
-                                ))
-                            ) : (
+                    <div className="table-container">
+                        <div className="head-icon">
+                            <h4 className="check-head text-color">Cases:{FilteredCases.length}</h4>
+                            <FontAwesomeIcon
+                                onClick={() => navigate("/add-case")}
+                                className="icon-edit"
+                                icon={faPlus}
+                            />
+                        </div>
+                        <table>
+                            <thead>
                                 <tr>
-                                    <td colSpan="2">No Cases found</td>
+                                    <th>Case Title</th>  
+                                    <th>Opposing Lawyer</th>
+                                    <th>Opposing Party</th>
+                                    <th>Start Date</th>
+                                    <th>Client</th>
+                                    <th>Actions</th>
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {FilteredCases.length > 0 ? (
+                                    FilteredCases.map((Case) => (
+                                        <tr key={Case.id}  >
+                                            <td onClick={() =>
+                                            navigate(`/view-case/${Case.id}`, { state: { Case } })
+                                        }>{Case.title}</td>
+                                            <td>{Case.opposingLawyer}</td>
+                                            <td>{Case.opposingParty}</td>
+                                            <td>{Case.startDate}</td>
+                                            <td>{getclientName(Case.clientId)}</td>
+                                            <td>
+                                                <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEdit}
+                                                    onClick={() =>
+                                                        navigate(`/edit-case/${Case.id}`, { state: { Case } })
+                                                    }
+                                                />
+                                                {/* <FontAwesomeIcon
+                                                    className="icon-del"
+                                                    icon={faTrash}
+                                                    onClick={() => handleDelete(Case.id)}
+                                                /> */}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="2">No Cases found</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <ToastContainer />
             </div>

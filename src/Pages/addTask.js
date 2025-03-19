@@ -38,9 +38,9 @@ function AddTask() {
 
 
 
-  if(departmentId){
-    console.log("departmentId",departmentId)
-  }
+  // if(departmentId){
+  //   console.log("departmentId",departmentId)
+  // }
   useEffect(() => {
           if (departmentId) {
               dispatch(fetchTasks(departmentId));
@@ -52,7 +52,7 @@ function AddTask() {
      if (Users && Users.length > 0) {
        const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
-       console.log("Agents:", agentList);
+      //  console.log("Agents:", agentList);
      }
    }, [Users,departmentId]);
   const { filteredServices } = useSelector((state) => state.Services); 
@@ -73,7 +73,7 @@ function AddTask() {
   
   useEffect(() => {
     dispatch(fetchActiveDepartments(orgId));
-    console.log("Departments", Departments);
+    // console.log("Departments", Departments);
 }, [dispatch]);
 
     const userRoles=sessionStorage.getItem("roles")
@@ -82,9 +82,9 @@ function AddTask() {
       dispatch(fetchClients());
   }, [dispatch]); 
   
-  useEffect(() => {
-    console.log("filteredServices after dispatch:", filteredServices);
-  }, [filteredServices]);
+  // useEffect(() => {
+  //   console.log("filteredServices after dispatch:", filteredServices);
+  // }, [filteredServices]);
 
   useEffect(() => {
     // if (departmentId && Departments && Departments.length > 0) {
@@ -95,7 +95,7 @@ function AddTask() {
   
     //   if (selectedDepartment?.id) {
         dispatch(filterServices(departmentId));
-        console.log("filteredServices",filteredServices)
+        // console.log("filteredServices",filteredServices)
       // }
     // }
   }, [departmentId, Departments, dispatch]);
@@ -109,7 +109,7 @@ useEffect(() => {
   const CaseSelected = Cases.find((c) => c.id === parseInt(CaseId,10));
   
   if (CaseSelected) {
-    console.log(CaseSelected.clientId);
+    // console.log(CaseSelected.clientId);
     setClientId(CaseSelected.clientId);
   }
 }, [CaseId, Cases]);
@@ -123,7 +123,7 @@ const FetchTaskTypes=async()=>{
         },
       }
     );
-    console.log("types",response.data)
+    // console.log("types",response.data)
      setTaskTypes(response.data.taskTypes)
   } catch (error) {
     console.error(error);
@@ -166,7 +166,7 @@ const FetchTaskTypes=async()=>{
     };
 
     try {
-      console.log(taskData)
+      // console.log(taskData)
       const newTask =await dispatch(addATask(taskData));
       settaskId(newTask.id)
       toast.success("Task added successfully!");
@@ -217,7 +217,7 @@ const FetchTaskTypes=async()=>{
   return (
     <div className="d-flex">
       <SidebarMenu />
-      <div className="org-par col-sm-12 col-md-8 col-lg-6">
+      <div className="org-par col-sm-12 col-md-10 col-lg-10">
         <h3 className="text-color">Add New Task</h3>
         <div className="stage-indicator">
           <div className={`stage-item ${currentSection === 0 ? "active" : ""}`}>

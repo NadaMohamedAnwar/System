@@ -68,7 +68,7 @@ function EditClient() {
         });
         return response.data.display_name || 'Unknown Location';
     } catch (error) {
-        console.error('Error fetching location name:', error);
+        // console.error('Error fetching location name:', error);
         return 'Unknown Location';
     }
 };
@@ -85,7 +85,7 @@ const handleConfirmLocation = (latlng) => {
   setLatLng(latlng);
   setLatitude(latlng.lat);  // Use latlng directly
   setLongitude(latlng.lng); // Use latlng directly
-  console.log('Location confirmed:', latlng);
+  // console.log('Location confirmed:', latlng);
 };
   // Navigation between sections
   const handleNext = () => {

@@ -26,7 +26,7 @@ function AddDep() {
     if (Users && Users.length > 0) {
       const managerList = Users.filter((u) => u.role === "Manager" && u.organizationId === parseInt(sessionStorage.getItem('orgId'), 10));
       setManagers(managerList);
-      console.log("Managers:", managerList);
+      // console.log("Managers:", managerList);
     }
   }, [Users]);
 

@@ -58,7 +58,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='*' element={<h2>Page Not Found</h2>} />
-          <Route path='/home' element={<PrivateRoute component={Home} roles={['SuperAdmin','OrgAdmin','Manager','HeadManager']}  />} />
+          {/* <Route path='/home' element={<PrivateRoute component={Home} roles={['SuperAdmin','OrgAdmin','Manager','HeadManager']}  />} /> */}
           <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           <Route path='/schduel' element={<PrivateRoute component={CalendarComponent} roles={['OrgAdmin','Manager','HeadManager']}  />} />
 
@@ -86,7 +86,7 @@ function App() {
           {/* <Route path='/add-admin' element={<PrivateRoute component={AddOrgAdmin} roles={['SuperAdmin']} />} />
           <Route path='/add-head' element={<PrivateRoute component={AddHead} roles={['OrgAdmin','SuperAdmin']} />} />
           <Route path='/add-manager' element={<PrivateRoute component={AddManager} roles={['OrgAdmin','SuperAdmin','HeadManager']} />} /> */}
-          <Route path='/edit-user/:role' element={<PrivateRoute component={EditUser} roles={['OrgAdmin','SuperAdmin']}  />} />
+          <Route path='/edit-user/:id' element={<PrivateRoute component={EditUser} roles={['OrgAdmin','SuperAdmin']}  />} />
           <Route path='/edit-agent' element={<PrivateRoute component={EditAgent} roles={['OrgAdmin','SuperAdmin']}  />} />
           <Route path='/view-user/:id' element={<PrivateRoute component={ViewUser} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           

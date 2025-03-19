@@ -32,7 +32,7 @@ function EditOrg() {
   useEffect(() => {
     if (state?.org) {
       const org = state.org;
-      console.log(org)
+      // console.log(org)
       setname(org.organizationName || "");
       settype(org.organizationType|| "");
       setphone(org.primaryContactPhone || "");

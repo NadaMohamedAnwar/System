@@ -14,8 +14,16 @@ function ActiveDep() {
     const [profile, setprofile] = useState("1");
     const [status, setstatus] = useState("0");
     const [name, setname] = useState("");
+    const [email, setemail] = useState("");
+    const [Phone, setPhone] = useState("");
     const navigate = useNavigate();
     const orgId = sessionStorage.getItem('orgId')
+
+    const handlePhoneChange = (e) => {
+        setPhone(e.target.value);
+          
+    };
+
     useEffect(() => {
         if (status === "0") {
             dispatch(fetchActiveDepartments(orgId));
@@ -34,13 +42,15 @@ function ActiveDep() {
         }
     };
     const handleFilter = () => {
-            dispatch(filterDeps(name,profile));
+            dispatch(filterDeps(name,profile,Phone,email));
         };
         
         const resetData = () => {
             setstatus("0"); 
             setprofile("");
             setname("");
+            setemail("")
+            setPhone("")
             dispatch(fetchActiveDepartments(orgId));
         };
     return (
@@ -62,10 +72,10 @@ function ActiveDep() {
                           </div>
                           
                           <div className="input-org-filter">
-                              <label>Name</label>
+                              <label>Department Name</label>
                               <input 
                               type="text"
-                              placeholder="Enter Name"
+                              placeholder="Enter Department Name"
                               value={name}
                               onChange={(e) => setname(e.target.value)}  
                               />
@@ -83,6 +93,24 @@ function ActiveDep() {
                                   <option value="Delivery">Delivery</option>
                                   <option value="None">None</option>
                               </select>
+                          </div>
+                          <div className="input-org-filter">
+                                <label>Manager phone</label>
+                                <input 
+                                type="number"
+                                placeholder="Enter Phone"
+                                value={Phone}
+                                onChange={handlePhoneChange}
+                                />
+                            </div>
+                            <div className="input-org-filter">
+                              <label>Manager Email</label>
+                              <input 
+                              type="text"
+                              placeholder="Enter Manager Email"
+                              value={email}
+                              onChange={(e) => setemail(e.target.value)}  
+                              />
                           </div>
                           
                           <button className="filter-btn" onClick={handleFilter}>Filter</button>

@@ -13,7 +13,7 @@ function ViewUser() {
 
   useEffect(() => {
     if (state?.User) {
-      console.log("Received User Data:", state.User);
+      // console.log("Received User Data:", state.User);
       setUserDetails(state.User);
 
       if (state.User.role === "Agent") {

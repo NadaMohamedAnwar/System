@@ -15,7 +15,7 @@ function EditCategory() {
   useEffect(() => {
       if (state?.Category) {
         const Category = state.Category;
-        console.log(Category)
+        // console.log(Category)
         setname(Category.name || "");
         
       }

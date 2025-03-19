@@ -19,44 +19,57 @@ function DashboardAgent() {
   const { ReportTaskData,TaskCount } = useSelector((state) => state.Tasks);
   const { ReportCasesData } = useSelector((state) => state.Cases);
   const [Agents, setAgents] = useState([]);
-  const [FromDate, setFromDate] = useState("");
-  const [ToDate, setToDate] = useState("");
+  const [FromDate, setFromDate] = useState(() => {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    return oneMonthAgo.toISOString().split("T")[0]; 
+  });
+  const [ToDate, setToDate] =  useState(() => {
+    return new Date().toISOString().split("T")[0]; 
+  });
   const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
   useEffect(() => {
       dispatch(fetchActiveDepartments(orgId));
       dispatch(fetchUsers());
       dispatch(fetchClients());
       dispatch(fetchTaskscount())
-      dispatch(fetchTasksReport("","","","",""))
-      dispatch(fetchCasesReport("","","","",""))
+      dispatch(fetchTasksReport(FromDate,ToDate,"","",""))
+      dispatch(fetchCasesReport(FromDate,ToDate,"","",""))
   }, [dispatch]);
 
   useEffect(() => {
         if (Users && Users.length > 0) {
           const agentList = Users.filter((u) => u.role === "Agent");
           setAgents(agentList);
-          console.log("Agents:", agentList);
+          // console.log("Agents:", agentList);
         }
       }, [Users]);
 
  const handleFilter = () => {
-  console.log(FromDate,ToDate,departmentId,clientId,AgentId)
+  // console.log(FromDate,ToDate,departmentId,clientId,AgentId)
   dispatch(fetchTasksReport(FromDate,ToDate,departmentId,clientId,AgentId))
   dispatch(fetchCasesReport(FromDate,ToDate,departmentId,clientId,AgentId))
   };
   const resetData=()=>{
-    setFromDate("")
-    setToDate("");
+    const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const formattedFromDate = oneMonthAgo.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+
+    setFromDate(formattedFromDate);
+    setToDate(today);
     setAgentId("")
     setClientId("")
     setdepartmentId("")
-    console.log(FromDate,ToDate,departmentId,clientId,AgentId)
-  dispatch(fetchTasksReport(FromDate,ToDate,departmentId,clientId,AgentId))
+    // console.log(FromDate,ToDate,departmentId,clientId,AgentId)
+    dispatch(fetchTasksReport(formattedFromDate, today, "", "", ""));
+    dispatch(fetchCasesReport(formattedFromDate, today, "", "", ""));
    
   }
-  useEffect(()=>{
-    console.log(ReportTaskData,ReportCasesData,TaskCount)
-  },[ReportTaskData,ReportCasesData,TaskCount])
+  // useEffect(()=>{
+  //   console.log(ReportTaskData,ReportCasesData,TaskCount)
+  // },[ReportTaskData,ReportCasesData,TaskCount])
   return (
     <div className="d-flex">
       <SidebarMenu />

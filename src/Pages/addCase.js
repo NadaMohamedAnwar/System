@@ -14,6 +14,7 @@ function AddCase() {
   const [opposingParty, setOpposingParty] = useState("");
   const [opposingLawyer, setOpposingLawyer] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [endDate,setendDate]=useState("");
   const [caseType, setCaseType] = useState("");
   const [clientId, setClientId] = useState("");
   const [ClientPosition, setClientPosition] = useState("");
@@ -27,7 +28,7 @@ function AddCase() {
   const { Cases} = useSelector((state) => state.Cases);
   const { Clients } = useSelector((state) => state.Clients);
   const {Courts} = useSelector((state)=> state.Courts)
-  const [selectedCourt, setSelectedCourt] = useState("");
+  const [selectedCourt, setSelectedCourt] = useState(0);
   const [arbitrations, setArbitrations] = useState([]);
   const [hearingDate, setHearingDate] = useState("");
   const { Users } = useSelector((state) => state.Users);
@@ -61,7 +62,7 @@ function AddCase() {
       const selectedFile = e.target.files[0];
       if (selectedFile) {
         setFile(selectedFile);
-        console.log("File details:", selectedFile);
+        // console.log("File details:", selectedFile);
       }
     };
 
@@ -109,6 +110,7 @@ function AddCase() {
       opposingParty: opposingParty || null,
       opposingLawyer: opposingLawyer || null,
       startDate,
+      endDate,
       caseType: parseInt(caseType,10),
       clientId: parseInt(clientId),
       organizationId: parseInt(sessionStorage.getItem("orgId"), 10),
@@ -116,9 +118,9 @@ function AddCase() {
     };
 
     try {
-      console.log(caseData)
+      // console.log(caseData)
       const newCase=await dispatch(addCases(caseData));
-      console.log(newCase)
+      // console.log(newCase)
       setCaseId(newCase.data.id)
       toast.success("Case added successfully!");
       setTitle("");
@@ -126,6 +128,7 @@ function AddCase() {
       setOpposingParty("");
       setOpposingLawyer("");
       setStartDate("");
+      setendDate("");
       setCaseType("");
       // setClientId("");
       setErrors({});
@@ -146,7 +149,7 @@ function AddCase() {
     }
 
     const newArbitration = {
-      courtId: selectedCourt,
+      courtId: parseInt(selectedCourt,10),
       hearingDate: hearingDate,
     };
 
@@ -158,7 +161,8 @@ function AddCase() {
   
       try {
         await dispatch(assignCaseToParent(CaseId,linkedCaseId));
-        toast.success("Task Assigned successfully!");
+        toast.success("Case Assigned successfully!");
+        setCurrentSection(4)
         
       } catch (error) {
         toast.error("An error occurred. Please try again.");
@@ -171,9 +175,11 @@ function AddCase() {
       
         await dispatch(assignCaseTocourts(CaseId,arbitrations));
         toast.success("Task Assigned successfully!");
+        setArbitrations([])
+        setCurrentSection(3)
         
       } catch (error) {
-        setArbitrations([])
+       
         toast.error("An error occurred. Please try again.");
         
       }
@@ -200,8 +206,7 @@ function AddCase() {
         await dispatch(attachCaseFile(CaseId,formData));
         toast.success("Document attached successfully!");
         setFile(null);
-        setCaseId("");
-        setCurrentSection(0)
+        setCurrentSection(5)
       } catch (error) {
         toast.error("An error occurred. Please try again.");
       }
@@ -220,7 +225,7 @@ function AddCase() {
   return (
     <div className="d-flex">
       <SidebarMenu />
-      <div className="org-par col-sm-12 col-md-8 col-lg-6">
+      <div className="org-par col-sm-12 col-md-8 col-lg-8">
         <h3 className="text-color">Add New Case</h3>
         <div className="stage-indicator">
           <div className={`stage-item ${currentSection === 0 ? "active" : ""}`}>
@@ -352,9 +357,15 @@ function AddCase() {
                 onChange={(e) => setStartDate(e.target.value)}
                 onBlur={handleInputBlur}
               />
-              {errors.startDate && (
-                <small className="error" style={{color:"red"}}>{errors.startDate}</small>
-              )}
+            </div>
+            <div className="input-org">
+              <label>End Date</label>
+              <input
+                type="datetime-local"
+                value={endDate}
+                onChange={(e) => setendDate(e.target.value)}
+                onBlur={handleInputBlur}
+              /> 
             </div>
             <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
             Save and Exit
@@ -461,28 +472,13 @@ function AddCase() {
                 </div>
 
                 <button onClick={handleAssignParent} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Parent
+                Assign Relevant
                 </button>
             </div>
        )}
        {currentSection === 4 && (
             <div className="org-data-div">
                <h3 className="text-color">Attach Case Document</h3>
-              <div className="input-org">
-                <label>Case</label>
-                <select value={CaseId} onChange={(e) => setCaseId(e.target.value)}>
-                  <option value="">Select Case</option>
-                  {Cases && Cases.length > 0 ? (
-                    Cases.map((Case) => (
-                      <option key={Case.id} value={Case.id}>
-                        {Case.title}
-                      </option>
-                    ))
-                  ) : (
-                    <option>No Cases available</option>
-                  )}
-                </select>
-              </div>
               <div className="input-org">
                 <label>Document</label>
                 <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} />

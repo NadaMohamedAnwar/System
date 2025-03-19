@@ -19,7 +19,7 @@ export const fetchActiveDepartments = (orgId) => async (dispatch) => {
         }
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_DEPARTMENT_SUCCESS', payload: response.data });
     
   } catch (error) {
@@ -138,14 +138,16 @@ export const deleteDepartment = (id) => async (dispatch) => {
       });
   }
 };
-export const filterDeps = (name,profile) => (dispatch, getState) => {
+export const filterDeps = (name,profile,Phone,email) => (dispatch, getState) => {
   const { Departments } = getState().Departments
 
   const filteredDepartments = Departments.filter((c) => {
     
     return (
       (!name || c.name.toLowerCase().includes(name.toLowerCase())) &&
-      (!profile || c.profileType === profile)
+      (!profile || c.profileType === profile) &&
+      (!email || c.email === email) &&
+      (!Phone || c.phone === Phone)
     );
   });
 
@@ -163,7 +165,7 @@ export const fetchOrgs = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_ORGS_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -306,7 +308,7 @@ export const fetchClients = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_CLIENTS_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -410,7 +412,7 @@ export const fetchCategories = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_CATEGORY_SUCCESS', payload: response.data.data });
   } catch (error) {
     dispatch({
@@ -513,7 +515,7 @@ export const fetchTasks = (depid) => async (dispatch) => {
         params: { OrgId},
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -524,7 +526,7 @@ export const fetchTasks = (depid) => async (dispatch) => {
 };
 export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,ParentTaskId,AssignedTo,CreatedBy,DepartmentIds) => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_REQUEST' });
-  console.log("Final departmentId before fetching tasks:", DepartmentIds);
+  // console.log("Final departmentId before fetching tasks:", DepartmentIds);
   const OrgId = sessionStorage.getItem('orgId');
   try {
     const token = sessionStorage.getItem('token');
@@ -539,7 +541,7 @@ export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,Parent
     if (AssignedTo) params.AssignedTo = AssignedTo;
     if (CreatedBy) params.CreatedBy = CreatedBy;
     if (DepartmentIds) params.DepartmentIds = DepartmentIds;
-    console.log("params",params)
+    // console.log("params",params)
   
     const response = await axios.get('http://agentsys.runasp.net/api/Task',
       {
@@ -550,7 +552,7 @@ export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,Parent
         params,
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -618,7 +620,7 @@ export const fetchTasksReport = (DateFrom, DateTo, Department, Client, Agent) =>
       params, 
     });
 
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_REPORT_SUCCESS', payload: response.data.data });
   } catch (error) {
     dispatch({
@@ -638,7 +640,7 @@ export const fetchTaskscount = () => async (dispatch) => {
       },
     });
 
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_COUNT_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -647,15 +649,18 @@ export const fetchTaskscount = () => async (dispatch) => {
     });
   }
 };
-export const filterTasks = (name, sDate, priority) => (dispatch, getState) => {
+export const filterTasks = (name,priority,agent,sDate,eDate) => (dispatch, getState) => {
   const { Tasks } = getState().Tasks;
 
   const filteredCases = Tasks.filter((c) => {
-    const caseDate = c.dueDate ? c.dueDate.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
+    const startDate = c.startAt ? c.startAt.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
+    const endDate = c.dueDate ? c.dueDate.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
 
     return (
       (!name || c.title.toLowerCase().includes(name.toLowerCase())) &&
-      (!sDate || caseDate === sDate) &&
+      (!agent || c.assignedToUserName.toLowerCase().includes(agent.toLowerCase())) &&
+      (!sDate || startDate === sDate) &&
+      (!eDate || endDate === eDate) &&
       (!priority || c.priority === priority)
     );
   });
@@ -675,7 +680,7 @@ export const fetchServices = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_SERVICES_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -759,7 +764,7 @@ export const filterServices = (departmentid) => async(dispatch) => {
         params: { OrgId},
       }
     );
-    console.log(response.data[0])
+    // console.log(response.data[0])
     dispatch({ type: 'FETCH_FILTER_SERVICES_SUCCESS', payload: response.data[0] });
   } catch (error) {
     console.log(error.response)
@@ -794,7 +799,7 @@ export const fetchUsers = () => async (dispatch) => {
       },
     });
 
-    console.log("API Response:", response.data); // Debugging log
+    // console.log("API Response:", response.data); // Debugging log
 
     if (response.data.isSuccessful) {
       dispatch({ type: 'FETCH_USERS_SUCCESS', payload: response.data.data }); // Fix: Use response.data.data
@@ -819,7 +824,7 @@ export const getUserProfile = () => async (dispatch) => {
       },
     });
 
-    console.log("profile:", response.data); 
+    // console.log("profile:", response.data); 
 
     if (response.data.isSuccessful) {
       dispatch({ type: 'FETCH_PROFILE_SUCCESS', payload: response.data.data }); 
@@ -851,7 +856,7 @@ export const addUsers = (userData,type) => async (dispatch) => {
         "Content-Type": "multipart/form-data", 
       },
     });
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'ADD_USERS_SUCCESS', payload: response.data });
     return Promise.resolve(response.data); 
   } catch (error) {
@@ -1013,13 +1018,17 @@ export const deleteUsers= (Id) => async (dispatch) => {
       });
   }
 };
-export const filterUsers = (orgName, Phone,NationalId) => (dispatch, getState) => {
+export const filterUsers = (username,email,NationalId,Phone,orgName, role,status) => (dispatch, getState) => {
   const { Users } = getState().Users;
   const filteredCases = Users.filter((c) => {
 
     return (
       (!orgName || c.organization.toLowerCase().includes(orgName.toLowerCase())) &&
       (!NationalId || c.nationalId === NationalId) &&
+      (!username || c.userName === username) &&
+      (!email || c.email === email) &&
+      (!role || c.role === role) &&
+      (status === undefined || c.isActive === status) &&
       (!Phone || c.phone === Phone)
     );
   });
@@ -1039,7 +1048,7 @@ export const fetchCases = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_CASES_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -1069,13 +1078,13 @@ export const addCases  = (CaseData) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
-export const editCases  = (id, CaseData) => async (dispatch) => {
+export const editCases  = (id, caseDto) => async (dispatch) => {
   dispatch({ type: 'EDIT_CASES_REQUEST' });
   try {
     const token = sessionStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Cases/${id}`,
-      CaseData,
+      caseDto,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -1084,7 +1093,7 @@ export const editCases  = (id, CaseData) => async (dispatch) => {
     );
     dispatch({ type: 'EDIT_CASES_SUCCESS', payload: response.data });
   } catch (error) {
-    console.log('Error Response:', error.response); // This will give you more insight into why it failed
+    console.log('Error Response:', error.response); 
     dispatch({ type: 'EDIT_CASES_FAILURE', payload: error.message });
     throw error;
   }
@@ -1130,30 +1139,28 @@ export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
-export const assignCaseTocourts = (caseId,arbitrations) => async (dispatch) => {
-    dispatch({ type: 'ASSIGN_CASES_REQUEST' });
-    try {
+export const assignCaseTocourts = (caseId, arbitrations) => async (dispatch) => {
+  dispatch({ type: 'ASSIGN_CASES_REQUEST' });
+  try {
       const token = sessionStorage.getItem('token');
-      console.log(caseId,arbitrations,parseInt(sessionStorage.getItem("orgId"), 10))
+
       const response = await axios.post(
-        `http://agentsys.runasp.net/api/Cases/${caseId}/arbitraries`, 
-        caseId,
-        arbitrations, 
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
+          `http://agentsys.runasp.net/api/Cases/${caseId}/arbitraries`,
+          arbitrations,  
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'application/json',
+              },
+          }
       );
-  
+
       dispatch({ type: 'ASSIGN_CASES_SUCCESS', payload: response.data });
       return Promise.resolve(response.data);
-    } catch (error) {
+  } catch (error) {
       dispatch({ type: 'ASSIGN_CASES_FAILURE', payload: error.message });
       return Promise.reject(error);
-    }
-  
+  }
 };
 export const fetchCourts = () => async (dispatch) => {
   dispatch({ type: 'FETCH_COURT_REQUEST' });
@@ -1166,7 +1173,7 @@ export const fetchCourts = () => async (dispatch) => {
         },
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_COURT_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -1195,7 +1202,7 @@ export const attachCaseFile = (CaseId,formData) => async (dispatch) => {
     return Promise.reject(error); 
   }
 };
-export const filterCases = (name, sDate, clientId) => (dispatch, getState) => {
+export const filterCases = (name,Lawyer,Party ,sDate, clientId) => (dispatch, getState) => {
   const { Cases } = getState().Cases;
 
   const filteredCases = Cases.filter((c) => {
@@ -1203,6 +1210,8 @@ export const filterCases = (name, sDate, clientId) => (dispatch, getState) => {
 
     return (
       (!name || c.title.toLowerCase().includes(name.toLowerCase())) &&
+      (!Lawyer || c.opposingLawyer.toLowerCase().includes(Lawyer.toLowerCase())) &&
+      (!Party || c.opposingParty.toLowerCase().includes(Party.toLowerCase())) &&
       (!sDate || caseDate === sDate) &&
       (!clientId || c.clientId === parseInt(clientId, 10))
     );
@@ -1230,7 +1239,7 @@ export const fetchCasesReport = (DateFrom, DateTo, Department, Client, Agent) =>
         params,
       }
     );
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_CASES_REPORT_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -1243,7 +1252,7 @@ export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
     const token = sessionStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
+    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',

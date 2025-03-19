@@ -14,7 +14,7 @@ function ViewClient() {
   const { Tasks = [] } = useSelector((state) => state.Tasks || {});
   useEffect(() => {
     if (state?.Client) {
-      console.log("Received Client Data:", state.Client);
+      // console.log("Received Client Data:", state.Client);
       dispatch(fetchAllTasks(id, "", "", "", "", "", "", "",[]));
       setClientDetails(state.Client);
     }

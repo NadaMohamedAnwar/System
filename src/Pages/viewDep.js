@@ -13,7 +13,7 @@ function ViewDep() {
 
   useEffect(() => {
     if (state?.dep) {
-      console.log("Received Department Data:", state.dep);
+      // console.log("Received Department Data:", state.dep);
       dispatch(fetchAllTasks("", "", "", "", "", "", "", "", state.dep.id));
       setDepartmentDetails(state.dep);
     }

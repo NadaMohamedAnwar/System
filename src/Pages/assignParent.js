@@ -23,8 +23,8 @@ function AssignParent() {
     if (CaseId && Cases?.length > 0) {
       const foundCase = Cases.find((c) => String(c.id) === String(CaseId)) || null;
       
-      console.log("CaseId:", CaseId); // Debugging CaseId
-      console.log("Found Case:", foundCase); // Debugging foundCase
+      // console.log("CaseId:", CaseId); // Debugging CaseId
+      // console.log("Found Case:", foundCase); // Debugging foundCase
       
       setSelectedCase(foundCase);
   

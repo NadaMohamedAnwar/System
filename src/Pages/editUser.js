@@ -4,10 +4,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { editUsers } from "../Redux/Actions/Action";
 import SidebarMenu from "../Layouts/sidemenue";
-import { useLocation, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 function EditUser() {
-  const [id, setId] = useState("");
   const [businessUserId, setBusinessUserId] = useState("");
   const [userNationalId, setUserNationalId] = useState("");
   const [email, setEmail] = useState("");
@@ -18,32 +18,43 @@ function EditUser() {
   const [postalCode, setPostalCode] = useState("");
   const [salary, setSalary] = useState("");
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
   
   const dispatch = useDispatch();
   const { state } = useLocation(); 
-  const { role } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    if (state?.User) {
-      const User = state.User;
-      console.log(state.User)
-      setId(User.id);
-      setBusinessUserId(User.businessUserId || "");
-      setUserNationalId(User.nationalId || "");
-      setEmail(User.email || "");
-      setPhoneNumber(User.phone || "");
-      setName(User.name || "");
-      setDateOfBirth(User.dateOfBirth || "");
-      setAddress(User.address || "");
-      setPostalCode(User.postalCode || "");
-      setSalary(User.salary || "");
+    const fetchData=async()=>{
+      try{
+        const token = sessionStorage.getItem('token');
+        const response=await axios.get(`http://agentsys.runasp.net/api/Admin/${id}`, {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+        })
+        const data=response.data.data;
+        setBusinessUserId(data.businessUserId)
+        setUserNationalId(data.userNationalId)
+        setAddress(data.address)
+        setEmail(data.email)
+        setName(data.name)
+        setPhoneNumber(data.phoneNumber)
+        setPostalCode(data.postalCode)
+        setSalary(data.salary)
+        setDateOfBirth(data.dateOfBirth.split("T")[0])
+
+       
+      }catch(error){
+        console.log(error)
+      }
     }
-  }, [state]);
+    fetchData()
+  }, [id]);
 
   const validate = () => {
     const newErrors = {};
 
-    if (!id) newErrors.id = "ID is required.";
     if (!name) newErrors.name = "Name is required.";
     if (!address) newErrors.address = "Address is required.";
     
@@ -80,6 +91,9 @@ function EditUser() {
     try {
       await dispatch(editUsers(userData,id));
       toast.success("User updated successfully!");
+      setTimeout(() => {
+        navigate(-1); 
+      }, 1500);
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
@@ -90,18 +104,6 @@ function EditUser() {
       <SidebarMenu />
       <div className="org-par col-sm-12 col-md-8 col-lg-6">
         <h3 className="text-color">Edit User</h3>
-
-        <div className="input-org">
-          <label>ID *</label>
-          <input
-            type="text"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            placeholder="Enter ID"
-            required
-          />
-          {errors.id && <p className="error" style={{ color: "red" }}>{errors.id}</p>}
-        </div>
 
         <div className="input-org">
           <label>Business User Id</label>

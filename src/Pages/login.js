@@ -21,21 +21,23 @@ function Login(){
         userName: username,
         password: password,
     });
-      const { token } = response.data;
+      const { accessToken } = response.data;
       const { roles } = response.data;
       const { userId } = response.data;
       const{orgId}=response.data
       const{departments}=response.data
-      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('token', accessToken);
       sessionStorage.setItem('orgId', orgId);
       sessionStorage.setItem('id', userId);
       sessionStorage.setItem('roles', JSON.stringify(roles));
       sessionStorage.setItem('departments',departments)
        console.log(response.data)
-        navigate('/home');
+        navigate('/dashboard-agent');
       
-      // if(roles=="SuperAdmin"){
-      //   navigate('/home');
+      // if(roles.include("SuperAdmin")){
+      //   navigate('/organizations');
+      // }else{
+      //   navigate('/dashboard-agent')
       // }
     } catch (error) {
       console.error('Login error', error);

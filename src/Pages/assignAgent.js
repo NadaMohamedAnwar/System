@@ -43,7 +43,7 @@ function AssignAgent() {
      if (Users && Users.length > 0) {
        const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
-       console.log("Agents:", agentList);
+      //  console.log("Agents:", agentList);
      }
    }, [Users,departmentId]);
 
@@ -51,7 +51,7 @@ function AssignAgent() {
   const handleAssignAgent = async () => {
     
     try {
-        console.log(taskId,"======",AgentId)
+        // console.log(taskId,"======",AgentId)
       await dispatch(assignTaskToAgent(parseInt(taskId,10),AgentId));
       toast.success("Task Assigned successfully!");
      

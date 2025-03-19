@@ -24,7 +24,7 @@ function AssignDep() {
     if (Users && Users.length > 0) {
       const managerList = Users.filter((u) => u.role === "Manager");
       setManagers(managerList);
-      console.log("Managers:", managerList);
+      // console.log("Managers:", managerList);
     }
   }, [Users]);
 
