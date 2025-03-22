@@ -13,6 +13,7 @@ function OrgManagement() {
     const { FilterOrgs, loading, error } = useSelector((state) => state.Orgs);
     const [status, setStatus] = useState("");
     const [name, setname] = useState("");
+    const [email, setemail] = useState("");
     const [type, settype] = useState("");
     const navigate = useNavigate();
 
@@ -42,14 +43,15 @@ function OrgManagement() {
             }
         };
         const handleFilter = () => {
-                 dispatch(filterOrgs(name,type,status));
+                 dispatch(filterOrgs(name,type,status,email));
             };
 
         const resetData=()=>{
         dispatch(fetchOrgs());
-        setStatus(true)
+        setStatus("")
         setname("")
         settype("") 
+        setemail("")
         }
     return (
         <div className="d-flex">
@@ -69,6 +71,14 @@ function OrgManagement() {
                             value={name}
                             onChange={(e) => setname(e.target.value)}  
                             />
+                        </div>
+                        <div className="input-org-filter">
+                                <label>Status</label>
+                                <select value={status} onChange={(e) => setStatus(e.target.value === "true")}>
+                                <option value="">Select Status</option>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
                         </div>
                         <div className="input-org-filter">
                             <label>Industry Type</label>
@@ -94,14 +104,16 @@ function OrgManagement() {
                                 <option value="Other">Other</option>
                             </select>
                             </div>
+                            
                             <div className="input-org-filter">
-                                <label>Status</label>
-                                <select value={status} onChange={(e) => setStatus(e.target.value === "true")}>
-                                <option value="">Select Status</option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
-                                </select>
-                            </div>
+                                <label>Contact Email</label>
+                                <input 
+                                type="text"
+                                placeholder="Enter Case Name"
+                                value={email}
+                                onChange={(e) => setemail(e.target.value)}  
+                                />
+                             </div>
                             <button className="filter-btn" onClick={handleFilter}>Filter</button>
                             <button className="filter-btn" onClick={resetData}>Reset</button>
                         

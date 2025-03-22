@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { assignCaseToParent, fetchCases } from "../Redux/Actions/Action";
 
 function AssignParent() {
+  const [Parloading, setParLoading] = useState(false); 
   const { Cases } = useSelector((state) => state.Cases);
   const [CaseId, setCaseId] = useState("");
   const [selectedCase, setSelectedCase] = useState(null);
@@ -41,11 +42,14 @@ function AssignParent() {
   
 
   const handleAssignParent = async () => {
+    setParLoading(true);
     try {
       await dispatch(assignCaseToParent(CaseId, linkedCaseId));
       toast.success("Case Assigned successfully!");
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setParLoading(false); 
     }
   };
 
@@ -79,9 +83,13 @@ function AssignParent() {
           </select>
         </div>
 
-        <button onClick={handleAssignParent} style={{ marginTop: "20px", width: "100%" }}>
-          Assign Relevant
-        </button>
+        <button className="loading-buttons"  onClick={handleAssignParent} style={{ marginTop: "20px", width: "100%" }} disabled={Parloading}>
+                {Parloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Relevant'
+              )}</button>
+   
       </div>
 
       <ToastContainer />

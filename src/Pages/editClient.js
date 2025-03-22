@@ -9,6 +9,7 @@ import {  editClient, fetchCategories } from "../Redux/Actions/Action";
 import { useLocation, useParams } from "react-router-dom";
 
 function EditClient() {
+   const [editloading,seteditloading]=useState(false)
   const dispatch = useDispatch();
   const { Categories, loading, error } = useSelector((state) => state.Categories);
   const { state } = useLocation(); 
@@ -124,7 +125,7 @@ const handleConfirmLocation = (latlng) => {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-
+    seteditloading(true)
     const clientData = {
       id,
       accountName,
@@ -154,6 +155,8 @@ const handleConfirmLocation = (latlng) => {
       setCurrentSection(0);
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
 
@@ -270,9 +273,12 @@ const handleConfirmLocation = (latlng) => {
             <h5 className="text-color">Location Info</h5>
             <p>Location : {location || "Not Set"}</p>
             <button style={{ marginTop: "20px", width: "100%" }} onClick={() => setShowMapModal(true)}>Select Location</button>
-            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
-              Edit
-            </button>   
+            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
           </div>
         )}
         {/* Navigation Buttons */}

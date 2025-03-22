@@ -7,6 +7,7 @@ import SidebarMenu from "../Layouts/sidemenue";
 
 function AddDep() {
   const [name, setname] = useState("");
+  const [Addloading, setAddloading] = useState(false); 
   const [description, setDescription] = useState("");
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("");
@@ -57,6 +58,7 @@ function AddDep() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
+    setAddloading(true);
   
     const depData = {
       name,
@@ -86,6 +88,8 @@ function AddDep() {
       toast.error(
         `An error occurred: ${error.response?.data?.message || error.message}`
       );
+    }finally {
+      setAddloading(false); 
     }
   };
   
@@ -182,7 +186,12 @@ function AddDep() {
           </select>
         </div>
 
-        <button onClick={handleSubmit}>Submit</button>
+        <button className="loading-buttons"  onClick={handleSubmit} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Submit'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

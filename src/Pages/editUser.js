@@ -8,6 +8,7 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom"
 import axios from "axios";
 
 function EditUser() {
+   const [editloading,seteditloading]=useState(false)
   const [businessUserId, setBusinessUserId] = useState("");
   const [userNationalId, setUserNationalId] = useState("");
   const [email, setEmail] = useState("");
@@ -74,7 +75,7 @@ function EditUser() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-
+    seteditloading(true)
     const userData = {
       id,
       businessUserId,
@@ -96,6 +97,8 @@ function EditUser() {
       }, 1500);
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
 
@@ -200,7 +203,12 @@ function EditUser() {
           />
         </div>
 
-        <button onClick={handleSubmit}>Edit User</button>
+        <button onClick={handleSubmit} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

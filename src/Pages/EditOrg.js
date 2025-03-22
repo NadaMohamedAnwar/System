@@ -10,6 +10,7 @@ import { editOrg } from "../Redux/Actions/Action";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function EditOrg() {
+   const [editloading,seteditloading]=useState(false)
   const [name, setname] = useState("");
   const [type, settype] = useState("");
   const [phone, setphone] = useState("");
@@ -90,7 +91,7 @@ function EditOrg() {
           toast.error("Please fix the errors before submitting.");
           return;
         }
-  
+        seteditloading(true)
     const orgData = {
       id: id,
       organizationName: name, 
@@ -127,6 +128,8 @@ function EditOrg() {
       setCurrentSection(0);
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
   
@@ -293,9 +296,12 @@ function EditOrg() {
               />
               {errors.financialLimitTo && <small className="error" style={{color:"red"}}>{errors.financialLimitTo}</small>}
             </div>
-            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
-              Edit Organization
-            </button>
+            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
           </div>
         )}
 

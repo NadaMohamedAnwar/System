@@ -32,13 +32,13 @@ function Login(){
       sessionStorage.setItem('roles', JSON.stringify(roles));
       sessionStorage.setItem('departments',departments)
        console.log(response.data)
-        navigate('/dashboard-agent');
+        // navigate('/dashboard-agent');
       
-      // if(roles.include("SuperAdmin")){
-      //   navigate('/organizations');
-      // }else{
-      //   navigate('/dashboard-agent')
-      // }
+      if(roles.includes("SuperAdmin")){
+        navigate('/organizations');
+      }else{
+        navigate('/dashboard-agent')
+      }
     } catch (error) {
       console.error('Login error', error);
       if (error.response) {

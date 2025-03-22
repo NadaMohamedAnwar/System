@@ -7,6 +7,7 @@ import SidebarMenu from "../Layouts/sidemenue";
 import { useLocation, useParams } from "react-router-dom";
 
 function EditDep() {
+   const [editloading,seteditloading]=useState(false)
   const [name, setname] = useState("");
   const [description, setDescription] = useState("");
   const [email, setemail] = useState("");
@@ -75,7 +76,7 @@ function EditDep() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-   
+    seteditloading(true)
     const depData = {
        id,
       name,
@@ -83,7 +84,7 @@ function EditDep() {
       email,
       phone,
     };
-
+    
     try {
       await dispatch(editDepartment(id,depData));
       toast.success("Department updated successfully!");
@@ -98,6 +99,8 @@ function EditDep() {
       setErrors({});
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
 
@@ -186,7 +189,12 @@ function EditDep() {
           />
         </div>
 
-        <button onClick={handleSubmit}>Edit Department</button>
+        <button onClick={handleSubmit} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

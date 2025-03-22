@@ -70,12 +70,13 @@ useEffect(() => {
      };
      const resetData=()=>{
         // console.log(FilterTasks)
-        dispatch(fetchAllTasks("", "", "", "", "", "", "", "",departmentId));
+       
         setsDate("")
         setname("")
         setPriority("") 
         seteDate("")
         setagent("")
+        dispatch(fetchAllTasks("", "", "", "", "", "", "", "",departmentId));
      }
      // Call handleFilter on input change
      const handleNameChange = (e) => {

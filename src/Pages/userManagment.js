@@ -26,20 +26,13 @@ function UserManagement() {
         dispatch(fetchUsers());
     }, [dispatch]);
 
-    // useEffect(() => {
-    //    console.log(FilterUsers)
-    // }, [FilterUsers]);
+    useEffect(() => {
+       console.log(FilterUsers)
+    }, [FilterUsers]);
 
-    const handleDelete = (Id) => {
-        if (window.confirm("Are you sure you want to delete this User?")) {
-            dispatch(deleteUsers(Id))
-                .then(() => toast.success("User deleted successfully"))
-                .catch((err) => toast.error("Failed to delete User: " + err.message));
-        }
-    };
     const handleActivate = (id,role) => {
         let type="";
-        if (role=="Agent"){
+        if (role.includes("Agent")){
           type="ActiveAgent"
         }
        ;
@@ -51,7 +44,7 @@ function UserManagement() {
     };
     const handleDeactivate = (id,role) => {
         let type="";
-        if (role=="Agent"){
+        if (role.includes("Agent")){
            type="DeActiveAgent"
         }
         if (window.confirm("Are you sure you want to Deactivate this User?")) {
@@ -90,36 +83,7 @@ function UserManagement() {
             setrole("")
             setStatus("")
         }
-        // Call handleFilter on input change
-        const handleOrgNameChange = (e) => {
-            setorgName(e.target.value);
-              
-        };
-        
-        const handleNationalIdChange = (e) => {
-            setNationalId(e.target.value);
-              
-        };
-        const handleUsernameChange = (e) => {
-            setusername(e.target.value);
-            
-        };
-        const handleRoleChange = (e) => {
-            setrole(e.target.value);
-            
-        };
-        const handleEmailChange = (e) => {
-            setemail(e.target.value);
-              
-        };
-        
-        const handlePhoneChange = (e) => {
-            setPhone(e.target.value);
-              
-        };
-        // useEffect(() => {
-        //     handleFilter();
-        // }, [orgName, Phone, NationalId]); 
+    
     return (
         <div className="d-flex">
             <SidebarMenu/>
@@ -133,7 +97,7 @@ function UserManagement() {
                             type="text"
                             placeholder="Enter Username"
                             value={username}
-                            onChange={handleUsernameChange}
+                            onChange={(e) => setusername(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -142,7 +106,7 @@ function UserManagement() {
                             type="text"
                             placeholder="Enter Email"
                             value={email}
-                            onChange={handleEmailChange}
+                            onChange={(e) => setemail(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -151,7 +115,7 @@ function UserManagement() {
                             type="number"
                             placeholder="Enter National Id"
                             value={NationalId}
-                            onChange={handleNationalIdChange}
+                            onChange={(e) => setNationalId(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -160,7 +124,7 @@ function UserManagement() {
                             type="number"
                             placeholder="Enter Phone"
                             value={Phone}
-                            onChange={handlePhoneChange}
+                            onChange={(e) => setPhone(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -169,7 +133,7 @@ function UserManagement() {
                             type="text"
                             placeholder="Enter Organization"
                             value={orgName}
-                            onChange={handleOrgNameChange}  
+                            onChange={(e) => setorgName(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -178,7 +142,7 @@ function UserManagement() {
                             type="text"
                             placeholder="Enter Role"
                             value={role}
-                            onChange={handleRoleChange}
+                            onChange={(e) => setrole(e.target.value)}
                             />
                         </div>
                         <div className="input-org-filter">
@@ -233,7 +197,7 @@ function UserManagement() {
                                         <td>{User.isActive ? "Active" : "Inactive"}</td>
                                        
                                            
-                                        { (User.role=="Agent" && (roles.includes("SuperAdmin") || roles.includes("OrgAdmin"))) &&
+                                        { (User.role.includes("Agent") && (roles.includes("SuperAdmin") || roles.includes("OrgAdmin"))) &&
                                         <td>
                                             <FontAwesomeIcon
                                             className="icon-edit"
@@ -250,7 +214,7 @@ function UserManagement() {
                                             </button>
                                         </td>
                                         }
-                                        { ((User.role=="OrgAdmin" || User.role=="HeadManager" || User.role=="Manager")&& (roles.includes("SuperAdmin") ||roles.includes("OrgAdmin")))&&
+                                        { ((User.role=="OrgAdmin" || User.role=="Head Manager" || User.role=="Manager")&& (roles.includes("SuperAdmin") ||roles.includes("OrgAdmin")))&&
                                         <td>
                                             <FontAwesomeIcon
                                             className="icon-edit"

@@ -279,16 +279,16 @@ export const DeactivateOrgs = (id) => async (dispatch) => {
   }
   
 };
-export const filterOrgs = (name, type, status) => (dispatch, getState) => {
+export const filterOrgs = (name, type, status,email) => (dispatch, getState) => {
   const { Orgs } = getState().Orgs
 
   const filteredOrgs = Orgs.filter((c) => {
-    console.log(name, type, status);
     
     return (
       (!name || c.organizationName.toLowerCase().includes(name.toLowerCase())) &&
       (!type || c.organizationType === type) &&
-      (!status || c.organizationStatus === status)
+      (!email || c.primaryContactEmail === email) &&
+      (status===undefined || c.organizationStatus === status)
     );
   });
 
@@ -657,7 +657,7 @@ export const filterTasks = (name,priority,agent,sDate,eDate) => (dispatch, getSt
     const endDate = c.dueDate ? c.dueDate.split("T")[0] : ""; // Extract "YYYY-MM-DD" format
 
     return (
-      (!name || c.title.toLowerCase().includes(name.toLowerCase())) &&
+      (!name || c.taskName.toLowerCase()===name.toLowerCase()) &&
       (!agent || c.assignedToUserName.toLowerCase().includes(agent.toLowerCase())) &&
       (!sDate || startDate === sDate) &&
       (!eDate || endDate === eDate) &&
@@ -824,13 +824,8 @@ export const getUserProfile = () => async (dispatch) => {
       },
     });
 
-    // console.log("profile:", response.data); 
-
-    if (response.data.isSuccessful) {
-      dispatch({ type: 'FETCH_PROFILE_SUCCESS', payload: response.data.data }); 
-    } else {
-      dispatch({ type: 'FETCH_PROFILE_FAILURE', payload: "API call failed" });
-    }
+    // console.log("profile:", response.data.user); 
+    dispatch({ type: 'FETCH_PROFILE_SUCCESS', payload: response.data.user }); 
   } catch (error) {
     dispatch({
       type: 'FETCH_PROFILE_FAILURE',
@@ -856,7 +851,7 @@ export const addUsers = (userData,type) => async (dispatch) => {
         "Content-Type": "multipart/form-data", 
       },
     });
-    // console.log(response.data)
+    console.log(response.data)
     dispatch({ type: 'ADD_USERS_SUCCESS', payload: response.data });
     return Promise.resolve(response.data); 
   } catch (error) {
@@ -1019,22 +1014,23 @@ export const deleteUsers= (Id) => async (dispatch) => {
   }
 };
 export const filterUsers = (username,email,NationalId,Phone,orgName, role,status) => (dispatch, getState) => {
-  const { Users } = getState().Users;
-  const filteredCases = Users.filter((c) => {
-
+  const { Users } = getState().Users
+  console.log(username,email,NationalId,Phone,orgName, role,status);
+  const filteredUsers = Users.filter((user) => {
+    
     return (
-      (!orgName || c.organization.toLowerCase().includes(orgName.toLowerCase())) &&
-      (!NationalId || c.nationalId === NationalId) &&
-      (!username || c.userName === username) &&
-      (!email || c.email === email) &&
-      (!role || c.role === role) &&
-      (status === undefined || c.isActive === status) &&
-      (!Phone || c.phone === Phone)
+      (!username || user.userName == username) &&
+      (!email || user.primaryContactEmail == email) &&
+      (!NationalId || user.nationalId == NationalId) &&
+      (!Phone || user.phone == Phone) &&
+      (!orgName || user.organization == orgName) &&
+      (!role || user.role == role) &&
+      (status == undefined || user.isActive == status)
     );
   });
+  console.log("filteredUsers",filteredUsers)
 
-
-  dispatch({ type: "FILTER_USERS", payload: filteredCases });
+  dispatch({ type: "FILTER_USERS", payload: filteredUsers });
 };
 // =============================Cases=============================
 export const fetchCases = () => async (dispatch) => {
@@ -1252,7 +1248,7 @@ export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
     const token = sessionStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`, {
+    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',

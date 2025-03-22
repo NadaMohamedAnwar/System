@@ -9,6 +9,7 @@ import { addAOrg } from "../Redux/Actions/Action";
 import MapModal from "../Components/map-model";
 
 function AddOrg() {
+  const [Addloading, setAddloading] = useState(false); 
   const [name, setname] = useState("");
   const [type, settype] = useState("0");
   const [phone, setphone] = useState("");
@@ -106,7 +107,7 @@ const handleConfirmLocation = (latlng) => {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-
+    setAddloading(true);
     const orgData = {
       organizationName: name,
       industryType: parseInt(type,10),
@@ -147,6 +148,8 @@ const handleConfirmLocation = (latlng) => {
       setCurrentSection(0);
     } catch (error) {
       toast.error("An error occurred. Please try again.",error);
+    }finally {
+      setAddloading(false); 
     }
   };
 
@@ -326,9 +329,13 @@ const handleConfirmLocation = (latlng) => {
             <h5 className="text-color">Location Info</h5>
             <p>Location : {location || "Not Set"}</p>
             <button style={{ marginTop: "20px", width: "100%" }} onClick={() => setShowMapModal(true)}>Select Location</button>
-            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
-              Submit
-            </button>  
+            <button className="loading-buttons"  onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Submit'
+              )}</button>
+            
           </div>
         )}
 

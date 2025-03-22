@@ -7,6 +7,7 @@ import {  addATask, assignTaskToAgent, assignTaskToParent, fetchActiveDepartment
 import axios from "axios";
 
 function AssignAgent() {
+  const [Agentloading, setAgentloading] = useState(false); 
   const [taskId, settaskId] = useState("");
   const { Tasks } = useSelector((state) => state.Tasks);
   const { Users } = useSelector((state) => state.Users);
@@ -41,7 +42,7 @@ function AssignAgent() {
  
    useEffect(() => {
      if (Users && Users.length > 0) {
-       const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
+       const agentList = Users.filter((u) => u.role.includes("Agent") && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
       //  console.log("Agents:", agentList);
      }
@@ -49,7 +50,7 @@ function AssignAgent() {
 
 
   const handleAssignAgent = async () => {
-    
+    setAgentloading(true);
     try {
         // console.log(taskId,"======",AgentId)
       await dispatch(assignTaskToAgent(parseInt(taskId,10),AgentId));
@@ -57,6 +58,8 @@ function AssignAgent() {
      
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAgentloading(false); 
     }
   };
 
@@ -115,9 +118,13 @@ function AssignAgent() {
                   </select>
                 </div>
 
-                <button onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Agent
-                </button>
+                <button className="loading-buttons"  onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }} disabled={Agentloading}>
+                {Agentloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Agent'
+              )}</button>
+            
             </div>
 
         <ToastContainer />

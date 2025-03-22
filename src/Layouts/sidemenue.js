@@ -16,6 +16,8 @@ import { FaTasks } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaServicestack } from "react-icons/fa6";
 import { GrSchedule } from "react-icons/gr";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
 
 const SidebarMenu = () => {
     const [open, setOpen] = useState(true);
@@ -24,6 +26,7 @@ const SidebarMenu = () => {
     const [TaskOpen, setTaskOpen] = useState(false);
     const [CaseOpen, setCaseOpen] = useState(false);
     const [OrganizationOpen, setOrganizationOpen] = useState(false);
+    const [SettingsOpen, setSettingsOpen] = useState(false);
     const [serviceOpen, setserviceOpen] = useState(false);
     const [CategoryOpen, setCategoryOpen] = useState(false);
     const [DepartmentOpen, setDepartmentOpen] = useState(false); 
@@ -56,7 +59,7 @@ const SidebarMenu = () => {
                     ${open ? "" : "d-none d-sm-inline"} `} 
                     style={{ width: "40px", height: "40px" }}
                 />
-                {open && <h2 className="fs-4 m-0">AgentApp</h2>}
+                {open && <h2 className="fs-4 m-0">LegalVerse</h2>}
             </div>
             
             {/* Menu Items */}
@@ -451,16 +454,43 @@ const SidebarMenu = () => {
                         </ul>
                     )}
                 </li>
-                <li className="mb-3 fs-6">
-                    <NavLink
-                        className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+               
+                {<li className="mb-3">
+                    <div
+                        className="d-flex align-items-center text-decoration-none text-white p-2 rounded cursor-pointer hover-bg-light"
+                        onClick={() => setSettingsOpen(!SettingsOpen)} 
                         style={{ fontSize: "0.75rem" }}
-                        onClick={handlelogout}
                     >
-                        <FiLogOut  size={15} className="me-2" />
-                        {open && <span>Logout</span>}
-                    </NavLink>
+                        <IoSettingsOutline size={15} style={{ transform: SettingsOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" ,marginRight:"10px"}}/>
+                        {open && <span>Settings</span>}
+                    </div>
+
+                    {/* Dropdown items */}
+                    {SettingsOpen && (
+                        <ul className="list-unstyled ms-3 mt-2">
+                            <li>
+                                <NavLink
+                                    to="/profile"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light fs-7"
+                                >
+                                    <CgProfile  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Profile</span>}
+                                </NavLink>
+                            </li>
+                            <li className="mb-3 fs-6">
+                                <NavLink
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                    style={{ fontSize: "0.75rem" }}
+                                    onClick={handlelogout}
+                                >
+                                    <FiLogOut  size={15} className="me-2" />
+                                    {open && <span>Logout</span>}
+                                </NavLink>
+                            </li>
+                        </ul>
+                    )}
                 </li>
+                }
             </ul>
         </div>
     );

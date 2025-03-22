@@ -6,6 +6,7 @@ import { assignDepartment, fetchActiveDepartments, fetchUsers } from "../Redux/A
 import SidebarMenu from "../Layouts/sidemenue";
 
 function AssignDep() {
+  const [Deploading, setDeploading] = useState(false); 
   const [id, setid] = useState("");
   const [ManagerId, setManagerId] = useState("");
   const [Managers, setManagers] = useState([]);
@@ -29,6 +30,7 @@ function AssignDep() {
   }, [Users]);
 
   const handleSubmit = async () => {
+    setDeploading(true);
     try {
 
       if (!id || !ManagerId) {
@@ -44,6 +46,8 @@ function AssignDep() {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
       console.error("Error assigning department:", error);
+    }finally {
+      setDeploading(false); 
     }
   };
 
@@ -87,7 +91,12 @@ function AssignDep() {
           </select>
         </div>
 
-        <button onClick={handleSubmit}>Assign Department</button>
+        <button className="loading-buttons" onClick={handleSubmit} disabled={Deploading}>
+                {Deploading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Department'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

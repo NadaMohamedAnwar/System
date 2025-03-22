@@ -9,6 +9,7 @@ import { addClient, fetchCategories, fetchOrgs } from "../Redux/Actions/Action";
 
 function AddClient() {
   const dispatch = useDispatch();
+  const [Addloading, setAddloading] = useState(false); 
   const { Categories, loading, error } = useSelector((state) => state.Categories);
   const { Orgs } = useSelector((state) => state.Orgs);
   
@@ -109,6 +110,7 @@ const handleConfirmLocation = (latlng) => {
       toast.error("Please fix the errors before submitting.");
       return;
     }
+    setAddloading(true);
 
     const clientData = {
       id:null,
@@ -139,6 +141,8 @@ const handleConfirmLocation = (latlng) => {
       setCurrentSection(0);
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
 
@@ -272,9 +276,13 @@ const handleConfirmLocation = (latlng) => {
             <h5 className="text-color">Location Info</h5>
             <p>Location : {location || "Not Set"}</p>
             <button style={{ marginTop: "20px", width: "100%" }} onClick={() => setShowMapModal(true)}>Select Location</button>
-            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
-              Submit
-            </button>   
+            <button className="loading-buttons"  onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Submit'
+              )}</button>
+            
           </div>
         )}
         {/* Navigation Buttons */}

@@ -8,8 +8,10 @@ import SidebarMenu from "../Layouts/sidemenue";
 
 function AddCategory() {
   const [name, setname] = useState("");
+   const [Addloading, setAddloading] = useState(false); 
   const dispatch = useDispatch();
   const handleSubmit = async () => {
+    setAddloading(true);
     try {
       if (!name) {
         toast.error("Please fill all data.");
@@ -21,6 +23,8 @@ function AddCategory() {
       setname("")
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
 
@@ -39,7 +43,12 @@ function AddCategory() {
           />
         </div>
 
-        <button onClick={handleSubmit}>Add Tag</button>
+        <button className="loading-buttons"  onClick={handleSubmit} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Add Tag'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

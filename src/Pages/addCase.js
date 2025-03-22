@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom";
 
 function AddCase() {
   const [title, setTitle] = useState("");
+  const [Addloading, setAddloading] = useState(false); 
+  const [Agentloading, setAgentloading] = useState(false); 
+  const [Docloading, setDocloading] = useState(false); 
+  const [Arbloading, setArbLoading] = useState(false);
+  const [Parloading, setParLoading] = useState(false); 
   const [description, setDescription] = useState("");
   const [pricingType, setPricingType] = useState("");
   const [price, setPrice] = useState("");
@@ -43,7 +48,7 @@ function AddCase() {
     }, [dispatch]); 
      useEffect(() => {
          if (Users && Users.length > 0) {
-           const agentList = Users.filter((u) => u.role === "Agent");
+           const agentList = Users.filter((u) => u.role==="LawyerAgent");
            setAgents(agentList);
            console.log("Agents:", agentList);
          }
@@ -101,7 +106,7 @@ function AddCase() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-
+    setAddloading(true);
     const caseData = {
       title,
       description: description || null,
@@ -130,6 +135,8 @@ function AddCase() {
       setStartDate("");
       setendDate("");
       setCaseType("");
+      setClientId("")
+      setClientPosition("")
       // setClientId("");
       setErrors({});
       if(exist==1){
@@ -140,6 +147,8 @@ function AddCase() {
       
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
   const handleAddArbitration = () => {
@@ -154,22 +163,27 @@ function AddCase() {
     };
 
     setArbitrations((prev) => [...prev, newArbitration]);
+    setSelectedCourt(0)
+    setHearingDate("")
   };
 
    const handleAssignParent = async () => {
-  
+    setParLoading(true);
   
       try {
         await dispatch(assignCaseToParent(CaseId,linkedCaseId));
         toast.success("Case Assigned successfully!");
+        setlinkedCaseId("")
         setCurrentSection(4)
         
       } catch (error) {
         toast.error("An error occurred. Please try again.");
+      }finally {
+        setParLoading(false); 
       }
     };
     const handleAssignArbitrations = async () => {
-  
+      setArbLoading(true);
   
       try {
       
@@ -182,6 +196,8 @@ function AddCase() {
        
         toast.error("An error occurred. Please try again.");
         
+      }finally {
+        setArbLoading(false); 
       }
     };
     const handleCourtChange = (event) => {
@@ -194,6 +210,7 @@ function AddCase() {
   
    
   const handleAttachFile = async () => {
+    setDocloading(true);
       try {
         if (!file || !CaseId) {
           toast.error("Please select a case and upload a document.");
@@ -209,17 +226,22 @@ function AddCase() {
         setCurrentSection(5)
       } catch (error) {
         toast.error("An error occurred. Please try again.");
+      }finally {
+        setDocloading(false); 
       }
     };
     const handleAssignAgent = async () => {
-        
+      setAgentloading(true);
         try {
           await dispatch(assignCaseToAgent(CaseId,AgentId));
+          setAgentId("")
           setCurrentSection(0);
-          toast.success("Task Assigned successfully!");
+          toast.success("Case Assigned successfully!");
          
         } catch (error) {
           toast.error("An error occurred. Please try again.");
+        }finally {
+          setAgentloading(false); 
         }
       };
   return (
@@ -367,12 +389,18 @@ function AddCase() {
                 onBlur={handleInputBlur}
               /> 
             </div>
-            <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
-            Save and Exit
-            </button>
-            <button onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }}>
-            Save and Continue
-            </button>
+            <button className="loading-buttons" onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save and Exit'
+              )}</button>
+            <button className="loading-buttons"  onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                ' Save and Continue'
+              )}</button>
           </div>
         )}
 
@@ -447,9 +475,13 @@ function AddCase() {
                   )}
 
                 </div>
-                <button onClick={handleAssignArbitrations} style={{ marginTop: "20px", width: "100%" }}>
-                Assign arbitrations
-                </button>
+                <button className="loading-buttons"  onClick={handleAssignArbitrations} style={{ marginTop: "20px", width: "100%" }} disabled={Arbloading}>
+                {Arbloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign arbitrations'
+              )}</button>
+                
                 
           </div>)}
         {currentSection === 3 && (
@@ -471,9 +503,12 @@ function AddCase() {
                 </select>
                 </div>
 
-                <button onClick={handleAssignParent} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Relevant
-                </button>
+                <button className="loading-buttons"  onClick={handleAssignParent} style={{ marginTop: "20px", width: "100%" }} disabled={Parloading}>
+                {Parloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Relevant'
+              )}</button>
             </div>
        )}
        {currentSection === 4 && (
@@ -484,7 +519,12 @@ function AddCase() {
                 <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} />
               </div>
 
-              <button onClick={handleAttachFile}>Attach</button>
+              <button className="loading-buttons"  onClick={handleAttachFile} disabled={Docloading}>
+                {Docloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Attach'
+              )}</button>
             </div>
        )}
         {currentSection === 5 && (
@@ -506,9 +546,13 @@ function AddCase() {
                   </select>
                 </div>
 
-                <button onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Agent
-                </button>
+                <button className="loading-buttons" onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }} disabled={Agentloading}>
+                {Agentloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Agent'
+              )}</button>
+            
             </div>
        )}
 

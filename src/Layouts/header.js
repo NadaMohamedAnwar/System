@@ -10,11 +10,13 @@ import { getUserProfile } from "../Redux/Actions/Action";
 
 function Header() {
   const navigate = useNavigate();
-  const {profile}=useSelector((state) => state.Users)
-  const dispatch = useDispatch();
-  const userProfile = {
-    image: null,
-  };
+   const { Profile} = useSelector((state) => state.Users);
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(getUserProfile())
+    
+        },[dispatch])
+
    useEffect(()=>{
     dispatch(getUserProfile())
 
@@ -33,7 +35,7 @@ function Header() {
 
       <div className="header-right">
         <img
-          src={userProfile.image || defaultProfile} // Use user's image or default
+           src={Profile?.picture ? `http://agentsys.runasp.net${Profile.picture}` : defaultProfile} 
           alt="Profile"
           className="profile-photo"
         />

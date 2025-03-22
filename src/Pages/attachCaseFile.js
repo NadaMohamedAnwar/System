@@ -6,6 +6,7 @@ import { attachCaseFile, fetchCases } from "../Redux/Actions/Action";
 import SidebarMenu from "../Layouts/sidemenue";
 
 function AttachCaseFile() {
+  const [Docloading, setDocloading] = useState(false); 
   const [file, setFile] = useState(null);
   const [CaseId, setCaseId] = useState("");
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function AttachCaseFile() {
         toast.error("Please select a case and upload a document.");
         return;
       }
-
+      setDocloading(true);
       const formData = new FormData();
       formData.append("file", file);
 
@@ -39,6 +40,8 @@ function AttachCaseFile() {
       setCaseId("");
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setDocloading(false); 
     }
   };
 
@@ -67,7 +70,12 @@ function AttachCaseFile() {
           <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} />
         </div>
 
-        <button onClick={handleSubmit}>Attach</button>
+        <button className="loading-buttons"  onClick={handleSubmit} disabled={Docloading}>
+                {Docloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Attach'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

@@ -40,6 +40,7 @@ function EditCase() {
     "Resumed": 10
   };
   const dispatch = useDispatch();
+  const [editloading,seteditloading]=useState(false)
   const [title, setTitle] = useState("");
   const [caseType, setCaseType] = useState("");
   const [clientId, setClientId] = useState("");
@@ -124,6 +125,7 @@ function EditCase() {
   };
 
   const handleSubmit = async () => {
+    seteditloading(true)
     const caseDto = {
       id: parseInt(id, 10),
       title,
@@ -154,6 +156,8 @@ function EditCase() {
     } catch (error) {
       console.log("Full Error Response:", error.response?.data || error.message);
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
   
@@ -351,9 +355,12 @@ function EditCase() {
             </div>
 
             {/* Display Arbitrations */}
-            <button onClick={() =>handleSubmit()} style={{ marginTop: "20px", width: "100%" }}>
-            Save
-            </button>
+            <button onClick={() =>handleSubmit()} style={{ marginTop: "20px", width: "100%" }} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
         </div>
 
 

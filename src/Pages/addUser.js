@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {  addUsers, fetchActiveDepartments, fetchCategories, fetchOrgs } from "../Redux/Actions/Action";
 
 function AddUser() {
+  const [Addloading, setAddloading] = useState(false); 
   const dispatch = useDispatch();
   const { Categories} = useSelector((state) => state.Categories);
   const { Departments } = useSelector((state) => state.Departments);
@@ -78,8 +79,8 @@ function AddUser() {
     if (!businessUserId) {
       newErrors.businessUserId = "Business User ID is required.";
     }
-    if (!userNationalId || userNationalId.length < 1 || userNationalId.length > 14) {
-      newErrors.userNationalId = "National ID must be between 1 and 14 characters.";
+    if (!userNationalId || userNationalId.length != 14) {
+      newErrors.userNationalId = "National ID must be 14 characters.";
     }
     if (!username || username.length < 1) {
       newErrors.username = "Username is required.";
@@ -101,9 +102,12 @@ function AddUser() {
   // **Submit Function**
   const handleSubmit = async () => {
     if (!validateInputs()) {
-      toast.error("Please fix the errors before submitting.");
+      Object.values(errors).forEach((error) => {
+        toast.error(error);
+         });
       return;
     }
+    setAddloading(true);
     const userData = new FormData();
    
     if(roles==="RegisterOrgAdmin"){
@@ -244,6 +248,8 @@ function AddUser() {
       setErrors({});
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
   const [currentSection, setCurrentSection] = useState(0);
@@ -496,9 +502,13 @@ function AddUser() {
                         
                     </div>
                    
-            <button onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }}>
-                        Submit
-                </button>
+            <button className="loading-buttons"  onClick={handleSubmit} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Submit'
+              )}</button>
+            
               </div>)}
             {/* Navigation Buttons */}
             <div style={{ marginTop: "10px" }}>

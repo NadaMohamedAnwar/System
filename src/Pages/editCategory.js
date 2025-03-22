@@ -8,6 +8,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 
 function EditCategory() {
+   const [editloading,seteditloading]=useState(false)
   const [name, setname] = useState("");
   const { state } = useLocation(); 
   const { id } = useParams();
@@ -21,12 +22,15 @@ function EditCategory() {
       }
     }, [state]);
   const handleSubmit = async () => {
+    seteditloading(true)
     try {
       await dispatch(editCategory(id,name));
       toast.success("Category updated successfully!");
       setname("")
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      seteditloading(false)
     }
   };
 
@@ -45,7 +49,12 @@ function EditCategory() {
           />
         </div>
 
-        <button onClick={handleSubmit}>Edit Tag</button>
+        <button onClick={handleSubmit} className="loading-buttons"  disabled={editloading}>
+                {editloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

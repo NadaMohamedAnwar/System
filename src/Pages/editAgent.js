@@ -8,6 +8,7 @@ import SidebarMenu from "../Layouts/sidemenue";
 import { useLocation, useParams } from "react-router-dom";
 
 function EditAgent() {
+  const [Agentloading, setAgentloading] = useState(false); 
   const [businessUserId, setbusinessUserId] = useState("");
   const [userNationalId, setuserNationalId] = useState("");
   const [email, setemail] = useState("");
@@ -54,7 +55,7 @@ function EditAgent() {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-   
+   setAgentloading(true)
     const userData = {
       id,
       businessUserId:businessUserId,
@@ -70,6 +71,8 @@ function EditAgent() {
       
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally{
+      setAgentloading(false)
     }
   };
 
@@ -125,7 +128,12 @@ function EditAgent() {
         </div>
 
 
-        <button onClick={handleSubmit}>Edit User</button>
+        <button onClick={handleSubmit} className="loading-buttons"  disabled={Agentloading}>
+                {Agentloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

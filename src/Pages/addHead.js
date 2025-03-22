@@ -41,8 +41,8 @@ function AddHead() {
     if (!businessUserId) {
       newErrors.businessUserId = "Business User ID is required.";
     }
-    if (!userNationalId || userNationalId.length < 1 || userNationalId.length > 14) {
-      newErrors.userNationalId = "National ID must be between 1 and 14 characters.";
+    if (!userNationalId || userNationalId.length !=14) {
+      newErrors.userNationalId = "National ID must be 14 characters.";
     }
     if (!username || username.length < 1) {
       newErrors.username = "Username is required.";

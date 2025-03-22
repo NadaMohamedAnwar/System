@@ -1,10 +1,11 @@
+import Profile from "../../Pages/profile";
 import { filterUsers } from "../Actions/Action";
 
 const initialState = {
     loading: false,
     Users: [],
     FilterUsers:[],
-    profile:{},
+    Profile:{},
     error: null,
   };
   const UsersReducer=(state=initialState,action)=>{
@@ -18,7 +19,7 @@ const initialState = {
         case 'FETCH_PROFILE_REQUEST':
             return{...state, loading:true, error:null};
         case 'FETCH_PROFILE_SUCCESS':
-            return{...state, loading:false, profile:action.payload};
+            return{...state, loading:false, Profile:action.payload};
         case 'FETCH_PROFILE_FAILURE':
             return{...state, loading:false, error:action.payload};
         case 'ADD_USERS_REQUEST':

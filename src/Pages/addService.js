@@ -7,6 +7,7 @@ import SidebarMenu from "../Layouts/sidemenue";
 
 
 function AddService() {
+  const [Addloading, setAddloading] = useState(false); 
   const [name, setname] = useState("");
   const [profile, setprofile] = useState("1");
   const [errors, setErrors] = useState({});
@@ -34,6 +35,7 @@ function AddService() {
           toast.error("Please fix the errors before submitting.");
           return;
         }
+        setAddloading(true);
     
         const ServicesData = {
           name,
@@ -46,6 +48,8 @@ function AddService() {
       setprofile("1")
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
 
@@ -80,7 +84,12 @@ function AddService() {
           </select>
         </div>
 
-        <button onClick={handleSubmit}>Add Service</button>
+        <button className="loading-buttons" onClick={handleSubmit} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Add Service'
+              )}</button>
         <ToastContainer />
       </div>
     </div>

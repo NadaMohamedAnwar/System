@@ -146,9 +146,15 @@ body {
     color: white;
     cursor: pointer;
     font-size: 16px;
+      
     background: linear-gradient(90deg, #125370, gray);
 }
-
+.loading-buttons{
+    position: relative;
+    display: flex;               
+    align-items: center;         
+    justify-content: center; 
+}
 .custom-button {
     width: 35%;
     border-radius: 10px;

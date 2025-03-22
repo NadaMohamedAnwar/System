@@ -8,6 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function AddTask() {
+   const [Addloading, setAddloading] = useState(false); 
+    const [Agentloading, setAgentloading] = useState(false);
   const [serviceId, setServiceId] = useState("");
   const [taskTypeId, setTaskTypeId] = useState("");
   const [taskTypes, setTaskTypes] = useState([]);
@@ -50,7 +52,7 @@ function AddTask() {
       
    useEffect(() => {
      if (Users && Users.length > 0) {
-       const agentList = Users.filter((u) => u.role === "Agent" && u.departmentIds.includes(parseInt(departmentId)));
+       const agentList = Users.filter((u) => u.role.includes("Agent") && u.departmentIds.includes(parseInt(departmentId)));
        setAgents(agentList);
       //  console.log("Agents:", agentList);
      }
@@ -95,7 +97,7 @@ function AddTask() {
   
     //   if (selectedDepartment?.id) {
         dispatch(filterServices(departmentId));
-        // console.log("filteredServices",filteredServices)
+        console.log("filteredServices",filteredServices)
       // }
     // }
   }, [departmentId, Departments, dispatch]);
@@ -133,7 +135,7 @@ const FetchTaskTypes=async()=>{
   const validateInputs = () => {
     let newErrors = {};
     if (!parseInt(taskTypeId, 10)) newErrors.taskTypeId = "Task Type ID is required.";
-    if (!parseInt(serviceId, 10)) newErrors.serviceId = "Service ID is required.";
+    if (!serviceId) newErrors.serviceId = "Service ID is required.";
     if (!parseInt(clientId, 10)) newErrors.clientId = "Client ID is required.";
     if (!departmentId) newErrors.departmentId = "Department ID is required.";
     if (!title || title.length > 50)
@@ -147,11 +149,12 @@ const FetchTaskTypes=async()=>{
 
   const handleSubmit = async (exist) => {
     if (!validateInputs()) {
-      console.log("Errors found:", errors);
-      toast.error("Please fix the errors before submitting.");
+      Object.values(errors).forEach((error) => {
+              toast.error(error);
+               });
       return;
     }
-
+    setAddloading(true);
     const taskData = {
       serviceId,
       taskTypeId: parseInt(taskTypeId),
@@ -189,10 +192,12 @@ const FetchTaskTypes=async()=>{
      
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAddloading(false); 
     }
   };
   const handleAssignAgent = async () => {
-    
+    setAgentloading(true);
     try {
       await dispatch(assignTaskToAgent(taskId,AgentId));
       setCurrentSection(0);
@@ -200,6 +205,8 @@ const FetchTaskTypes=async()=>{
      
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setAgentloading(false); 
     }
   };
   // const handleAssignParent = async () => {
@@ -217,7 +224,7 @@ const FetchTaskTypes=async()=>{
   return (
     <div className="d-flex">
       <SidebarMenu />
-      <div className="org-par col-sm-12 col-md-10 col-lg-10">
+      <div className="org-par col-sm-12 col-md-8 col-lg-6">
         <h3 className="text-color">Add New Task</h3>
         <div className="stage-indicator">
           <div className={`stage-item ${currentSection === 0 ? "active" : ""}`}>
@@ -415,12 +422,18 @@ const FetchTaskTypes=async()=>{
                 )}
                 </div>
 
-                <button onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }}>
-                Save and Exit
-                </button>
-                <button onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }}>
-                Save and Continue
-                </button>
+                <button className="loading-buttons" onClick={() =>handleSubmit(1)} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Save and Exit'
+              )}</button>
+                <button className="loading-buttons" onClick={() =>handleSubmit(2)} style={{ marginTop: "20px", width: "100%" }} disabled={Addloading}>
+                {Addloading ? (
+                <span className="loader"></span> 
+              ) : (
+                ' Save and Continue'
+              )}</button>
             </div>
        )}
        {currentSection === 3 && (
@@ -442,9 +455,12 @@ const FetchTaskTypes=async()=>{
                   </select>
                 </div>
 
-                <button onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }}>
-                Assign Agent
-                </button>
+                <button className="loading-buttons"  onClick={handleAssignAgent} style={{ marginTop: "20px", width: "100%" }} disabled={Agentloading}>
+                {Agentloading ? (
+                <span className="loader"></span> 
+              ) : (
+                'Assign Agent'
+              )}</button>
             </div>
        )}
 

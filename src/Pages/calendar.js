@@ -434,7 +434,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
 import SidebarMenu from "../Layouts/sidemenue";
 import Calendar from "react-calendar";
-import { deleteOrg, fetchActiveDepartments, fetchAllTasks, fetchTasks, fetchUsers } from "../Redux/Actions/Action";
+import { deleteOrg, fetchActiveDepartments, fetchAllTasks, fetchTasks, fetchUsers, filterTasks } from "../Redux/Actions/Action";
 import axios from "axios";
 
 function CalendarComponent() {
@@ -445,6 +445,7 @@ function CalendarComponent() {
     const [AgentId, setAgentId] = useState("all");
     const [date, setDate] = useState(new Date());
     const [tasks, setTasks] = useState({});
+    const [Filtertasks, setFilterTasks] = useState([]);
     const roles = sessionStorage.getItem('roles');
     const { Users } = useSelector((state) => state.Users);
     const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
@@ -459,7 +460,7 @@ function CalendarComponent() {
       }, [dispatch]);
       useEffect(() => {
            if (Users && Users.length > 0) {
-             const agentList = Users.filter((u) => u.role === "Agent");
+             const agentList = Users.filter((u) => u.role.includes("Agent"));
              setAgents(agentList);
             //  console.log("Agents:", agentList);
            }
@@ -493,25 +494,28 @@ function CalendarComponent() {
         }
     }, [Departments, roles]);
     
-    useEffect(() => {
-        // console.log("Final departmentId before fetching tasks:", departmentId);
+    // useEffect(() => {
+    //     // console.log("Final departmentId before fetching tasks:", departmentId);
         
-        if (departmentId) {
-            // Construct parameters dynamically
-            const selectedDepartment = departmentId !== "all" ? parseInt(departmentId,10) : "";
-            const selectedAgent = AgentId !== "all" ? AgentId : "";
-            // console.log("selectedDepartment",selectedDepartment,selectedAgent) 
+    //     if (departmentId) {
+    //         // Construct parameters dynamically
+    //         const selectedDepartment = departmentId !== "all" ? parseInt(departmentId,10) : "";
+    //         const selectedAgent = AgentId !== "all" ? AgentId : "";
+    //         // console.log("selectedDepartment",selectedDepartment,selectedAgent) 
     
-            dispatch(fetchAllTasks("", "", "", "", "", "", selectedAgent, "",selectedDepartment));
-        }
-    }, [dispatch, departmentId, AgentId]);
+    //         dispatch(fetchAllTasks("", "", "", "", "", "", selectedAgent, "",selectedDepartment));
+    //         if(Tasks){
+    //             const tasksList = Tasks.filter((t) => t.assignedTo!=null );
+    //         }
+    //     }
+    // }, [dispatch, departmentId, AgentId]);
     
 useEffect(() => {
     // console.log("Redux Tasks State Updated:", Tasks);
-    if (Tasks.length === 0) {
+    if (Filtertasks.length === 0) {
         setDate(new Date()); 
     }
-}, [Tasks]);
+}, [Filtertasks]);
     const [serviceColors, setServiceColors] = useState({});
     const [serviceCounts, setServiceCounts] = useState({});
 
@@ -524,13 +528,26 @@ useEffect(() => {
             const selectedDepartment = departmentId !== "all" ? parseInt(departmentId, 10) : "";
             const selectedAgent = AgentId !== "all" ? AgentId : "";
             dispatch(fetchAllTasks("", "", "", "", "", "", selectedAgent, "", selectedDepartment));
+            const tasksList = Tasks.filter((t) => t.assignedTo!=null );
+            setFilterTasks(tasksList)
         }
+        
+            
+            
+        console.log(Filtertasks)
+        console.log(Tasks)
     }, [dispatch, departmentId, AgentId]);
+    useEffect(() => {
+        
+        const tasksList = Tasks.filter((t) => t.assignedTo!=null );
+        setFilterTasks(tasksList)
+       
+    }, [Tasks]);
 
     useEffect(() => {
-        if (Tasks.length > 0) {
+        if (Filtertasks.length > 0) {
             setTasks({});
-            const formattedTasks = Tasks.reduce((acc, task) => {
+            const formattedTasks = Filtertasks.reduce((acc, task) => {
                 if (!task.startAt) return acc;
             
                 const taskStartDate = new Date(task.startAt);
@@ -560,7 +577,7 @@ useEffect(() => {
             
 
             setTasks(formattedTasks);
-            console.log(formattedTasks)
+            // console.log(formattedTasks)
 
             const formattedDate = formatDate(date);
             const tasksForSelectedDate = formattedTasks[formattedDate] || [];
@@ -581,7 +598,7 @@ useEffect(() => {
             setServiceCounts(serviceCountMap);
             setServiceColors(colorMap);
         }
-    }, [Tasks, departmentId, AgentId, date]);
+    }, [Filtertasks, departmentId, AgentId, date]);
 
     // const generateColor = () => {
     //     const letters = "0123456789ABCDEF";

@@ -46,6 +46,7 @@ import ViewUser from './Pages/viewUser';
 import ViewOrg from './Pages/viewOrg';
 import ViewDep from './Pages/viewDep';
 import EditAgent from './Pages/editAgent';
+import Profile from './Pages/profile';
 // import './App.css'; 
 
 function App() {
@@ -59,7 +60,8 @@ function App() {
           <Route path='/' element={<Login />} />
           <Route path='*' element={<h2>Page Not Found</h2>} />
           {/* <Route path='/home' element={<PrivateRoute component={Home} roles={['SuperAdmin','OrgAdmin','Manager','HeadManager']}  />} /> */}
-          <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
+          <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/profile' element={<PrivateRoute component={Profile} roles={['OrgAdmin','Manager','SuperAdmin','HeadManager']} />} />
           <Route path='/schduel' element={<PrivateRoute component={CalendarComponent} roles={['OrgAdmin','Manager','HeadManager']}  />} />
 
           <Route path='/add-category' element={<PrivateRoute component={AddCategory} roles={['SuperAdmin']} />} />
