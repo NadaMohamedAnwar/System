@@ -38,7 +38,7 @@ function EditDep() {
   useEffect(() => {
       if (state?.dep) {
         const dep = state.dep;
-        console.log(dep)
+        // console.log(dep)
         setname(dep.name || "")
         setDescription(dep.description || "");
         setemail(dep.email|| "");

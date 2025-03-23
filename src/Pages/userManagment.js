@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlus,faEye } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,9 +26,9 @@ function UserManagement() {
         dispatch(fetchUsers());
     }, [dispatch]);
 
-    useEffect(() => {
-       console.log(FilterUsers)
-    }, [FilterUsers]);
+    // useEffect(() => {
+    //    console.log(FilterUsers)
+    // }, [FilterUsers]);
 
     const handleActivate = (id,role) => {
         let type="";
@@ -185,9 +185,7 @@ function UserManagement() {
                             {FilterUsers.length > 0 ? (
                                 FilterUsers.map((User) => (
                                     <tr key={User.id} >
-                                        <td onClick={() =>
-                                        navigate(`/view-user/${User.id}`, { state: { User } })
-                                    }>{User.userName}</td>
+                                        <td>{User.userName}</td>
                                         <td>{User.email}</td>
                                         <td>{User.nationalId}</td>
                                         <td>{User.phone}</td>
@@ -199,6 +197,13 @@ function UserManagement() {
                                            
                                         { (User.role.includes("Agent") && (roles.includes("SuperAdmin") || roles.includes("OrgAdmin"))) &&
                                         <td>
+                                            <FontAwesomeIcon
+                                                className="icon-edit"
+                                                icon={faEye}
+                                                onClick={() =>
+                                                    navigate(`/view-user/${User.id}`, { state: { User } })
+                                                }
+                                            />
                                             <FontAwesomeIcon
                                             className="icon-edit"
                                             icon={faEdit}
@@ -214,8 +219,15 @@ function UserManagement() {
                                             </button>
                                         </td>
                                         }
-                                        { ((User.role=="OrgAdmin" || User.role=="Head Manager" || User.role=="Manager")&& (roles.includes("SuperAdmin") ||roles.includes("OrgAdmin")))&&
+                                        { ((User.role=="OrgAdmin" || User.role=="HeadManager" || User.role=="Manager")&& (roles.includes("SuperAdmin") ||roles.includes("OrgAdmin")))&&
                                         <td>
+                                            <FontAwesomeIcon
+                                                className="icon-edit"
+                                                icon={faEye}
+                                                onClick={() =>
+                                                    navigate(`/view-user/${User.id}`, { state: { User } })
+                                                }
+                                            />
                                             <FontAwesomeIcon
                                             className="icon-edit"
                                             icon={faEdit}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faPlus ,faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -83,7 +83,7 @@ function ClientsManagement() {
                 <div>
                     <div className="filter-div">
                         <div className="input-org-filter">
-                            <label>Name</label>
+                            <label>Account Name</label>
                             <input
                                 type="text"
                                 placeholder="Enter Name"
@@ -143,14 +143,19 @@ function ClientsManagement() {
                             <tbody>
                                 {filteredClients.length > 0 ? (
                                     filteredClients.map((Client) => (
-                                        <tr key={Client.id} onClick={() =>
-                                            navigate(`/view-client/${Client.id}`, { state: { Client } })
-                                        }>
+                                        <tr key={Client.id} >
                                             <td>{Client.accountName}</td>
                                             <td>{Client.contactName}</td>
                                             <td>{Client.contactMobileNumber}</td>
                                             <td>{Client.accountAddress}</td>
                                             <td>
+                                                <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEye}
+                                                    onClick={() =>
+                                                        navigate(`/view-client/${Client.id}`, { state: { Client } })
+                                                    }
+                                                />
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
                                                     icon={faEdit}

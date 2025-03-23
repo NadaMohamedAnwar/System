@@ -70,7 +70,7 @@ function EditCase() {
   useEffect(() => {
     if (state?.Case  && Cases) {
       const Case = state.Case;
-      console.log(Case)
+      // console.log(Case)
       setTitle(Case.title || "");
       setCaseType(caseTypeMap[Case.casetype || ""]);
       setClientId(Case.clientId || "");
@@ -143,7 +143,7 @@ function EditCase() {
     };
   
     try {
-      console.log(caseDto);
+      // console.log(caseDto);
       
       const response = await dispatch(editCases(id, caseDto));
   
@@ -354,7 +354,7 @@ function EditCase() {
              
             </div>
 
-            {/* Display Arbitrations */}
+            
             <button onClick={() =>handleSubmit()} style={{ marginTop: "20px", width: "100%" }} className="loading-buttons"  disabled={editloading}>
                 {editloading ? (
                 <span className="loader"></span> 

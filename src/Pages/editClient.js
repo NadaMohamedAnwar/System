@@ -18,7 +18,7 @@ function EditClient() {
     useEffect(() => {
       if (state?.Client) {
         const Client = state.Client;
-        console.log(Client)
+        // console.log(Client)
         setAccountName(Client.accountName||"");
         setAccountAddress(Client.accountAddress||"");
         setCustomerType(Client.customerType||0);

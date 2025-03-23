@@ -65,7 +65,7 @@ const SidebarMenu = () => {
             {/* Menu Items */}
             <ul className="list-unstyled">
                 
-                <li className="mb-3 fs-6">
+            {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3 fs-6">
                     <NavLink
                         to="/dashboard-agent"
                         className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
@@ -74,7 +74,7 @@ const SidebarMenu = () => {
                         <RxDashboard  size={15} className="me-2" />
                         {open && <span>Dashboard</span>}
                     </NavLink>
-                </li>
+                </li>}
                 {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager"))&&<li className="mb-3 fs-6">
                     <NavLink
                         to="/schduel"

@@ -186,7 +186,7 @@ function AddDep() {
           </select>
         </div>
 
-        <button className="loading-buttons"  onClick={handleSubmit} disabled={Addloading}>
+        <button className="loading-buttons" style={{ marginTop: "20px", width: "100%" }} onClick={handleSubmit} disabled={Addloading}>
                 {Addloading ? (
                 <span className="loader"></span> 
               ) : (

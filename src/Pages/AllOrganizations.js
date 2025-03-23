@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlus,faEye } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -141,14 +141,19 @@ function OrgManagement() {
                             <tbody>
                                 {FilterOrgs.length > 0 ? (
                                     FilterOrgs.map((org) => (
-                                        <tr key={org.id}  onClick={() =>
-                                            navigate('/view-org', { state: { org } })
-                                        }>
+                                        <tr key={org.id}  >
                                             <td>{org.organizationName}</td>
                                             <td>{org.organizationStatus ? "Active" : "Inactive"}</td>
                                             <td>{org.organizationType}</td>
                                             <td>{org.primaryContactEmail}</td>
                                             <td>
+                                            <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEye}
+                                                    onClick={() =>
+                                                        navigate('/view-org', { state: { org } })
+                                                    }
+                                                />
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
                                                     icon={faEdit}
@@ -156,6 +161,7 @@ function OrgManagement() {
                                                         navigate(`/edit-org/${org.id}`, { state: { org } })
                                                     }
                                                 />
+                                               
                                             {/* <button 
                                                     className="manage-buttons" 
                                                     onClick={() => org.organizationStatus ? handleDeactivate(org.id) : handleActivate(org.id)}

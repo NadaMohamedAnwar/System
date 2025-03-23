@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlus ,faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -46,9 +46,9 @@ function TaskManagement() {
 }, [Departments, roles]);
 
 
-useEffect(() => {
-   console.log(FilterTasks)
-}, [FilterTasks]);
+// useEffect(() => {
+//    console.log(FilterTasks)
+// }, [FilterTasks]);
 
     
     
@@ -208,22 +208,30 @@ useEffect(() => {
                                     <th>Agent</th>
                                     <th>Start At</th>
                                     <th>Due Date</th>
-                                    {/* <th>Actions</th> */}
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {FilterTasks? (
                                     FilterTasks.map((task) => (
-                                        <tr key={task.id} onClick={() =>
-                                            navigate(`/view-task/${task.id}`, { state: { task } })
-                                        }>
+                                        <tr key={task.id} >
                                             <td>{task.taskName}</td>
                                             <td>{task.priorityName}</td>
                                             {/* <td>{task.statusName}</td> */}
                                             <td>{task.assignedToUserName}</td>
                                             <td>{task.startAt}</td>
                                             <td>{task.dueDate}</td>
+                                            <td>
+                                                <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEye}
+                                                    onClick={() =>
+                                                        navigate(`/view-task/${task.id}`, { state: { task } })
+                                                    }
+                                                />
+                                            </td>
                                             {/* <td>
+
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
                                                     icon={faEdit}

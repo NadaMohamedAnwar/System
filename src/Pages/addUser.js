@@ -43,6 +43,7 @@ function AddUser() {
   const [dateHired, setDateHired] = useState("");
   const [salary, setSalary] = useState("");
   const [Picture,setPicture]=useState(null);
+  const [currentSection, setCurrentSection] = useState(0);
 
   const [categoriesId, setCategoriesId] = useState([]); 
   const [departmentId, setDepartmentId] = useState("");
@@ -245,6 +246,7 @@ function AddUser() {
       setCategoriesId([]);
       setDepartmentId("");
       setdepartmentIds([]);
+      setCurrentSection(0)
       setErrors({});
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -252,7 +254,7 @@ function AddUser() {
       setAddloading(false); 
     }
   };
-  const [currentSection, setCurrentSection] = useState(0);
+  
   const handleNext = () => {
     setCurrentSection((prevSection) => (prevSection + 1) % 4);
   };

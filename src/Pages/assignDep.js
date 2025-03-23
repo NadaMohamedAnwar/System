@@ -91,7 +91,7 @@ function AssignDep() {
           </select>
         </div>
 
-        <button className="loading-buttons" onClick={handleSubmit} disabled={Deploading}>
+        <button className="loading-buttons" style={{width:"100%",marginTop:"20px"}} onClick={handleSubmit} disabled={Deploading}>
                 {Deploading ? (
                 <span className="loader"></span> 
               ) : (

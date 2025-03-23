@@ -288,7 +288,7 @@ export const filterOrgs = (name, type, status,email) => (dispatch, getState) => 
       (!name || c.organizationName.toLowerCase().includes(name.toLowerCase())) &&
       (!type || c.organizationType === type) &&
       (!email || c.primaryContactEmail === email) &&
-      (status===undefined || c.organizationStatus === status)
+      (status === undefined || status === "" || c.organizationStatus === status)
     );
   });
 
@@ -1015,20 +1015,19 @@ export const deleteUsers= (Id) => async (dispatch) => {
 };
 export const filterUsers = (username,email,NationalId,Phone,orgName, role,status) => (dispatch, getState) => {
   const { Users } = getState().Users
-  console.log(username,email,NationalId,Phone,orgName, role,status);
   const filteredUsers = Users.filter((user) => {
-    
+   
     return (
-      (!username || user.userName == username) &&
-      (!email || user.primaryContactEmail == email) &&
-      (!NationalId || user.nationalId == NationalId) &&
-      (!Phone || user.phone == Phone) &&
-      (!orgName || user.organization == orgName) &&
-      (!role || user.role == role) &&
-      (status == undefined || user.isActive == status)
+      (!username || user.userName === username ) &&
+      (!email || user.email === email) &&
+      (!NationalId || user.nationalId === NationalId) &&
+      (!Phone || user.phone === Phone) &&
+      (!orgName || user.organization === orgName) &&
+      (!role || user.role === role) &&
+      (status === undefined || status === "" || user.isActive === status)
     );
   });
-  console.log("filteredUsers",filteredUsers)
+
 
   dispatch({ type: "FILTER_USERS", payload: filteredUsers });
 };

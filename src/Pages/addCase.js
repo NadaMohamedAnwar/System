@@ -519,7 +519,7 @@ function AddCase() {
                 <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleFileChange} />
               </div>
 
-              <button className="loading-buttons"  onClick={handleAttachFile} disabled={Docloading}>
+              <button className="loading-buttons" style={{ marginTop: "20px", width: "100%" }} onClick={handleAttachFile} disabled={Docloading}>
                 {Docloading ? (
                 <span className="loader"></span> 
               ) : (

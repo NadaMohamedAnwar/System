@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlus,faEye } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -162,14 +162,19 @@ function CaseManagement() {
                                 {FilteredCases.length > 0 ? (
                                     FilteredCases.map((Case) => (
                                         <tr key={Case.id}  >
-                                            <td onClick={() =>
-                                            navigate(`/view-case/${Case.id}`, { state: { Case } })
-                                        }>{Case.title}</td>
+                                            <td >{Case.title}</td>
                                             <td>{Case.opposingLawyer}</td>
                                             <td>{Case.opposingParty}</td>
                                             <td>{Case.startDate}</td>
                                             <td>{getclientName(Case.clientId)}</td>
                                             <td>
+                                            <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEye}
+                                                    onClick={() =>
+                                                        navigate(`/view-case/${Case.id}`, { state: { Case } })
+                                                    }
+                                                />
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
                                                     icon={faEdit}

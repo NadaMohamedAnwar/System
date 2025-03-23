@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faEdit, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faPlus ,faEye} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -139,14 +139,19 @@ function ActiveDep() {
                             <tbody>
                                 {FilterDepartments.length > 0 ? (
                                     FilterDepartments.map((dep) => (
-                                        <tr key={dep.id} onClick={() =>
-                                            navigate(`/view-department/${dep.id}`, { state: { dep } })
-                                        }>
+                                        <tr key={dep.id} >
                                             <td>{dep.name}</td>
                                             <td>{dep.profileType}</td>
                                             <td>{dep.phone}</td>
                                             <td>{dep.email}</td>
                                             <td>
+                                            <FontAwesomeIcon
+                                                    className="icon-edit"
+                                                    icon={faEye}
+                                                    onClick={() =>
+                                                        navigate(`/view-department/${dep.id}`, { state: { dep } })
+                                                    }
+                                                />
                                                 <FontAwesomeIcon
                                                     className="icon-edit"
                                                     icon={faEdit}
