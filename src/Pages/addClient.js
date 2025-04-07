@@ -25,7 +25,7 @@ function AddClient() {
   const [accountName, setAccountName] = useState("");
   const [accountAddress, setAccountAddress] = useState("");
   const [customerType, setCustomerType] = useState(0); 
-  const [categoryId, setCategoryId] = useState(); 
+  const [categoryId, setCategoryId] = useState(""); 
 
   // Section 2: Contact Info
   const [contactName, setContactName] = useState("");
@@ -133,7 +133,7 @@ const handleConfirmLocation = (latlng) => {
       setAccountName("");
       setAccountAddress("");
       setCustomerType(0);
-      setCategoryId(0);
+      setCategoryId("");
       setContactName("");
       setContactMobileNumber("");
       setContactAddress("");
@@ -207,6 +207,7 @@ const handleConfirmLocation = (latlng) => {
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
+                <option value={""}>Selecte Category</option>
                 {Categories && Categories.length > 0 ? (
                   Categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
