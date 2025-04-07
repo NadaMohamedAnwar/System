@@ -315,6 +315,7 @@ const FetchTaskTypes=async()=>{
                 value={taskTypeId}
                 onChange={(e) => setTaskTypeId(e.target.value)}
               >
+                 <option value={""}>Select Task Type</option>
                 {taskTypes && taskTypes.length > 0 ? (
                   taskTypes.map((type) => (
                     <option key={type.id} value={type.id}>{type.name}</option>

@@ -207,7 +207,7 @@ const handleConfirmLocation = (latlng) => {
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
-                <option value={""}>Selecte Category</option>
+                <option value={""}>Select Category</option>
                 {Categories && Categories.length > 0 ? (
                   Categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
