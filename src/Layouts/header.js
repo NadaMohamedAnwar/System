@@ -23,7 +23,7 @@ function Header() {
    },[])
   const handleLogout = (e) => {
     e.preventDefault();
-    sessionStorage.clear();
+    localStorage.clear();
     navigate('/');
   };
 

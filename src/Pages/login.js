@@ -7,7 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import LoginCss from '../Css/LoginCss.css';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Login(){
+function Login({ onLoginSuccess }){
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); 
@@ -24,13 +24,17 @@ function Login(){
       const { accessToken } = response.data;
       const { roles } = response.data;
       const { userId } = response.data;
+      const { refreshTokenExpiryDate } = response.data;
       const{orgId}=response.data
       const{departments}=response.data
-      sessionStorage.setItem('token', accessToken);
-      sessionStorage.setItem('orgId', orgId);
-      sessionStorage.setItem('id', userId);
-      sessionStorage.setItem('roles', JSON.stringify(roles));
-      sessionStorage.setItem('departments',departments)
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('orgId', orgId);
+      localStorage.setItem('id', userId);
+      localStorage.setItem('roles', JSON.stringify(roles));
+      localStorage.setItem('departments',departments)
+      localStorage.setItem('tokenExpiry', refreshTokenExpiryDate);
+
+      onLoginSuccess(accessToken);
        console.log(response.data)
         // navigate('/dashboard-agent');
       
@@ -64,7 +68,7 @@ function Login(){
   //     });
   
   //     console.log("User Data:", userResponse.data);
-  //     sessionStorage.setItem("userData", JSON.stringify(userResponse.data)); 
+  //     localStorage.setItem("userData", JSON.stringify(userResponse.data)); 
   //   } catch (error) {
   //     console.error("Error fetching user data", error);
   //     toast.error("Failed to fetch user data.");

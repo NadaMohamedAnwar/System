@@ -11,7 +11,7 @@ function AddUser() {
   const { Categories} = useSelector((state) => state.Categories);
   const { Departments } = useSelector((state) => state.Departments);
   const { Orgs} = useSelector((state) => state.Orgs);
-  const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
+  const [orgId, setorgId] = useState(localStorage.getItem("orgId"));
   const [departments, setdepartments] = useState([]);
   
   
@@ -47,7 +47,7 @@ function AddUser() {
 
   const [categoriesId, setCategoriesId] = useState([]); 
   const [departmentId, setDepartmentId] = useState("");
-  const userRoles = JSON.parse(sessionStorage.getItem('roles'));
+  const userRoles = JSON.parse(localStorage.getItem('roles'));
 
   const [departmentIds, setdepartmentIds] = useState([]);
   const handleDepChange = (e) => {
@@ -210,7 +210,7 @@ function AddUser() {
       userData.append("email", email);
       userData.append("phoneNumber", phoneNumber || null);
       userData.append("orgId", parseInt(orgId, 10));
-      userData.append("orgAdminId", sessionStorage.getItem("id"));
+      userData.append("orgAdminId", localStorage.getItem("id"));
 
       // Append categoriesId array properly
       if (categoriesId.length > 0) {

@@ -18,6 +18,12 @@ import { FaServicestack } from "react-icons/fa6";
 import { GrSchedule } from "react-icons/gr";
 import { IoSettingsOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
+import { FaRegFileAlt } from 'react-icons/fa'; 
+import { HiOutlineDocumentAdd } from 'react-icons/hi'; 
+import { BiHistory } from 'react-icons/bi'; 
+
+
+
 
 const SidebarMenu = () => {
     const [open, setOpen] = useState(true);
@@ -26,21 +32,22 @@ const SidebarMenu = () => {
     const [TaskOpen, setTaskOpen] = useState(false);
     const [CaseOpen, setCaseOpen] = useState(false);
     const [OrganizationOpen, setOrganizationOpen] = useState(false);
+    const [documentOpen, setDocumentOpen] = useState(false);
     const [SettingsOpen, setSettingsOpen] = useState(false);
     const [serviceOpen, setserviceOpen] = useState(false);
     const [CategoryOpen, setCategoryOpen] = useState(false);
     const [DepartmentOpen, setDepartmentOpen] = useState(false); 
-    const userRoles = JSON.parse(sessionStorage.getItem('roles'));
+    const userRoles = JSON.parse(localStorage.getItem('roles'));
     const navigate = useNavigate();
     const handlelogout = e => {
         e.preventDefault();
-        sessionStorage.clear();
+        localStorage.clear();
         navigate('/');
     
       };
     return (
         <div
-            className={`bg-dark text-white ${open ? "col-sm-4 col-md-3 col-lg-2" : "col-1"} vh-100 p-3 position-relative transition-width`}
+            className={`bg-dark text-white ${open ? "col-sm-4 col-md-3 col-lg-2" : "col-1"}  p-3 position-relative transition-width`}
             style={{ transition: "width 0.3s" }}
         >
             {/* Toggle Button */}
@@ -57,9 +64,9 @@ const SidebarMenu = () => {
                     alt="Logo"
                     className={`rounded-circle ${open ? "me-3" : ""} 
                     ${open ? "" : "d-none d-sm-inline"} `} 
-                    style={{ width: "40px", height: "40px" }}
+                    style={{ width: "60px", height: "60px" }}
                 />
-                {open && <h2 className="fs-4 m-0">LegalVerse</h2>}
+                {open && <h5 className="m-0">LegalVerse</h5>}
             </div>
             
             {/* Menu Items */}
@@ -319,6 +326,51 @@ const SidebarMenu = () => {
                         </ul>
                     )}
                 </li>
+                {/* {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3">
+                    <div
+                        className="d-flex align-items-center text-decoration-none text-white p-2 rounded cursor-pointer hover-bg-light"
+                        onClick={() => setDocumentOpen(!documentOpen)} 
+                        style={{ fontSize: "0.75rem" }}
+                    >
+                        <FaChevronDown size={15} style={{ transform: documentOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" ,marginRight:"10px"}} />
+                        {open && <span className='cursor-pointer'>Document Management</span>}
+                    </div>
+
+                   
+                    {documentOpen && (
+                        <ul className="list-unstyled ms-3 mt-2">
+                            <li>
+                                <NavLink
+                                    to="/documents"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <FaRegFileAlt  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Documents</span>}
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/add-document"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <HiOutlineDocumentAdd  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Add Document</span>}
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/documents-log"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <BiHistory  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Documents Log</span>}
+                                </NavLink>
+                            </li>
+    
+                        </ul>
+                    )}
+                </li>
+                } */}
                 {/* Dropdown Menu for Task Management */}
                 {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3">
                     <div

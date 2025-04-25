@@ -13,10 +13,10 @@ function AssignAgent() {
   const { Users } = useSelector((state) => state.Users);
   const [AgentId, setAgentId] = useState("");
   const [Agents, setAgents] = useState([]);
-  const [departmentId, setDepartmentId] = useState(sessionStorage.getItem('departments'));
+  const [departmentId, setDepartmentId] = useState(localStorage.getItem('departments'));
   const { Departments } = useSelector((state) => state.Departments);
-   const roles = sessionStorage.getItem('roles');
-   const depids = sessionStorage.getItem('departments');
+   const roles = localStorage.getItem('roles');
+   const depids = localStorage.getItem('departments');
    const [headDeps, setHeadDeps] = useState([]);
    const dispatch = useDispatch();
    
@@ -29,7 +29,7 @@ function AssignAgent() {
                 if (roles.includes("OrgAdmin") || roles.includes("HeadManager")) {
                     setDepartmentId(""); 
                 }else{
-                    setDepartmentId(sessionStorage.getItem("departments"))
+                    setDepartmentId(localStorage.getItem("departments"))
                 }
             }
         }, [Departments, roles]);

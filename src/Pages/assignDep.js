@@ -10,7 +10,7 @@ function AssignDep() {
   const [id, setid] = useState("");
   const [ManagerId, setManagerId] = useState("");
   const [Managers, setManagers] = useState([]);
-   const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
+   const [orgId, setorgId] = useState(localStorage.getItem("orgId"));
 
   const dispatch = useDispatch();
   const { Departments } = useSelector((state) => state.Departments);

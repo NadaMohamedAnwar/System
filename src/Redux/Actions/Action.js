@@ -6,8 +6,8 @@ import axios from "axios";
 export const fetchActiveDepartments = (orgId) => async (dispatch) => {
   dispatch({ type: 'FETCH_DEPARTMENT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
-    // const orgId = sessionStorage.getItem('orgId')
+    const token = localStorage.getItem('token');
+    // const orgId = localStorage.getItem('orgId')
     const response = await axios.get('http://agentsys.runasp.net/api/Departments',
       {
         headers: {
@@ -34,8 +34,8 @@ export const fetchActiveDepartments = (orgId) => async (dispatch) => {
 export const fetchInActiveDepartments = () => async (dispatch) => {
   dispatch({ type: 'FETCH_DEPARTMENT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
-    const orgId = sessionStorage.getItem('orgId')
+    const token = localStorage.getItem('token');
+    const orgId = localStorage.getItem('orgId')
     const response = await axios.get('http://agentsys.runasp.net/api/Departments',
       {
         headers: {
@@ -62,7 +62,7 @@ export const fetchInActiveDepartments = () => async (dispatch) => {
 export const addDepartment = (DepData) => async (dispatch) => {
   dispatch({ type: 'ADD_DEPARTMENT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); // Retrieve token from sessionStorage
+    const token = localStorage.getItem('token'); // Retrieve token from localStorage
     const response = await axios.post('http://agentsys.runasp.net/api/Departments', DepData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export const addDepartment = (DepData) => async (dispatch) => {
 export const editDepartment = (id, DepData) => async (dispatch) => {
   dispatch({ type: 'EDIT_DEPARTMENT_REQUEST' });
   try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await axios.put(
           `http://agentsys.runasp.net/api/Departments/${id}`,
           DepData,
@@ -101,7 +101,7 @@ export const editDepartment = (id, DepData) => async (dispatch) => {
 export const assignDepartment = (id, ManagerId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_DEPARTMENT_REQUEST' });
   try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
       const response = await axios.post(
           `http://agentsys.runasp.net/api/Departments/${id}/AssignManager/${ManagerId}`, {},
           {
@@ -121,7 +121,7 @@ export const assignDepartment = (id, ManagerId) => async (dispatch) => {
 
 export const deleteDepartment = (id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_DEPARTMENT_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Departments/${id}`,
         {
@@ -157,7 +157,7 @@ export const filterDeps = (name,profile,Phone,email) => (dispatch, getState) => 
 export const fetchOrgs = () => async (dispatch) => {
   dispatch({ type: 'FETCH_ORGS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Organizations',
       {
         headers: {
@@ -179,7 +179,7 @@ export const fetchOrgs = () => async (dispatch) => {
 export const addAOrg = (OrgData) => async (dispatch) => {
   dispatch({ type: 'ADD_ORGS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post('http://agentsys.runasp.net/api/Organizations', OrgData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -198,7 +198,7 @@ export const addAOrg = (OrgData) => async (dispatch) => {
 export const editOrg = (id, OrgData) => async (dispatch) => {
   dispatch({ type: 'EDIT_ORGS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Organizations/${id}`,
       OrgData,
@@ -219,7 +219,7 @@ export const editOrg = (id, OrgData) => async (dispatch) => {
 
 export const deleteOrg = (Id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_ORGS_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Organizations/${Id}`,
         {
@@ -239,7 +239,7 @@ export const deleteOrg = (Id) => async (dispatch) => {
 export const activateOrgs = (id) => async (dispatch) => {
   dispatch({ type: 'EDIT_ORGS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.patch(
       `http://agentsys.runasp.net/api/Organizations/${id}`,
       id,
@@ -261,7 +261,7 @@ export const activateOrgs = (id) => async (dispatch) => {
 export const DeactivateOrgs = (id) => async (dispatch) => {
   dispatch({ type: 'EDIT_ORGS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Organizations/${id}`,
       id,
@@ -300,7 +300,7 @@ export const filterOrgs = (name, type, status,email) => (dispatch, getState) => 
 export const fetchClients = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CLIENTS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Clients',
       {
         headers: {
@@ -322,7 +322,7 @@ export const fetchClients = () => async (dispatch) => {
 export const addClient = (clientData) => async (dispatch) => {
   dispatch({ type: 'ADD_CLIENTS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post('http://agentsys.runasp.net/api/Clients', clientData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -341,7 +341,7 @@ export const addClient = (clientData) => async (dispatch) => {
 export const editClient = (id, clientData) => async (dispatch) => {
   dispatch({ type: 'EDIT_CLIENTS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Clients/${id}`,
       clientData,
@@ -362,7 +362,7 @@ export const editClient = (id, clientData) => async (dispatch) => {
 
 export const deleteClient = (id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_CLIENTS_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Clients/${id}`,
         {
@@ -404,7 +404,7 @@ export const filterClientDate = ( Name, contactName, Phone, address) => (dispatc
 export const fetchCategories = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CATEGORY_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Category',
       {
         headers: {
@@ -426,7 +426,7 @@ export const fetchCategories = () => async (dispatch) => {
 export const addCategory = (name) => async (dispatch) => {
   dispatch({ type: 'ADD_CATEGORY_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     console.log("name",name)
     const response = await axios.post('http://agentsys.runasp.net/api/Category',{name}, 
      {
@@ -448,7 +448,7 @@ export const addCategory = (name) => async (dispatch) => {
 export const editCategory = (id, name) => async (dispatch) => {
   dispatch({ type: 'EDIT_CATEGORY_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Category/${id}`,
       { Name: name },
@@ -471,7 +471,7 @@ export const deleteCategory = (id) => async (dispatch) => {
   dispatch({ type: "DELETE_CATEGORY_REQUEST" });
 
   try {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     await axios.delete(`http://agentsys.runasp.net/api/Category/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -503,8 +503,8 @@ export const filterCategory = (name) => (dispatch, getState) => {
 export const fetchTasks = (depid) => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
-    const OrgId = sessionStorage.getItem('orgId');
+    const token = localStorage.getItem('token');
+    const OrgId = localStorage.getItem('orgId');
     
     const response = await axios.get(`http://agentsys.runasp.net/api/Departments/${depid}/Tasks`,
       {
@@ -527,10 +527,10 @@ export const fetchTasks = (depid) => async (dispatch) => {
 export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,ParentTaskId,AssignedTo,CreatedBy,DepartmentIds) => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_REQUEST' });
   // console.log("Final departmentId before fetching tasks:", DepartmentIds);
-  const OrgId = sessionStorage.getItem('orgId');
+  const OrgId = localStorage.getItem('orgId');
   try {
-    const token = sessionStorage.getItem('token');
-    const OrgId = sessionStorage.getItem('orgId');
+    const token = localStorage.getItem('token');
+    const OrgId = localStorage.getItem('orgId');
     const params = { OrgId };
     if (ClientId) params.ClientId = ClientId;
     if (ServiceId) params.ServiceId = ServiceId;
@@ -566,7 +566,7 @@ export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,Parent
 export const addATask = (taskData) => async (dispatch) => {
   dispatch({ type: 'ADD_TASKS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post('http://agentsys.runasp.net/api/Task', taskData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -585,7 +585,7 @@ export const addATask = (taskData) => async (dispatch) => {
 export const assignTaskToAgent = (taskId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_TASKS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post(`http://agentsys.runasp.net/api/Task/${taskId}/assign/${AgentId}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -605,7 +605,7 @@ export const assignTaskToAgent = (taskId,AgentId) => async (dispatch) => {
 export const fetchTasksReport = (DateFrom, DateTo, Department, Client, Agent) => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_REPORT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const params = {};
     if (DateFrom) params.DateFrom = DateFrom;
     if (DateTo) params.DateTo = DateTo;
@@ -632,7 +632,7 @@ export const fetchTasksReport = (DateFrom, DateTo, Department, Client, Agent) =>
 export const fetchTaskscount = () => async (dispatch) => {
   dispatch({ type: 'FETCH_TASKS_COUNT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
     const response = await axios.get('http://agentsys.runasp.net/api/Task/count', {
       headers: {
@@ -640,7 +640,7 @@ export const fetchTaskscount = () => async (dispatch) => {
       },
     });
 
-    // console.log(response.data)
+    console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_COUNT_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -672,7 +672,7 @@ export const filterTasks = (name,priority,agent,sDate,eDate) => (dispatch, getSt
 export const fetchServices = () => async (dispatch) => {
   dispatch({ type: 'FETCH_SERVICES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Service',
       {
         headers: {
@@ -694,7 +694,7 @@ export const fetchServices = () => async (dispatch) => {
 export const addServices = (ServicesData) => async (dispatch) => {
   dispatch({ type: 'ADD_SERVICES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post('http://agentsys.runasp.net/api/Service', ServicesData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -713,7 +713,7 @@ export const addServices = (ServicesData) => async (dispatch) => {
 export const editServices = (id, ServicesData) => async (dispatch) => {
   dispatch({ type: 'EDIT_SERVICES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Service/${id}`,
       ServicesData,
@@ -734,7 +734,7 @@ export const editServices = (id, ServicesData) => async (dispatch) => {
 
 export const deleteServices = (id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_SERVICES_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Service/${id}`,
         {
@@ -754,8 +754,8 @@ export const deleteServices = (id) => async (dispatch) => {
 export const filterServices = (departmentid) => async(dispatch) => {
   dispatch({ type: 'FETCH_FILTER_SERVICES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
-    const OrgId = sessionStorage.getItem('orgId');
+    const token = localStorage.getItem('token');
+    const OrgId = localStorage.getItem('orgId');
     const response = await axios.get(`http://agentsys.runasp.net/api/Departments/${departmentid}/Services`,
       {
         headers: {
@@ -792,7 +792,7 @@ export const filterService = (name,profile) => (dispatch, getState) => {
 export const fetchUsers = () => async (dispatch) => {
   dispatch({ type: 'FETCH_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Users', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -817,7 +817,7 @@ export const fetchUsers = () => async (dispatch) => {
 export const getUserProfile = () => async (dispatch) => {
   dispatch({ type: 'FETCH_PROFILE_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Users/GetUserProfile', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -839,7 +839,7 @@ export const getUserProfile = () => async (dispatch) => {
 export const addUsers = (userData,type) => async (dispatch) => {
   dispatch({ type: 'ADD_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     console.log(`http://agentsys.runasp.net/api/Users/${type}`, userData)
     for (let pair of userData.entries()) {
       console.log(`${pair[0]}: ${pair[1]}`);
@@ -865,7 +865,7 @@ export const addUsers = (userData,type) => async (dispatch) => {
 export const editAgent = (userData) => async (dispatch) => {
   dispatch({ type: 'EDIT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Users/UpdateAgentProfile`,
       userData,
@@ -886,7 +886,7 @@ export const editAgent = (userData) => async (dispatch) => {
 export const editUsers = (userData,AdminId) => async (dispatch) => {
   dispatch({ type: 'EDIT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Admin/${AdminId}/update`,
       userData,
@@ -907,7 +907,7 @@ export const editUsers = (userData,AdminId) => async (dispatch) => {
 export const activateUsers = (id,type) => async (dispatch) => {
   dispatch({ type: 'ACT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Users/${type}/${id}`,
       id,
@@ -930,7 +930,7 @@ export const activateUsers = (id,type) => async (dispatch) => {
 export const DeactivateUsers = (id,type) => async (dispatch) => {
   dispatch({ type: 'DEACT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Users/${type}/${id}`,
       id,
@@ -952,7 +952,7 @@ export const DeactivateUsers = (id,type) => async (dispatch) => {
 export const activateAdmin = (id,type) => async (dispatch) => {
   dispatch({ type: 'ACT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Admin/${id}/active`,
       id,
@@ -975,7 +975,7 @@ export const activateAdmin = (id,type) => async (dispatch) => {
 export const DeactivateAdmin = (id,type) => async (dispatch) => {
   dispatch({ type: 'DEACT_USERS_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Admin/${id}/deactive`,
       id,
@@ -996,7 +996,7 @@ export const DeactivateAdmin = (id,type) => async (dispatch) => {
 };
 export const deleteUsers= (Id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_USERS_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Organizations/${Id}`,
         {
@@ -1035,7 +1035,7 @@ export const filterUsers = (username,email,NationalId,Phone,orgName, role,status
 export const fetchCases = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Cases',
       {
         headers: {
@@ -1057,7 +1057,7 @@ export const fetchCases = () => async (dispatch) => {
 export const addCases  = (CaseData) => async (dispatch) => {
   dispatch({ type: 'ADD_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post('http://agentsys.runasp.net/api/Cases', CaseData, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1076,7 +1076,7 @@ export const addCases  = (CaseData) => async (dispatch) => {
 export const editCases  = (id, caseDto) => async (dispatch) => {
   dispatch({ type: 'EDIT_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.put(
       `http://agentsys.runasp.net/api/Cases/${id}`,
       caseDto,
@@ -1097,7 +1097,7 @@ export const editCases  = (id, caseDto) => async (dispatch) => {
 
 export const deleteCases  = (id) => async (dispatch) => {
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_CASES_REQUEST" });
       await axios.delete(`http://agentsys.runasp.net/api/Cases/${id}`,
         {
@@ -1117,7 +1117,7 @@ export const deleteCases  = (id) => async (dispatch) => {
 export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/link/${linkedCaseId}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1137,7 +1137,7 @@ export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
 export const assignCaseTocourts = (caseId, arbitrations) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
 
       const response = await axios.post(
           `http://agentsys.runasp.net/api/Cases/${caseId}/arbitraries`,
@@ -1160,7 +1160,7 @@ export const assignCaseTocourts = (caseId, arbitrations) => async (dispatch) => 
 export const fetchCourts = () => async (dispatch) => {
   dispatch({ type: 'FETCH_COURT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get('http://agentsys.runasp.net/api/Courts',
       {
         headers: {
@@ -1180,7 +1180,7 @@ export const fetchCourts = () => async (dispatch) => {
 export const attachCaseFile = (CaseId,formData) => async (dispatch) => {
   dispatch({ type: 'ATTACH_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/Documents`,formData , {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1218,7 +1218,7 @@ export const filterCases = (name,Lawyer,Party ,sDate, clientId) => (dispatch, ge
 export const fetchCasesReport = (DateFrom, DateTo, Department, Client, Agent) => async (dispatch) => {
   dispatch({ type: 'FETCH_CASES_REPORT_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const params = {};
     if (DateFrom) params.DateFrom = DateFrom;
     if (DateTo) params.DateTo = DateTo;
@@ -1246,7 +1246,7 @@ export const fetchCasesReport = (DateFrom, DateTo, Department, Client, Agent) =>
 export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
-    const token = sessionStorage.getItem('token'); 
+    const token = localStorage.getItem('token'); 
     const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1265,3 +1265,64 @@ export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
 };
 
 // ======================================================================
+export const fetchDocuments = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_DOCUMENT_REQUEST' });
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://agentsys.runasp.net/api/',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    // console.log(response.data)
+    dispatch({ type: 'FETCH_DOCUMENT_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_DOCUMENT_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+export const fetchDocumentsLog = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_DOCUMENT_LOG_REQUEST' });
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://agentsys.runasp.net/api/',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    // console.log(response.data)
+    dispatch({ type: 'FETCH_DOCUMENT_LOG_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_DOCUMENT_LOG_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+
+
+export const addADocument = (DocData) => async (dispatch) => {
+  dispatch({ type: 'ADD_DOCUMENT_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.post('http://agentsys.runasp.net/api/', DocData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({ type: 'ADD_DOCUMENT_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ADD_DOCUMENT_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};

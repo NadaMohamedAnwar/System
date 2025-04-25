@@ -27,7 +27,7 @@ function DashboardAgent() {
   const [ToDate, setToDate] =  useState(() => {
     return new Date().toISOString().split("T")[0]; 
   });
-  const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
+  const [orgId, setorgId] = useState(localStorage.getItem("orgId"));
   useEffect(() => {
       dispatch(fetchActiveDepartments(orgId));
       dispatch(fetchUsers());

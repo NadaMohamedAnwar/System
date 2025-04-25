@@ -18,8 +18,8 @@ function ClientsManagement() {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
 
-    const orgId = parseInt(sessionStorage.getItem("orgId"), 10);
-    const userRoles = sessionStorage.getItem("roles");
+    const orgId = parseInt(localStorage.getItem("orgId"), 10);
+    const userRoles = localStorage.getItem("roles");
 
     // Fetch Clients on component mount
     useEffect(() => {

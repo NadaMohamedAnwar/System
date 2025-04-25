@@ -25,7 +25,7 @@ function AddDep() {
 
   useEffect(() => {
     if (Users && Users.length > 0) {
-      const managerList = Users.filter((u) => u.role === "Manager" && u.organizationId === parseInt(sessionStorage.getItem('orgId'), 10));
+      const managerList = Users.filter((u) => u.role === "Manager" && u.organizationId === parseInt(localStorage.getItem('orgId'), 10));
       setManagers(managerList);
       // console.log("Managers:", managerList);
     }
@@ -67,7 +67,7 @@ function AddDep() {
       phone,
       status,
       managerId: managerId || null,
-      orgId: parseInt(sessionStorage.getItem('orgId'), 10),
+      orgId: parseInt(localStorage.getItem('orgId'), 10),
       profileType: parseInt(profileType),
     };
   

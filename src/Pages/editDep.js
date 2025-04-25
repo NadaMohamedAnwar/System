@@ -15,7 +15,7 @@ function EditDep() {
   const [status, setStatus] = useState(true); // Default to true
   const [managerId, setManagerId] = useState(null);
   const [profileType, setProfileType] = useState("");
-  const orgId = sessionStorage.getItem('orgId')
+  const orgId = localStorage.getItem('orgId')
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const { state } = useLocation(); 

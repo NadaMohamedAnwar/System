@@ -4,8 +4,8 @@ import { Navigate } from 'react-router-dom';
 
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-  const token = sessionStorage.getItem('token');
-  const userRoles = JSON.parse(sessionStorage.getItem('roles'));
+  const token = localStorage.getItem('token');
+  const userRoles = JSON.parse(localStorage.getItem('roles'));
 
   if (!token) {
     return <Navigate to="/" />;

@@ -8,6 +8,7 @@ import ServicesReducer from './serviceReducer';
 import UsersReducer from './UserReducer';
 import CaseReducer from './CaseReducer';
 import CourtReducer from './CourtReducer';
+import DocumentReducer from './DocumentReducer';
 
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     Users: UsersReducer,
     Cases: CaseReducer,
     Courts: CourtReducer,
+    Documents: DocumentReducer,
 });
 
 export default rootReducer;

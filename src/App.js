@@ -1,5 +1,5 @@
-import React ,{ useState } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import React ,{ useEffect, useState } from 'react';
+import { HashRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import DashboardAgent from './Pages/DashboardAgent';
 import Login from './Pages/login';
 import Header from './Layouts/header';
@@ -47,17 +47,86 @@ import ViewOrg from './Pages/viewOrg';
 import ViewDep from './Pages/viewDep';
 import EditAgent from './Pages/editAgent';
 import Profile from './Pages/profile';
+import axios from 'axios';
+import DocumentsLog from './Pages/documentsLog';
+import Documents from './Pages/documents';
+import AddDocument from './Pages/addDocument';
+import RouterAware from './Components/RouterAware';
 // import './App.css'; 
 
 function App() {
-  const token = sessionStorage.getItem('token');
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
+  // Set up a timer to refresh the token 30 minutes before expiry.
+  useEffect(() => {
+    const expiry = localStorage.getItem('tokenExpiry');
+    if (!expiry) return; // Do nothing if there is no expiry
+
+    const expiryTime = new Date(expiry).getTime();
+    const now = Date.now();
+    // Calculate delay: token expiry minus current time and subtract 30 minutes.
+    const refreshIn = expiryTime - now - 30 * 60 * 1000;
+    let timeoutId;
+
+    if (refreshIn <= 0) {
+      // If we're already too close to expiry, try to refresh immediately
+      refreshAccessToken();
+    } else {
+      // Set a timeout to refresh the token after the calculated delay
+      timeoutId = setTimeout(() => {
+        refreshAccessToken();
+      }, refreshIn);
+    }
+
+    // Clean up the timeout when the component unmounts or token updates
+    return () => clearTimeout(timeoutId);
+  }, [token]);
+
+  // Token refresh logic.
+  const refreshAccessToken = async () => {
+    try {
+      // Use the current token as refreshToken here.
+      const refreshToken = localStorage.getItem('token');
+      const response = await axios.post('http://agentsys.runasp.net/api/Account/refresh', {
+        refreshToken,
+      });
+
+      const { accessToken} = response.data;
+
+      // Update localStorage and token state.
+      localStorage.setItem('token', accessToken);
+      setToken(accessToken);
+       console.log("token refresh")
+      return accessToken;
+    } catch (err) {
+      console.error('Token refresh failed:', err);
+      // If refresh fails, clear localStorage and redirect to the login page.
+      localStorage.clear();
+      window.location.href = '/';
+    }
+  };
+
+  // Sync token across tabs by listening for 'storage' events.
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setToken(localStorage.getItem('token'));
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  
+  
   return (
     <div>
       <HashRouter>
        {token && <Header/>}
-        
+       <RouterAware token={token} refreshAccessToken={refreshAccessToken} />
         <Routes>
-          <Route path='/' element={<Login />} />
+          <Route path='/' element={<Login onLoginSuccess={(token) => setToken(token)} />} />
           <Route path='*' element={<h2>Page Not Found</h2>} />
           {/* <Route path='/home' element={<PrivateRoute component={Home} roles={['SuperAdmin','OrgAdmin','Manager','HeadManager']}  />} /> */}
           <Route path='/dashboard-agent' element={<PrivateRoute component={DashboardAgent} roles={['OrgAdmin','Manager','HeadManager']} />} />
@@ -113,7 +182,9 @@ function App() {
           <Route path='/view-case/:id' element={<PrivateRoute component={ViewCase} roles={['OrgAdmin','Manager','HeadManager']} />} />
           <Route path='/attach-document' element={<PrivateRoute component={AttachCaseFile} roles={['OrgAdmin','Manager','HeadManager']} />} />
 
-
+          <Route path='/documents' element={<PrivateRoute component={Documents} roles={['OrgAdmin','Manager','HeadManager']}  />} />
+          <Route path='/add-document' element={<PrivateRoute component={AddDocument} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/documents-log' element={<PrivateRoute component={DocumentsLog} roles={['OrgAdmin','Manager','HeadManager']}  />} />
           
           <Route path='/logout' element={<Login />} /> 
         </Routes>

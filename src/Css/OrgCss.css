@@ -504,6 +504,8 @@ form button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     background-color: #fff;
+    height: 500px;         /* or whatever height fits your design */
+    overflow-y: auto;
 }
 
 
@@ -568,6 +570,7 @@ form button:hover {
     background-color: #fdfdfd;
     display: flex;
     flex-direction: column;
+    
 }
 
 .agent-task-column::before {

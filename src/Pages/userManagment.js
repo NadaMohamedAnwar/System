@@ -11,7 +11,7 @@ import { activateAdmin, activateUsers, DeactivateAdmin, DeactivateUsers, deleteU
 function UserManagement() {
     const dispatch = useDispatch();
     const { FilterUsers} = useSelector((state) => state.Users);
-    const roles = sessionStorage.getItem('roles');
+    const roles = localStorage.getItem('roles');
     const [orgName, setorgName] = useState("");
     const [NationalId, setNationalId] = useState("");
     const [username, setusername] = useState("");

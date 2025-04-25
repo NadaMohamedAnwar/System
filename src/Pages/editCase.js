@@ -83,7 +83,7 @@ function EditCase() {
       setClientPositionType(clientPositionTypeMap[Case.clientPositionType || ""]);
       const fetchCourts = async () => {
         try {
-          const token = sessionStorage.getItem('token'); 
+          const token = localStorage.getItem('token'); 
           const response = await axios.get(`http://agentsys.runasp.net/api/Cases/${id}/arbitraries`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ function EditCase() {
       fetchCourts();
       const fetchLinkedCases = async () => {
         try {
-          const token = sessionStorage.getItem('token'); 
+          const token = localStorage.getItem('token'); 
           const response = await axios.get(`http://agentsys.runasp.net/api/Cases/${id}/linked`, {
             headers: {
               Authorization: `Bearer ${token}`,

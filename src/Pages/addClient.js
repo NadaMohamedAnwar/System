@@ -41,8 +41,8 @@ function AddClient() {
   const [longitude, setLongitude] = useState(null);
   const [showMapModal, setShowMapModal] = useState(false);
   const [location, setlocation] = useState('');
-  const [orgId, setorgId] = useState(sessionStorage.getItem('orgId'));
-  const role= sessionStorage.getItem('roles')
+  const [orgId, setorgId] = useState(localStorage.getItem('orgId'));
+  const role= localStorage.getItem('roles')
   const getLocationName = async (lat, lng) => {
     try {
         const response = await axios.get(`https://nominatim.openstreetmap.org/reverse`, {

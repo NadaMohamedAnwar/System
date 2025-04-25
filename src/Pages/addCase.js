@@ -39,7 +39,7 @@ function AddCase() {
   const { Users } = useSelector((state) => state.Users);
   const [AgentId, setAgentId] = useState("");
   const [Agents, setAgents] = useState([]);
-  const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
+  const orgId=parseInt(localStorage.getItem("orgId"), 10)
  
   useEffect(() => {
         dispatch(fetchClients());
@@ -118,7 +118,7 @@ function AddCase() {
       endDate,
       caseType: parseInt(caseType,10),
       clientId: parseInt(clientId),
-      organizationId: parseInt(sessionStorage.getItem("orgId"), 10),
+      organizationId: parseInt(localStorage.getItem("orgId"), 10),
       ClientPositionType:parseInt(ClientPosition,10)
     };
 

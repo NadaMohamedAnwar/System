@@ -28,7 +28,7 @@ function EditUser() {
   useEffect(() => {
     const fetchData=async()=>{
       try{
-        const token = sessionStorage.getItem('token');
+        const token = localStorage.getItem('token');
         const response=await axios.get(`http://agentsys.runasp.net/api/Admin/${id}`, {
           headers: {
               Authorization: `Bearer ${token}`,

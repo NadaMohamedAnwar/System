@@ -13,17 +13,17 @@ import axios from "axios";
 function TaskManagement() {
     const dispatch = useDispatch();
     const { FilterTasks = [] } = useSelector((state) => state.Tasks || {});
-    const [departmentId, setdepartmentId] = useState(sessionStorage.getItem('departments'));
+    const [departmentId, setdepartmentId] = useState(localStorage.getItem('departments'));
     const { Departments } = useSelector((state) => state.Departments);
     const [name, setname] = useState("");
     const [agent, setagent] = useState("");
     const [sDate, setsDate] = useState("");
     const [eDate, seteDate] = useState("");
     const [priority, setPriority] = useState("");
-    const roles = sessionStorage.getItem('roles');
+    const roles = localStorage.getItem('roles');
     const { Users } = useSelector((state) => state.Users);
     const [total, setTotal] = useState();
-    const [orgId, setorgId] = useState(sessionStorage.getItem("orgId"));
+    const [orgId, setorgId] = useState(localStorage.getItem("orgId"));
       useEffect(() => {
           dispatch(fetchActiveDepartments(orgId));
           dispatch(fetchUsers());

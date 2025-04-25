@@ -18,8 +18,8 @@ function CaseManagement() {
     const [sDate, setsDate] = useState("");
     const [clientId, setClientId] = useState("");
     const { Clients } = useSelector((state) => state.Clients);
-    const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
-    const userRoles=sessionStorage.getItem("roles")
+    const orgId=parseInt(localStorage.getItem("orgId"), 10)
+    const userRoles=localStorage.getItem("roles")
     useEffect(() => {
         dispatch(fetchClients());
     }, [dispatch]);

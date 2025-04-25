@@ -17,7 +17,7 @@ function ActiveDep() {
     const [email, setemail] = useState("");
     const [Phone, setPhone] = useState("");
     const navigate = useNavigate();
-    const orgId = sessionStorage.getItem('orgId')
+    const orgId = localStorage.getItem('orgId')
 
     const handlePhoneChange = (e) => {
         setPhone(e.target.value);

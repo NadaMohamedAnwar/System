@@ -13,7 +13,7 @@ function AddTask() {
   const [serviceId, setServiceId] = useState("");
   const [taskTypeId, setTaskTypeId] = useState("");
   const [taskTypes, setTaskTypes] = useState([]);
-  const [departmentId, setDepartmentId] = useState(sessionStorage.getItem('departments'));
+  const [departmentId, setDepartmentId] = useState(localStorage.getItem('departments'));
   const [clientId, setClientId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -27,9 +27,9 @@ function AddTask() {
   const { Users } = useSelector((state) => state.Users);
   const [AgentId, setAgentId] = useState("");
   const [Agents, setAgents] = useState([]);
-  const roles = sessionStorage.getItem('roles');
+  const roles = localStorage.getItem('roles');
   const dispatch = useDispatch();
-  const orgId=parseInt(sessionStorage.getItem("orgId"), 10)
+  const orgId=parseInt(localStorage.getItem("orgId"), 10)
 
   const { Cases } = useSelector((state) => state.Cases);
   const [CaseId, setCaseId] = useState(null);
@@ -78,7 +78,7 @@ function AddTask() {
     // console.log("Departments", Departments);
 }, [dispatch]);
 
-    const userRoles=sessionStorage.getItem("roles")
+    const userRoles=localStorage.getItem("roles")
     const { Clients } = useSelector((state) => state.Clients);
     useEffect(() => {
       dispatch(fetchClients());
@@ -117,7 +117,7 @@ useEffect(() => {
 }, [CaseId, Cases]);
 const FetchTaskTypes=async()=>{
   try {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const response = await axios.get(`http://agentsys.runasp.net/api/Service/${serviceId}/tasks`,
       {
         headers: {
