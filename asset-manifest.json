@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/System/static/css/main.6aeb9a3f.css",
-    "main.js": "/System/static/js/main.ebb112ca.js",
+    "main.css": "/System/static/css/main.bfe030ce.css",
+    "main.js": "/System/static/js/main.32df3ca4.js",
     "static/js/453.72ad9384.chunk.js": "/System/static/js/453.72ad9384.chunk.js",
     "static/media/Codeverse_FinalLogo_Negative.svg": "/System/static/media/Codeverse_FinalLogo_Negative.75c4d2d80f5958fe6cbc91376dda4f31.svg",
     "static/media/Codeverse_FinalLogo.svg": "/System/static/media/Codeverse_FinalLogo.a08d2e248f3440d28e93c707d45f142a.svg",
     "index.html": "/System/index.html",
     "static/media/profile-user-svgrepo-com.svg": "/System/static/media/profile-user-svgrepo-com.b4723ab19a13b47db61a0028497d6bd0.svg",
-    "main.6aeb9a3f.css.map": "/System/static/css/main.6aeb9a3f.css.map",
-    "main.ebb112ca.js.map": "/System/static/js/main.ebb112ca.js.map",
+    "main.bfe030ce.css.map": "/System/static/css/main.bfe030ce.css.map",
+    "main.32df3ca4.js.map": "/System/static/js/main.32df3ca4.js.map",
     "453.72ad9384.chunk.js.map": "/System/static/js/453.72ad9384.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6aeb9a3f.css",
-    "static/js/main.ebb112ca.js"
+    "static/css/main.bfe030ce.css",
+    "static/js/main.32df3ca4.js"
   ]
 }
