@@ -52,60 +52,132 @@ import DocumentsLog from './Pages/documentsLog';
 import Documents from './Pages/documents';
 import AddDocument from './Pages/addDocument';
 import RouterAware from './Components/RouterAware';
+import FolderGrid from './Pages/FolderGrid';
+import FolderViewer from './Pages/FolderViewer';
+import { addTag } from './Redux/Actions/Action';
+import TagsManagement from './Pages/Tags';
+import EditTags from './Pages/editTag';
+
 // import './App.css'; 
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
-
+  // const navigate = useNavigate();
   // Set up a timer to refresh the token 30 minutes before expiry.
-  useEffect(() => {
-    const expiry = localStorage.getItem('tokenExpiry');
-    if (!expiry) return; // Do nothing if there is no expiry
+  // useEffect(() => {
+  //   const expiry = localStorage.getItem('tokenExpiry');
+  //   if (!expiry) return; // Do nothing if there is no expiry
 
-    const expiryTime = new Date(expiry).getTime();
-    const now = Date.now();
-    // Calculate delay: token expiry minus current time and subtract 30 minutes.
-    const refreshIn = expiryTime - now - 30 * 60 * 1000;
-    let timeoutId;
+  //   const expiryTime = new Date(expiry).getTime();
+  //   const now = Date.now();
+  //   // Calculate delay: token expiry minus current time and subtract 30 minutes.
+  //   const refreshIn = expiryTime - now - 30 * 60 * 1000;
+  //   let timeoutId;
 
-    if (refreshIn <= 0) {
-      // If we're already too close to expiry, try to refresh immediately
-      refreshAccessToken();
-    } else {
-      // Set a timeout to refresh the token after the calculated delay
-      timeoutId = setTimeout(() => {
-        refreshAccessToken();
-      }, refreshIn);
-    }
+  //   if (refreshIn <= 0) {
+  //     // If we're already too close to expiry, try to refresh immediately
+  //     refreshAccessToken();
+  //   } else {
+  //     // Set a timeout to refresh the token after the calculated delay
+  //     timeoutId = setTimeout(() => {
+  //       refreshAccessToken();
+  //     }, refreshIn);
+  //   }
 
-    // Clean up the timeout when the component unmounts or token updates
-    return () => clearTimeout(timeoutId);
-  }, [token]);
+  //   // Clean up the timeout when the component unmounts or token updates
+  //   return () => clearTimeout(timeoutId);
+  // }, [token]);
+  // const refreshAccessToken = async () => {
+  //   try {
+  //     // Use the current token as refreshToken here.
+  //     const refreshToken = localStorage.getItem('token');
+  //     const response = await axios.post('http://agentsys.runasp.net/api/Account/refresh-token', {
+  //       accessToken:refreshToken,
+  //     });
 
-  // Token refresh logic.
+  //     const { accessToken} = response.data;
+
+  //     // Update localStorage and token state.
+  //     localStorage.setItem('token', accessToken);
+  //     setToken(accessToken);
+  //      console.log("token refresh")
+  //     return accessToken;
+  //   } catch (err) {
+  //     console.error('Token refresh failed:', err);
+  //     // If refresh fails, clear localStorage and redirect to the login page.
+  //     localStorage.clear();
+  //     window.location.href = '/';
+  //   }
+  // };
+ 
+
   const refreshAccessToken = async () => {
-    try {
-      // Use the current token as refreshToken here.
+      try {
       const refreshToken = localStorage.getItem('token');
-      const response = await axios.post('http://agentsys.runasp.net/api/Account/refresh', {
-        refreshToken,
-      });
 
+      const response = await axios.post(
+        'http://agentsys.runasp.net/api/Account/refresh-token',
+        {}, // empty POST body
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          params: {
+            accessToken: refreshToken, 
+          },
+        }
+      );
+
+      console.log(response)
       const { accessToken} = response.data;
 
-      // Update localStorage and token state.
-      localStorage.setItem('token', accessToken);
-      setToken(accessToken);
-       console.log("token refresh")
-      return accessToken;
+      if (accessToken) {
+        localStorage.setItem('token', accessToken);
+        setToken(accessToken);
+      } else {
+        throw new Error('Failed to refresh access token');
+      }
     } catch (err) {
       console.error('Token refresh failed:', err);
-      // If refresh fails, clear localStorage and redirect to the login page.
-      localStorage.clear();
-      window.location.href = '/';
+      // localStorage.clear();
+      // window.location.href = '/'; // Log out if refresh fails
     }
   };
 
+  useEffect(() => {
+    const refreshToken = () => {
+      const tokenExpiry = localStorage.getItem('tokenExpiry');
+      const now = Date.now();
+      const refreshTokenExpiry = new Date(tokenExpiry).getTime(); // Expiry of refresh token
+
+      if (refreshTokenExpiry > now) {
+        refreshAccessToken(); // Refresh the token if it's still valid
+      } else {
+        localStorage.clear();
+        window.location.href = '/'; // Log out if refresh token expired
+      }
+    };
+
+    // Refresh token on initial load
+    if (token) {
+      refreshToken();
+    }
+
+    // Set interval to refresh the token every 25 minutes (1500 seconds)
+    const intervalId = setInterval(() => {
+      if (token) {
+        refreshToken(); // Refresh token every 25 minutes
+      }
+    }, 25 * 60 * 1000); // 25 minutes in milliseconds
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [token]); 
+  
+  
+
+  
   // Sync token across tabs by listening for 'storage' events.
   useEffect(() => {
     const handleStorageChange = () => {
@@ -186,6 +258,14 @@ function App() {
           <Route path='/add-document' element={<PrivateRoute component={AddDocument} roles={['OrgAdmin','Manager','HeadManager']} />} />
           <Route path='/documents-log' element={<PrivateRoute component={DocumentsLog} roles={['OrgAdmin','Manager','HeadManager']}  />} />
           
+          <Route path='/folders' element={<PrivateRoute component={FolderGrid} roles={['OrgAdmin','Manager','HeadManager']}  />} />
+          <Route path='/view-folder/:id' element={<PrivateRoute component={FolderViewer} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          
+          <Route path='/tags' element={<PrivateRoute component={TagsManagement} roles={['OrgAdmin','Manager','HeadManager']}  />} />
+          <Route path='/add-tag' element={<PrivateRoute component={addTag} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/edit-tag/:id' element={<PrivateRoute component={EditTags} roles={['OrgAdmin','Manager','HeadManager']} />} />
+          <Route path='/manage-document-tag/:id' element={<PrivateRoute component={EditCase} roles={['OrgAdmin','Manager','HeadManager']} />} />
+
           <Route path='/logout' element={<Login />} /> 
         </Routes>
       </HashRouter>

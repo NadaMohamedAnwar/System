@@ -8,7 +8,7 @@ export const fetchActiveDepartments = (orgId) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
     // const orgId = localStorage.getItem('orgId')
-    const response = await axios.get('http://agentsys.runasp.net/api/Departments',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Departments',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -36,7 +36,7 @@ export const fetchInActiveDepartments = () => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
     const orgId = localStorage.getItem('orgId')
-    const response = await axios.get('http://agentsys.runasp.net/api/Departments',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Departments',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ export const addDepartment = (DepData) => async (dispatch) => {
   dispatch({ type: 'ADD_DEPARTMENT_REQUEST' });
   try {
     const token = localStorage.getItem('token'); // Retrieve token from localStorage
-    const response = await axios.post('http://agentsys.runasp.net/api/Departments', DepData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Departments', DepData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -83,7 +83,7 @@ export const editDepartment = (id, DepData) => async (dispatch) => {
   try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-          `http://agentsys.runasp.net/api/Departments/${id}`,
+          `https://agentsystem-development.up.railway.app/api/Departments/${id}`,
           DepData,
           {
               headers: {
@@ -103,7 +103,7 @@ export const assignDepartment = (id, ManagerId) => async (dispatch) => {
   try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-          `http://agentsys.runasp.net/api/Departments/${id}/AssignManager/${ManagerId}`, {},
+          `https://agentsystem-development.up.railway.app/api/Departments/${id}/AssignManager/${ManagerId}`, {},
           {
               headers: {
                   Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ export const deleteDepartment = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_DEPARTMENT_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Departments/${id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Departments/${id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -158,7 +158,7 @@ export const fetchOrgs = () => async (dispatch) => {
   dispatch({ type: 'FETCH_ORGS_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Organizations',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Organizations',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -180,7 +180,7 @@ export const addAOrg = (OrgData) => async (dispatch) => {
   dispatch({ type: 'ADD_ORGS_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/Organizations', OrgData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Organizations', OrgData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -200,7 +200,7 @@ export const editOrg = (id, OrgData) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Organizations/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Organizations/${id}`,
       OrgData,
       {
         headers: {
@@ -221,7 +221,7 @@ export const deleteOrg = (Id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_ORGS_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Organizations/${Id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Organizations/${Id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -231,7 +231,7 @@ export const deleteOrg = (Id) => async (dispatch) => {
       dispatch({ type: "DELETE_ORGS_SUCCESS", payload: Id });
   } catch (error) {
       dispatch({
-          type: "DELETE_ORGS_FAIL",
+          type: "DELETE_ORGS_FAILURE",
           payload: error.response?.data?.message || error.message,
       });
   }
@@ -241,7 +241,7 @@ export const activateOrgs = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.patch(
-      `http://agentsys.runasp.net/api/Organizations/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Organizations/${id}`,
       id,
       {
         headers: {
@@ -263,7 +263,7 @@ export const DeactivateOrgs = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Organizations/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Organizations/${id}`,
       id,
       {
         headers: {
@@ -301,7 +301,7 @@ export const fetchClients = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CLIENTS_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Clients',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Clients',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -323,7 +323,7 @@ export const addClient = (clientData) => async (dispatch) => {
   dispatch({ type: 'ADD_CLIENTS_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/Clients', clientData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Clients', clientData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -343,7 +343,7 @@ export const editClient = (id, clientData) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Clients/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Clients/${id}`,
       clientData,
       {
         headers: {
@@ -364,7 +364,7 @@ export const deleteClient = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_CLIENTS_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Clients/${id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Clients/${id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -405,7 +405,7 @@ export const fetchCategories = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CATEGORY_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Category',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Category',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -428,7 +428,7 @@ export const addCategory = (name) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     console.log("name",name)
-    const response = await axios.post('http://agentsys.runasp.net/api/Category',{name}, 
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Category',{name}, 
      {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -450,7 +450,7 @@ export const editCategory = (id, name) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Category/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Category/${id}`,
       { Name: name },
       {
         headers: {
@@ -472,7 +472,7 @@ export const deleteCategory = (id) => async (dispatch) => {
 
   try {
     const token = localStorage.getItem("token");
-    await axios.delete(`http://agentsys.runasp.net/api/Category/${id}`, {
+    await axios.delete(`https://agentsystem-development.up.railway.app/api/Category/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -506,7 +506,7 @@ export const fetchTasks = (depid) => async (dispatch) => {
     const token = localStorage.getItem('token');
     const OrgId = localStorage.getItem('orgId');
     
-    const response = await axios.get(`http://agentsys.runasp.net/api/Departments/${depid}/Tasks`,
+    const response = await axios.get(`https://agentsystem-development.up.railway.app/api/Departments/${depid}/Tasks`,
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -543,7 +543,7 @@ export const fetchAllTasks = (ClientId,ServiceId,TaskTypeId,Status,CaseId,Parent
     if (DepartmentIds) params.DepartmentIds = DepartmentIds;
     // console.log("params",params)
   
-    const response = await axios.get('http://agentsys.runasp.net/api/Task',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Task',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -567,7 +567,7 @@ export const addATask = (taskData) => async (dispatch) => {
   dispatch({ type: 'ADD_TASKS_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/Task', taskData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Task', taskData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -586,7 +586,7 @@ export const assignTaskToAgent = (taskId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_TASKS_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Task/${taskId}/assign/${AgentId}`,{}, {
+    const response = await axios.post(`https://agentsystem-development.up.railway.app/api/Task/${taskId}/assign/${AgentId}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -613,7 +613,7 @@ export const fetchTasksReport = (DateFrom, DateTo, Department, Client, Agent) =>
     if (Client) params.Client = Client;
     if (Agent) params.Agent = Agent;
 
-    const response = await axios.get('http://agentsys.runasp.net/api/Task/status-breakdown', {
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Task/status-breakdown', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -634,13 +634,13 @@ export const fetchTaskscount = () => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
 
-    const response = await axios.get('http://agentsys.runasp.net/api/Task/count', {
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Task/count', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    console.log(response.data)
+    // console.log(response.data)
     dispatch({ type: 'FETCH_TASKS_COUNT_SUCCESS', payload: response.data });
   } catch (error) {
     dispatch({
@@ -673,7 +673,7 @@ export const fetchServices = () => async (dispatch) => {
   dispatch({ type: 'FETCH_SERVICES_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Service',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Service',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -695,7 +695,7 @@ export const addServices = (ServicesData) => async (dispatch) => {
   dispatch({ type: 'ADD_SERVICES_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/Service', ServicesData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Service', ServicesData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -715,7 +715,7 @@ export const editServices = (id, ServicesData) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Service/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Service/${id}`,
       ServicesData,
       {
         headers: {
@@ -736,7 +736,7 @@ export const deleteServices = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_SERVICES_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Service/${id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Service/${id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -756,7 +756,7 @@ export const filterServices = (departmentid) => async(dispatch) => {
   try {
     const token = localStorage.getItem('token');
     const OrgId = localStorage.getItem('orgId');
-    const response = await axios.get(`http://agentsys.runasp.net/api/Departments/${departmentid}/Services`,
+    const response = await axios.get(`https://agentsystem-development.up.railway.app/api/Departments/${departmentid}/Services`,
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -793,7 +793,7 @@ export const fetchUsers = () => async (dispatch) => {
   dispatch({ type: 'FETCH_USERS_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Users', {
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Users', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -818,7 +818,7 @@ export const getUserProfile = () => async (dispatch) => {
   dispatch({ type: 'FETCH_PROFILE_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Users/GetUserProfile', {
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Users/GetUserProfile', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -840,12 +840,12 @@ export const addUsers = (userData,type) => async (dispatch) => {
   dispatch({ type: 'ADD_USERS_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    console.log(`http://agentsys.runasp.net/api/Users/${type}`, userData)
-    for (let pair of userData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+    // console.log(`https://agentsystem-development.up.railway.app/api/Users/${type}`, userData)
+    // for (let pair of userData.entries()) {
+    //   console.log(`${pair[0]}: ${pair[1]}`);
+    // }
      
-    const response = await axios.post(`http://agentsys.runasp.net/api/Users/${type}`, userData, {
+    const response = await axios.post(`https://agentsystem-development.up.railway.app/api/Users/${type}`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data", 
@@ -867,7 +867,7 @@ export const editAgent = (userData) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Users/UpdateAgentProfile`,
+      `https://agentsystem-development.up.railway.app/api/Users/UpdateAgentProfile`,
       userData,
       {
         headers: {
@@ -888,7 +888,7 @@ export const editUsers = (userData,AdminId) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Admin/${AdminId}/update`,
+      `https://agentsystem-development.up.railway.app/api/Admin/${AdminId}/update`,
       userData,
       {
         headers: {
@@ -909,7 +909,7 @@ export const activateUsers = (id,type) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Users/${type}/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Users/${type}/${id}`,
       id,
       {
         headers: {
@@ -932,7 +932,7 @@ export const DeactivateUsers = (id,type) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Users/${type}/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Users/${type}/${id}`,
       id,
       {
         headers: {
@@ -954,7 +954,7 @@ export const activateAdmin = (id,type) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Admin/${id}/active`,
+      `https://agentsystem-development.up.railway.app/api/Admin/${id}/active`,
       id,
       {
         headers: {
@@ -977,7 +977,7 @@ export const DeactivateAdmin = (id,type) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Admin/${id}/deactive`,
+      `https://agentsystem-development.up.railway.app/api/Admin/${id}/deactive`,
       id,
       {
         headers: {
@@ -998,7 +998,7 @@ export const deleteUsers= (Id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_USERS_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Organizations/${Id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Organizations/${Id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -1036,7 +1036,7 @@ export const fetchCases = () => async (dispatch) => {
   dispatch({ type: 'FETCH_CASES_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Cases',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Cases',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -1058,7 +1058,7 @@ export const addCases  = (CaseData) => async (dispatch) => {
   dispatch({ type: 'ADD_CASES_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/Cases', CaseData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Cases', CaseData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1078,7 +1078,7 @@ export const editCases  = (id, caseDto) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token'); 
     const response = await axios.put(
-      `http://agentsys.runasp.net/api/Cases/${id}`,
+      `https://agentsystem-development.up.railway.app/api/Cases/${id}`,
       caseDto,
       {
         headers: {
@@ -1099,7 +1099,7 @@ export const deleteCases  = (id) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
       dispatch({ type: "DELETE_CASES_REQUEST" });
-      await axios.delete(`http://agentsys.runasp.net/api/Cases/${id}`,
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Cases/${id}`,
         {
           headers: {
               Authorization: `Bearer ${token}`,
@@ -1118,7 +1118,7 @@ export const assignCaseToParent = (CaseId,linkedCaseId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/link/${linkedCaseId}`, {}, {
+    const response = await axios.post(`https://agentsystem-development.up.railway.app/api/Cases/${CaseId}/link/${linkedCaseId}`, {}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -1140,7 +1140,7 @@ export const assignCaseTocourts = (caseId, arbitrations) => async (dispatch) => 
       const token = localStorage.getItem('token');
 
       const response = await axios.post(
-          `http://agentsys.runasp.net/api/Cases/${caseId}/arbitraries`,
+          `https://agentsystem-development.up.railway.app/api/Cases/${caseId}/arbitraries`,
           arbitrations,  
           {
               headers: {
@@ -1161,7 +1161,7 @@ export const fetchCourts = () => async (dispatch) => {
   dispatch({ type: 'FETCH_COURT_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/Courts',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Courts',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -1181,7 +1181,7 @@ export const attachCaseFile = (CaseId,formData) => async (dispatch) => {
   dispatch({ type: 'ATTACH_CASES_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/Documents`,formData , {
+    const response = await axios.post(`https://agentsystem-development.up.railway.app/api/Cases/${CaseId}/Documents`,formData , {
       headers: {
         Authorization: `Bearer ${token}`,
         
@@ -1226,7 +1226,7 @@ export const fetchCasesReport = (DateFrom, DateTo, Department, Client, Agent) =>
     if (Client) params.Client = Client;
     if (Agent) params.Agent = Agent;
 
-    const response = await axios.get('http://agentsys.runasp.net/api/Cases/status-breakdown',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Cases/status-breakdown',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -1247,7 +1247,7 @@ export const assignCaseToAgent = (CaseId,AgentId) => async (dispatch) => {
   dispatch({ type: 'ASSIGN_CASES_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post(`http://agentsys.runasp.net/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
+    const response = await axios.post(`https://agentsystem-development.up.railway.app/api/Cases/${CaseId}/assign/${AgentId}`,{}, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -1269,7 +1269,7 @@ export const fetchDocuments = () => async (dispatch) => {
   dispatch({ type: 'FETCH_DOCUMENT_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -1289,7 +1289,7 @@ export const fetchDocumentsLog = () => async (dispatch) => {
   dispatch({ type: 'FETCH_DOCUMENT_LOG_REQUEST' });
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://agentsys.runasp.net/api/',
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/',
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -1311,7 +1311,7 @@ export const addADocument = (DocData) => async (dispatch) => {
   dispatch({ type: 'ADD_DOCUMENT_REQUEST' });
   try {
     const token = localStorage.getItem('token'); 
-    const response = await axios.post('http://agentsys.runasp.net/api/', DocData, {
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/', DocData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -1321,6 +1321,290 @@ export const addADocument = (DocData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: 'ADD_DOCUMENT_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};
+// ==============================================Folder==============================
+export const fetchFolders = () => async (dispatch) => {
+  dispatch({ type: 'FETCH_FOLDER_REQUEST' });
+  try {
+    const token = localStorage.getItem('token');
+    const OrgId = localStorage.getItem('id');
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Folders',
+      { params: {
+        includeDocuments: false,
+      },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data)
+    dispatch({ type: 'FETCH_FOLDER_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_FOLDER_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+// export const fetchFolderContents = (id) => async (dispatch) => {
+//   dispatch({ type: "FETCH_SUB_FOLDER_REQUEST" });
+//   try {
+//     const token = localStorage.getItem('token');
+//     console.log(`https://agentsystem-development.up.railway.app/api/Folders/${id}/contents`)
+//     const response = await axios.get(`https://agentsystem-development.up.railway.app/api/Folders/${id}/contents`, {
+//       params: {
+//         includeDocuments: true,  // Assuming the API includes documents
+//       },
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+    
+//     const folderData = response.data;
+//     // Fetch subfolders and files using their respective URLs
+//     const subfolders = await fetchSubfolders(folderData.folders[0].subfoldersUrl, token);
+//     const files = await fetchFiles(folderData.folders[0].filesUrl, token);
+//     console.log(subfolders,files)
+//     dispatch({ 
+//       type: "FETCH_SUB_FOLDER_SUCCESS", 
+//       payload: { 
+//         folder: folderData.folders[0],
+//         subfolders: subfolders,
+//         files: files 
+//       } 
+//     });
+//   } catch (error) {
+//     dispatch({
+//       type: "FETCH_FOLDER_SUB_FAILURE",
+//       payload: error.message,
+//     });
+//   }
+// };
+
+// // Helper function to fetch subfolders
+// const fetchSubfolders = async (subfoldersUrl, token) => {
+//   const response = await axios.get(subfoldersUrl, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return response.data;  // Assuming the response contains subfolder data
+// };
+
+// // Helper function to fetch files
+// const fetchFiles = async (filesUrl, token) => {
+//   const response = await axios.get(filesUrl, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   return response.data;  // Assuming the response contains file data
+// };
+export const fetchFolderContents = (id) => async (dispatch) => {
+  dispatch({ type: "FETCH_SUB_FOLDER_REQUEST" });
+
+  try {
+    const token = localStorage.getItem('token');
+    const url = `https://agentsystem-development.up.railway.app/api/Folders/${id}/contents`;
+
+    const response = await axios.get(url, {
+      params: {
+        includeDocuments: true, // includes files/documents in the response
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { folders, files } = response.data;
+
+    dispatch({
+      type: "FETCH_SUB_FOLDER_SUCCESS",
+      payload: {
+        folder: id,
+        subfolders: folders,
+        files: files,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "FETCH_FOLDER_SUB_FAILURE",
+      payload: error.message,
+    });
+  }
+};
+
+export const addFolder = (folderData) => async (dispatch) => {
+  dispatch({ type: 'ADD_FOLDER_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Folders', folderData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({ type: 'ADD_FOLDER_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ADD_FOLDER_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};
+export const addFile = (formData) => async (dispatch) => {
+  dispatch({ type: 'ADD_DOCUMENT_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Documents', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({ type: 'ADD_DOCUMENT_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ADD_DOCUMENT_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};
+// ==============================
+export const fetchTags= () => async (dispatch) => {
+  dispatch({ type: 'FETCH_TAGS_REQUEST' });
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('https://agentsystem-development.up.railway.app/api/Tag',
+      {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    // console.log(response.data)
+    dispatch({ type: 'FETCH_TAGS_SUCCESS', payload: response.data });
+  } catch (error) {
+    dispatch({
+      type: 'FETCH_TAGS_FAILURE',
+      payload: error.message,
+    });
+  }
+};
+
+
+export const addTag = (TagData) => async (dispatch) => {
+  dispatch({ type: 'ADD_TAGS_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Tag', TagData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({ type: 'ADD_TAGS_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ADD_TAGS_FAILURE',
+      payload: error.message,
+    });
+    return Promise.reject(error); 
+  }
+};
+export const editTag = (id, TagData) => async (dispatch) => {
+  dispatch({ type: 'EDIT_TAGS_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.put(
+      `https://agentsystem-development.up.railway.app/api/Tag/${id}`,
+      TagData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    dispatch({ type: 'EDIT_TAGS_SUCCESS', payload: response.data });
+  } catch (error) {
+    console.log('Error Response:', error.response); // This will give you more insight into why it failed
+    dispatch({ type: 'EDIT_TAGS_FAILURE', payload: error.message });
+    throw error;
+  }
+  
+};
+
+export const deleteTag = (Id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+      dispatch({ type: "DELETE_TAGS_REQUEST" });
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Tag/${Id}`,
+        {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      }
+      );
+      dispatch({ type: "DELETE_TAGS_SUCCESS", payload: Id });
+  } catch (error) {
+      dispatch({
+          type: "DELETE_TAGS_FAILURE",
+          payload: error.response?.data?.message || error.message,
+      });
+  }
+};
+export const filterTag = (name) => (dispatch, getState) => {
+  const { Tags } = getState().Tags;
+
+  const filteredTags = Tags.filter((t) => {
+    
+    return (
+      (!name || t.name.toLowerCase().includes(name.toLowerCase()))
+    );
+  });
+   console.log(filteredTags)
+
+  dispatch({ type: "FILTER_TAGS", payload: filteredTags });
+};
+export const deleteDocumentTag = (Id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+      dispatch({ type: "DELETE_TAGS_REQUEST" });
+      await axios.delete(`https://agentsystem-development.up.railway.app/api/Tag/${Id}`,
+        {
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+      }
+      );
+      dispatch({ type: "DELETE_TAGS_SUCCESS", payload: Id });
+  } catch (error) {
+      dispatch({
+          type: "DELETE_TAGS_FAILURE",
+          payload: error.response?.data?.message || error.message,
+      });
+  }
+};
+export const addDocumentTag = (TagData) => async (dispatch) => {
+  dispatch({ type: 'ADD_TAGS_REQUEST' });
+  try {
+    const token = localStorage.getItem('token'); 
+    const response = await axios.post('https://agentsystem-development.up.railway.app/api/Tag', TagData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch({ type: 'ADD_TAGS_SUCCESS', payload: response.data });
+    return Promise.resolve(response.data); 
+  } catch (error) {
+    dispatch({
+      type: 'ADD_TAGS_FAILURE',
       payload: error.message,
     });
     return Promise.reject(error); 

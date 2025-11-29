@@ -26,7 +26,7 @@ const Profile=()=>{
                     <h3 style={{color:"white",margin:"7px"}}>Profile</h3>
                     <div className="imageContainer">
                         <img
-                             src={Profile?.picture ? `http://agentsys.runasp.net${Profile.picture}` : defaultProfile} 
+                             src={Profile?.picture ? `https://agentsystem-development.up.railway.app/${Profile.picture}` : defaultProfile} 
                             alt="Profile"
                             className="photo"
                         />

@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     Documents: [],
     DocumentLog:[],
+    DocumentTags:[],
     FilterDocument:[],
     error: null,
   };
@@ -27,6 +28,21 @@ const initialState = {
             return { ...state, loading: false, Documents: [...state.Documents, action.payload] };
         case 'ADD_DOCUMENT_FAILURE':
             return { ...state, loading: false, error: action.payload };
+        case 'ADD_DOCUMENT_TAG_REQUEST':
+            return { ...state, loading: true, error: null };
+        case 'ADD_DOCUMENT_TAG_SUCCESS':
+            return { ...state, loading: false, DocumentTags: [...state.DocumentTags, action.payload] };
+        case 'ADD_DOCUMENT_TAG_FAILURE':
+            return { ...state, loading: false, error: action.payload };
+        case "DELETE_DOCUMENT_TAG_SUCCESS":
+            return {
+                ...state,
+                DocumentTags: state.DocumentTags.filter(d => d.id !== action.payload)
+            };
+        case "DELETE_DOCUMENT_TAG_REQUEST":
+                return { ...state, loading: true };
+        case "DELETE_DOCUMENT_TAG_FAILURE":
+                return { ...state, error: action.payload, loading: false };
         case 'EDIT_DOCUMENT_REQUEST':
                 return { ...state, loading: true, error: null };
         case 'EDIT_DOCUMENT_SUCCESS':

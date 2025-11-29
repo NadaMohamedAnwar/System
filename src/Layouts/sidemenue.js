@@ -21,6 +21,7 @@ import { CgProfile } from "react-icons/cg";
 import { FaRegFileAlt } from 'react-icons/fa'; 
 import { HiOutlineDocumentAdd } from 'react-icons/hi'; 
 import { BiHistory } from 'react-icons/bi'; 
+import { FaHashtag } from "react-icons/fa";
 
 
 
@@ -33,6 +34,7 @@ const SidebarMenu = () => {
     const [CaseOpen, setCaseOpen] = useState(false);
     const [OrganizationOpen, setOrganizationOpen] = useState(false);
     const [documentOpen, setDocumentOpen] = useState(false);
+    const [folderOpen, setFolderOpen] = useState(false);
     const [SettingsOpen, setSettingsOpen] = useState(false);
     const [serviceOpen, setserviceOpen] = useState(false);
     const [CategoryOpen, setCategoryOpen] = useState(false);
@@ -371,6 +373,52 @@ const SidebarMenu = () => {
                     )}
                 </li>
                 } */}
+                {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3">
+                    <div
+                        className="d-flex align-items-center text-decoration-none text-white p-2 rounded cursor-pointer hover-bg-light"
+                        onClick={() => setFolderOpen(!folderOpen)} 
+                        style={{ fontSize: "0.75rem" }}
+                    >
+                        <FaChevronDown size={15} style={{ transform: folderOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" ,marginRight:"10px"}} />
+                        {open && <span className='cursor-pointer'>Folder Management</span>}
+                    </div>
+
+                   
+                    {folderOpen && (
+                        <ul className="list-unstyled ms-3 mt-2">
+                            <li>
+                                <NavLink
+                                    to="/folders"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <FaRegFileAlt  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Folders</span>}
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/tags"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <FaHashtag  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Tags</span>}
+                                </NavLink>
+                            </li>
+                            
+                            <li>
+                                <NavLink
+                                    to="/documents-log"
+                                    className="d-flex align-items-center text-decoration-none text-white p-2 rounded hover-bg-light"
+                                >
+                                    <BiHistory  size={15} className="me-2" />
+                                    {open && <span style={{ fontSize: "0.75rem" }}>Documents Log</span>}
+                                </NavLink>
+                            </li>
+    
+                        </ul>
+                    )}
+                </li>
+                }
                 {/* Dropdown Menu for Task Management */}
                 {(userRoles.includes("OrgAdmin") || userRoles.includes("Manager") || userRoles.includes("HeadManager")) &&<li className="mb-3">
                     <div

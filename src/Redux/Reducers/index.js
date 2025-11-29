@@ -9,6 +9,8 @@ import UsersReducer from './UserReducer';
 import CaseReducer from './CaseReducer';
 import CourtReducer from './CourtReducer';
 import DocumentReducer from './DocumentReducer';
+import FolderReducer from './FolderReducer';
+import TagReducer from './TagReducer';
 
 
 const rootReducer = combineReducers({
@@ -22,6 +24,8 @@ const rootReducer = combineReducers({
     Cases: CaseReducer,
     Courts: CourtReducer,
     Documents: DocumentReducer,
+    Folders: FolderReducer,
+    Tags: TagReducer,
 });
 
 export default rootReducer;

@@ -35,7 +35,7 @@ function Header() {
 
       <div className="header-right">
         <img
-           src={Profile?.picture ? `http://agentsys.runasp.net${Profile.picture}` : defaultProfile} 
+           src={Profile?.picture ? `http://agentsys.runasp.net/${Profile.picture}` : defaultProfile} 
           alt="Profile"
           className="profile-photo"
         />

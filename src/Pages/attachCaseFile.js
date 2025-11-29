@@ -20,7 +20,7 @@ function AttachCaseFile() {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
-      console.log("File details:", selectedFile);
+      // console.log("File details:", selectedFile);
     }
   };
 

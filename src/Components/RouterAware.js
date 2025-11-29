@@ -8,11 +8,12 @@ const RouterAware = ({ token, refreshAccessToken }) => {
     useEffect(() => {
       if (!token) {
         if (location.pathname !== '/') {
-          navigate('/');
+          navigate('/'); // Redirect to login page if not logged in
         }
       } else {
         const role = localStorage.getItem('role');
-        // refreshAccessToken();
+        if (!role) return; // If role is not available, don't redirect yet
+  
         if (location.pathname === '/') {
           if (role === 'SuperAdmin') {
             navigate('/organizations');
@@ -26,4 +27,4 @@ const RouterAware = ({ token, refreshAccessToken }) => {
     return null;
   };
   
-  export default RouterAware;
+  export default RouterAware; 

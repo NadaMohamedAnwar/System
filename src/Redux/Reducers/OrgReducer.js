@@ -42,7 +42,7 @@ const initialState = {
             };
         case "DELETE_ORGS_REQUEST":
                 return { ...state, loading: true };
-        case "DELETE_ORGS_FAIL":
+        case "DELETE_ORGS_FAILURE":
                 return { ...state, error: action.payload, loading: false };
         case "FILTER_ORGS":
             return {
